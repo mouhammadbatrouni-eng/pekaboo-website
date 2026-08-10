@@ -182,9 +182,37 @@
   }
 }
 
+/*
+ * Scroll reveal.
+ *
+ * Elements start hidden ONLY once the script confirms it can observe them
+ * (it sets `data-reveal-ready` on <html>). Without JS, or before the script
+ * runs, everything is visible — content is never dependent on animation.
+ */
+[data-reveal-ready] [data-reveal] {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-reveal-ready] [data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  /* Reveal animations are motion, not information — drop them entirely. */
+  [data-reveal-ready] [data-reveal],
+  [data-reveal-ready] [data-reveal].is-revealed {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 
   *,

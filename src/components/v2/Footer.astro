@@ -1,0 +1,83 @@
+---
+import Logo from "../ui/Logo.astro";
+import Container from "../ui/Container.astro";
+import { ArrowUp } from "@lucide/astro";
+import { SITE } from "../../lib/content/site";
+
+const COLUMNS = [
+  {
+    heading: "Product",
+    links: [
+      { label: "Plans", href: "#plans" },
+      { label: "Our App", href: "#app" },
+      { label: "Features", href: "#features" },
+    ],
+  },
+  {
+    heading: "Company",
+    links: [
+      { label: "About", href: "#about" },
+      { label: "Why Us", href: "#why-us" },
+      { label: "Contact", href: "#contact" },
+    ],
+  },
+  {
+    heading: "Legal",
+    links: [
+      { label: "Privacy", href: "/privacy" },
+      { label: "Terms", href: "/terms" },
+    ],
+  },
+];
+
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-ink-100 bg-ink-950 text-ink-300">
+  <Container class="py-14">
+    <div class="grid gap-10 lg:grid-cols-[1.4fr_2fr]">
+      <div>
+        <Logo tone="light" />
+        <p class="mt-4 max-w-xs leading-relaxed text-ink-400">
+          One connected platform for childcare centers — operations, educators, families and finance.
+        </p>
+        <a
+          href={SITE.whatsappUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="mt-5 inline-flex items-center rounded-full border border-white/10 px-3.5 py-1.5 text-xs font-semibold text-ink-300 transition-colors hover:border-brand-400 hover:text-brand-300"
+        >
+          WhatsApp
+        </a>
+      </div>
+
+      <div class="grid grid-cols-2 gap-8 sm:grid-cols-3">
+        {COLUMNS.map((column) => (
+          <div>
+            <h2 class="text-sm font-bold text-white">{column.heading}</h2>
+            <ul class="mt-4 space-y-3">
+              {column.links.map((link) => (
+                <li>
+                  <a href={link.href} class="text-sm text-ink-400 transition-colors hover:text-white">
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="mt-12 flex flex-col gap-4 border-t border-white/8 pt-7 text-xs text-ink-500 sm:flex-row sm:items-center sm:justify-between">
+      <p>&copy; {year} {SITE.name} · {SITE.parentCompany}</p>
+      <a
+        href="#top"
+        class="inline-flex items-center gap-1.5 font-semibold text-ink-400 transition-colors hover:text-white"
+      >
+        Back to top
+        <ArrowUp size={13} aria-hidden="true" />
+      </a>
+    </div>
+  </Container>
+</footer>

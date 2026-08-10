@@ -22,8 +22,14 @@ const {
   disabled = false,
 } = Astro.props;
 
+/*
+ * Note: `inline-flex` here competes with any `hidden` passed via `class` —
+ * both are display utilities at equal specificity, and Tailwind emits
+ * `inline-flex` later, so it wins. To hide a Button responsively, wrap it in
+ * an element that carries the visibility classes rather than passing `hidden`.
+ */
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-full border font-bold tracking-[-0.01em] transition-all duration-200 " +
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full border font-bold tracking-[-0.01em] transition-all duration-200 " +
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500 " +
   "active:translate-y-px disabled:opacity-50 disabled:pointer-events-none";
 

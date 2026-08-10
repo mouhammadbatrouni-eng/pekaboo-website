@@ -1,0 +1,67 @@
+---
+import Container from "../ui/Container.astro";
+import ScrollSection from "./ScrollSection.astro";
+import SectionIntro from "./SectionIntro.astro";
+import FeatureIcon from "../ui/FeatureIcon.astro";
+import { Check, ArrowRight } from "@lucide/astro";
+import { SOLUTIONS } from "../../lib/content/solutions";
+---
+
+<ScrollSection id="plans" label="Plans" surface="tint">
+  <Container>
+    <SectionIntro
+      id="plans-heading"
+      step="01"
+      eyebrow="Plans"
+      title="Three ways to start with Peekaboo"
+      description="Every center is different. Pick the one that matches yours — you can always talk it through with us first."
+    />
+
+    <div class="mt-14 grid gap-6 lg:grid-cols-3">
+      {SOLUTIONS.map((solution, index) => (
+        <article
+          data-reveal
+          data-reveal-delay={index * 90}
+          class:list={[
+            "relative flex flex-col rounded-xl border bg-white p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg",
+            solution.featured ? "border-brand-300 shadow-soft-lg" : "border-ink-100 shadow-soft hover:border-brand-200",
+          ]}
+        >
+          {solution.featured && (
+            <span class="absolute -top-3 left-7 rounded-full bg-[linear-gradient(180deg,#0e7fa8_0%,#0e77a1_100%)] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-white shadow-glow-brand">
+              Most popular
+            </span>
+          )}
+
+          <FeatureIcon icon={solution.icon} tone={solution.featured ? "brand" : "gold"} class="h-11 w-11" />
+          <h3 class="mt-5 font-heading text-xl tracking-[-0.03em] text-ink-900">{solution.name}</h3>
+          <p class="mt-3 leading-relaxed text-ink-500 lg:min-h-[7.5rem]">{solution.description}</p>
+
+          {/* Fixed heights keep the three cards' dividers on the same line, so
+              the column reads as a comparison rather than three loose cards. */}
+          <p class="mt-6 text-xs font-bold uppercase tracking-[0.1em] text-ink-400">Best for</p>
+          <p class="mt-1 text-sm font-semibold text-ink-700 sm:min-h-[2.5rem]">{solution.bestFor}</p>
+
+          <ul class="mt-6 space-y-2.5 border-t border-ink-100 pt-6">
+            {solution.includes.slice(0, 3).map((item) => (
+              <li class="flex items-start gap-2.5 text-sm text-ink-700">
+                <span class="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-mint-soft text-success">
+                  <Check size={10} stroke-width={3.5} aria-hidden="true" />
+                </span>
+                {item}
+              </li>
+            ))}
+          </ul>
+
+          <a
+            href="#contact"
+            class="group mt-7 inline-flex items-center gap-1.5 text-sm font-bold text-brand-700 transition-colors hover:text-brand-800"
+          >
+            Talk to us about this
+            <ArrowRight size={15} class="transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true" />
+          </a>
+        </article>
+      ))}
+    </div>
+  </Container>
+</ScrollSection>

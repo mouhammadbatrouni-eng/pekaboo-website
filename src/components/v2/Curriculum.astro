@@ -1,0 +1,68 @@
+---
+import Container from "../ui/Container.astro";
+import ScrollSection from "./ScrollSection.astro";
+import SectionIntro from "./SectionIntro.astro";
+import CurriculumPlanner from "../product/CurriculumPlanner.astro";
+import { CURRICULA, CURRICULUM_STEPS } from "../../lib/content/marketing";
+---
+
+<ScrollSection id="curriculum" label="Curriculum" surface="tint">
+  <Container>
+    <SectionIntro
+      id="curriculum-heading"
+      step="07"
+      eyebrow="Curriculum"
+      title="Your curriculum. Your framework. Built into Peekaboo."
+      description="Peekaboo doesn't impose a curriculum on your setting. You define the learning areas, objectives and attainment levels you work to — then everything else follows that structure."
+    />
+
+    <div class="mt-16 grid gap-12 lg:grid-cols-[1fr_380px] lg:items-center lg:gap-16">
+      <div>
+        <ol class="grid gap-6 sm:grid-cols-2">
+          {CURRICULUM_STEPS.map((step, index) => (
+            <li class="relative pl-11" data-reveal data-reveal-delay={index * 80}>
+              <span
+                class="absolute left-0 top-0 flex h-8 w-8 items-center justify-center rounded-full bg-white text-sm font-bold text-brand-700 shadow-soft ring-1 ring-brand-100"
+                aria-hidden="true"
+              >
+                {index + 1}
+              </span>
+              <p class="text-xs font-bold uppercase tracking-[0.12em] text-brand-700">{step.step}</p>
+              <p class="mt-1 font-bold text-ink-900">{step.title}</p>
+              <p class="mt-1 text-sm leading-relaxed text-ink-500">{step.description}</p>
+            </li>
+          ))}
+        </ol>
+
+        <div class="mt-10 rounded-xl border border-ink-100 bg-white/80 p-6" data-reveal>
+          <p class="text-xs font-bold uppercase tracking-[0.12em] text-ink-400">
+            Set up by settings working to
+          </p>
+          <ul class="mt-4 flex flex-wrap gap-2">
+            {CURRICULA.map((curriculum) => (
+              <li
+                class="rounded-full border border-ink-100 bg-white px-3.5 py-1.5 text-sm font-semibold text-ink-700"
+                title={curriculum.name}
+              >
+                {curriculum.abbr}
+                <span class="sr-only"> — {curriculum.name}</span>
+              </li>
+            ))}
+          </ul>
+          <p class="mt-4 text-sm leading-relaxed text-ink-400">
+            Because you define the framework, Peekaboo can be configured for any of these — or for a
+            structure that's entirely your own.
+          </p>
+        </div>
+      </div>
+
+      <div data-reveal data-reveal-delay="120">
+        <CurriculumPlanner />
+        <p class="mt-4 text-center text-sm leading-relaxed text-ink-400">
+          A theme leads to activities, activities map to objectives, and an observation becomes part
+          of the child's journal.
+        </p>
+      </div>
+    </div>
+  </Container>
+</ScrollSection>

@@ -1,0 +1,75 @@
+---
+import Container from "../ui/Container.astro";
+import ScrollSection from "./ScrollSection.astro";
+import SectionIntro from "./SectionIntro.astro";
+import FeatureIcon from "../ui/FeatureIcon.astro";
+
+/**
+ * Outcomes, not features. Deliberately carries no statistics — no customer
+ * counts, percentages or time-saved figures, because none are verified.
+ */
+const REASONS = [
+  {
+    title: "Everything connected",
+    description: "Children, parents, educators, billing and operations in one system instead of five.",
+    icon: "attendance",
+    tone: "brand" as const,
+  },
+  {
+    title: "Less administration",
+    description: "Records entered once travel to the parent, the report and the invoice on their own.",
+    icon: "finance",
+    tone: "gold" as const,
+  },
+  {
+    title: "Better parent engagement",
+    description: "Families see the day as it happens, so pickup stops being the only update they get.",
+    icon: "communication",
+    tone: "coral" as const,
+  },
+  {
+    title: "Understand child development",
+    description: "Observations, milestones and journals build a record that follows each child.",
+    icon: "curriculum",
+    tone: "mint" as const,
+  },
+  {
+    title: "Better decisions",
+    description: "Occupancy, ratios, attendance and finance in one view rather than four exports.",
+    icon: "people",
+    tone: "violet" as const,
+  },
+  {
+    title: "Flexible for your organisation",
+    description: "Use Peekaboo as it comes, brand the parent app, or have it built around your process.",
+    icon: "security",
+    tone: "brand" as const,
+  },
+];
+---
+
+<ScrollSection id="why-us" label="Why Us">
+  <Container>
+    <SectionIntro
+      id="why-us-heading"
+      step="06"
+      eyebrow="Why Us"
+      title="Why one platform beats five tools"
+      description="The case for Peekaboo isn't a longer feature list — it's what stops being your problem."
+    />
+
+    <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {REASONS.map((reason, index) => (
+        <article
+          data-reveal
+          data-reveal-delay={index * 70}
+          class="rounded-xl border border-ink-100 bg-white/90 p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-brand-200 hover:shadow-soft-lg"
+        >
+          <FeatureIcon icon={reason.icon} tone={reason.tone} class="h-11 w-11" />
+          <h3 class="mt-5 font-heading text-lg tracking-[-0.02em] text-ink-900">{reason.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-ink-500">{reason.description}</p>
+        </article>
+      ))}
+    </div>
+  </Container>
+</ScrollSection>

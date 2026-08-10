@@ -1,0 +1,88 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import StickyNav from "../components/v2/StickyNav.astro";
+import Hero from "../components/v2/Hero.astro";
+import Plans from "../components/v2/Plans.astro";
+import Bridge from "../components/v2/Bridge.astro";
+import AppStory from "../components/v2/AppStory.astro";
+import Features from "../components/v2/Features.astro";
+import Improve from "../components/v2/Improve.astro";
+import About from "../components/v2/About.astro";
+import WhyUs from "../components/v2/WhyUs.astro";
+import Curriculum from "../components/v2/Curriculum.astro";
+import Contact from "../components/v2/Contact.astro";
+import Footer from "../components/v2/Footer.astro";
+import { getSiteSettings } from "../lib/sanity/queries";
+import { resolveSeo } from "../lib/seo";
+
+export const prerender = true;
+
+const site = await getSiteSettings();
+const seo = resolveSeo("Home", {
+  metaTitle: "Peekaboo — everything your childcare center needs, in one platform",
+  metaDescription:
+    "Run your center, support your educators, connect with parents, manage payments and follow every child's journey — all from one connected platform.",
+}, site);
+---
+
+<BaseLayout seo={seo} includeOrgSchema>
+  <StickyNav />
+
+  <main id="main-content">
+    <Hero />
+    <Plans />
+
+    <Bridge text="However you start with Peekaboo, families stay connected to their child's day." />
+    <AppStory />
+
+    <Bridge text="That's what parents see. Here's what your team works with." />
+    <Features />
+
+    <Bridge text="All of which adds up to a different kind of working week." />
+    <Improve />
+
+    <About />
+    <WhyUs />
+    <Curriculum />
+    <Contact />
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<script>
+  // Scroll reveal. The hidden state is only applied once we know we can
+  // observe and un-hide, so no-JS visitors and older browsers see everything.
+  const reveals = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
+
+  if (reveals.length > 0 && "IntersectionObserver" in window) {
+    document.documentElement.setAttribute("data-reveal-ready", "");
+
+    const observer = new IntersectionObserver(
+      (entries, obs) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const el = entry.target as HTMLElement;
+          const delay = Number(el.dataset.revealDelay ?? 0);
+          el.style.transitionDelay = `${delay}ms`;
+          el.classList.add("is-revealed");
+          obs.unobserve(el);
+        }
+      },
+      { rootMargin: "0px 0px -12% 0px", threshold: 0.05 },
+    );
+
+    for (const el of reveals) observer.observe(el);
+
+    // Anything already in view on load (the hero) reveals immediately rather
+    // than waiting for a scroll event that may never come.
+    requestAnimationFrame(() => {
+      for (const el of reveals) {
+        if (el.getBoundingClientRect().top < window.innerHeight) {
+          el.classList.add("is-revealed");
+          observer.unobserve(el);
+        }
+      }
+    });
+  }
+</script>

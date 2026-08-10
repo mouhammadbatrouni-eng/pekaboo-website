@@ -1,0 +1,39 @@
+---
+import type { SectionId } from "./SECTIONS";
+
+/**
+ * A section in the single-page journey. Registers itself with the scroll spy
+ * via `data-section`, and carries the surface/spacing choices that keep the
+ * page reading as one continuous story rather than stacked blocks.
+ */
+interface Props {
+  id: SectionId;
+  label: string;
+  surface?: "plain" | "tint" | "deep";
+  space?: "normal" | "loose";
+  class?: string;
+}
+
+const { id, label, surface = "plain", space = "normal", class: className = "" } = Astro.props;
+
+const surfaces = {
+  plain: "",
+  tint: "bg-white/55",
+  deep: "bg-ink-950 text-ink-200",
+};
+
+const spacing = {
+  normal: "py-20 sm:py-28",
+  loose: "py-24 sm:py-32",
+};
+---
+
+<section
+  id={id}
+  data-section={id}
+  data-section-label={label}
+  aria-labelledby={`${id}-heading`}
+  class:list={["relative scroll-mt-28", surfaces[surface], spacing[space], className]}
+>
+  <slot />
+</section>

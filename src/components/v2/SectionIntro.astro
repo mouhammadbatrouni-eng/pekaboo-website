@@ -1,0 +1,46 @@
+---
+interface Props {
+  id: string;
+  /** The step number in the journey, e.g. "01". */
+  step?: string;
+  eyebrow: string;
+  title: string;
+  description?: string;
+  align?: "left" | "center";
+  tone?: "dark" | "light";
+  class?: string;
+}
+
+const {
+  id,
+  step,
+  eyebrow,
+  title,
+  description,
+  align = "center",
+  tone = "dark",
+  class: className = "",
+} = Astro.props;
+
+const titleClass = tone === "light" ? "text-white" : "text-ink-900";
+const bodyClass = tone === "light" ? "text-ink-300" : "text-ink-500";
+const eyebrowClass = tone === "light" ? "text-brand-300" : "text-brand-700";
+const stepClass =
+  tone === "light" ? "border-white/15 text-ink-400" : "border-ink-200 text-ink-400";
+---
+
+<div
+  class:list={["max-w-2xl", align === "center" ? "mx-auto text-center" : "", className]}
+  data-reveal
+>
+  <p class:list={["mb-3 flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.14em]", align === "center" && "justify-center", eyebrowClass]}>
+    {step && (
+      <span class:list={["rounded-full border px-2 py-0.5 tabular-nums", stepClass]} aria-hidden="true">
+        {step}
+      </span>
+    )}
+    {eyebrow}
+  </p>
+  <h2 id={id} class:list={["text-3xl sm:text-4xl", titleClass]}>{title}</h2>
+  {description && <p class:list={["mt-4 text-lg leading-relaxed", bodyClass]}>{description}</p>}
+</div>

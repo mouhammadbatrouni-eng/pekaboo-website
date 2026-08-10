@@ -1,0 +1,72 @@
+---
+import Container from "../ui/Container.astro";
+import Button from "../ui/Button.astro";
+import PortalScreen from "../product/PortalScreen.astro";
+import PhoneShell from "../product/PhoneShell.astro";
+import ParentAppBody from "../product/ParentAppBody.astro";
+import { ArrowDown, Check } from "@lucide/astro";
+---
+
+<section id="top" class="relative overflow-hidden pt-12 pb-16 sm:pt-16 sm:pb-20">
+  <div
+    class="pointer-events-none absolute inset-x-0 -top-52 -z-10 h-[640px] bg-[radial-gradient(58%_58%_at_50%_0%,var(--color-brand-100),transparent)]"
+    aria-hidden="true"
+  >
+  </div>
+
+  <Container>
+    <div class="grid items-center gap-14 lg:grid-cols-[1fr_1.02fr] lg:gap-8">
+      <div data-reveal>
+        <p class="mb-5 inline-flex items-center gap-2 rounded-full border border-brand-200/60 bg-white/80 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-brand-700 shadow-soft">
+          <span class="h-1.5 w-1.5 rounded-full bg-brand-500"></span>
+          Childcare management platform
+        </p>
+
+        <h1 class="text-[2.5rem] leading-[1.04] sm:text-[3.2rem] lg:text-[3.5rem]">
+          Everything your childcare center needs. One connected platform.
+        </h1>
+
+        <p class="mt-6 max-w-xl text-lg leading-relaxed text-ink-500">
+          Run your center, support your educators, connect with parents, manage payments and follow
+          every child's journey — all from one place.
+        </p>
+
+        <div class="mt-9 flex flex-wrap items-center gap-3">
+          <Button href="#contact" size="lg">Get started</Button>
+          <Button href="#plans" variant="secondary" size="lg">
+            Explore Peekaboo
+            <ArrowDown size={16} aria-hidden="true" />
+          </Button>
+        </div>
+
+        {/* The five-second test: name both halves of the product explicitly. */}
+        <ul class="mt-9 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ink-500">
+          {["A portal for your team", "An app for families", "Built for early years"].map((point) => (
+            <li class="flex items-center gap-2">
+              <span class="flex h-4 w-4 items-center justify-center rounded-full bg-mint-soft text-success">
+                <Check size={10} stroke-width={3.5} aria-hidden="true" />
+              </span>
+              {point}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="relative" data-reveal data-reveal-delay="120">
+        <div class="lg:pr-[150px] xl:pr-[168px]">
+          <PortalScreen screen="dashboard" />
+        </div>
+        <div class="absolute -bottom-6 right-0 hidden w-[170px] lg:block xl:w-[188px]">
+          <PhoneShell>
+            <ParentAppBody screen="timeline" />
+          </PhoneShell>
+        </div>
+        <div class="mt-8 flex justify-center lg:hidden">
+          <PhoneShell class="max-w-[230px]">
+            <ParentAppBody screen="timeline" />
+          </PhoneShell>
+        </div>
+      </div>
+    </div>
+  </Container>
+</section>

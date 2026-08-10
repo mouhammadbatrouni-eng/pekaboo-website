@@ -1,0 +1,59 @@
+---
+import PortalShell from "./PortalShell.astro";
+import { Check } from "@lucide/astro";
+
+/**
+ * The curriculum planner, as it works in Peekaboo Care: a theme holds
+ * activities, activities map to learning objectives, an observation records
+ * what happened, and that feeds the child's journal.
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className = "" } = Astro.props;
+
+const chain = [
+  { step: "Theme", value: "Growing things", tone: "bg-brand-500/15 text-brand-300" },
+  { step: "Activity", value: "Planting sunflower seeds", tone: "bg-mint/15 text-mint" },
+  { step: "Objective", value: "Explores how living things grow", tone: "bg-gold-300/15 text-gold-300" },
+];
+---
+
+<PortalShell eyebrow="Early Childhood · Curriculum" title="Weekly plan" active="learning" class={className}>
+  <div class="space-y-2.5">
+    {chain.map((item, index) => (
+      <div class="relative">
+        <div class="rounded-lg bg-white/5 p-3">
+          <div class="flex items-center justify-between gap-2">
+            <span class:list={["rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide", item.tone]}>
+              {item.step}
+            </span>
+            {index === 2 && (
+              <span class="rounded-full bg-mint/15 px-2 py-0.5 text-[9px] font-bold text-mint">Expected</span>
+            )}
+          </div>
+          <p class="mt-1.5 text-[12px] font-semibold text-white">{item.value}</p>
+        </div>
+        {index < chain.length - 1 && (
+          <div class="ml-4 h-2 w-px bg-white/15" aria-hidden="true"></div>
+        )}
+      </div>
+    ))}
+
+    <div class="rounded-lg border border-brand-400/25 bg-brand-500/10 p-3">
+      <p class="text-[9px] font-bold uppercase tracking-wide text-brand-300">Observation → Journal</p>
+      <p class="mt-1.5 text-[11px] leading-relaxed text-ink-200">
+        "Noah checked his seed every morning and told the group it needed water."
+      </p>
+      <div class="mt-2.5 flex flex-wrap gap-1.5">
+        {["Added to journal", "Milestone recorded", "Shared with family"].map((tag) => (
+          <span class="inline-flex items-center gap-1 rounded-full bg-white/8 px-2 py-0.5 text-[9px] font-semibold text-ink-300">
+            <Check size={8} stroke-width={4} class="text-mint" aria-hidden="true" />
+            {tag}
+          </span>
+        ))}
+      </div>
+    </div>
+  </div>
+</PortalShell>
