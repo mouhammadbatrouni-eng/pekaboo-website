@@ -6,72 +6,58 @@ export default defineType({
   title: 'Home Page',
   type: 'document',
   icon: HomeIcon,
+  description:
+    'The headline messaging at the top of the homepage. The sections below the hero are built from the product’s capability structure and are managed in code, so they always match what Peekaboo actually does.',
+  groups: [
+    {name: 'hero', title: 'Hero', default: true},
+    {name: 'seo', title: 'SEO'},
+  ],
   fields: [
     defineField({
-      name: 'title',
-      title: 'Internal title',
-      type: 'string',
-      initialValue: 'Home',
-      description: 'Only used inside the Studio to identify this document.',
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
       name: 'heroEyebrow',
-      title: 'Hero eyebrow label',
+      title: 'Eyebrow label',
       type: 'string',
-      description: 'Small label above the hero heading, e.g. "Nursery Operating System".',
+      group: 'hero',
+      description: 'The small label above the headline. Currently “Nursery Operating System”.',
+      validation: (rule) => rule.max(48),
     }),
     defineField({
       name: 'heroHeading',
-      title: 'Hero heading',
+      title: 'Headline',
       type: 'string',
-      validation: (rule) => rule.required(),
+      group: 'hero',
+      description: 'The first thing a visitor reads. Aim for one clear sentence under 60 characters.',
+      validation: (rule) => rule.required().max(80).warning('Shorter headlines read better at mobile sizes.'),
     }),
     defineField({
       name: 'heroDescription',
-      title: 'Hero description',
+      title: 'Supporting paragraph',
       type: 'text',
       rows: 3,
+      group: 'hero',
+      description: 'One or two sentences explaining what Peekaboo does and who it is for.',
+      validation: (rule) => rule.max(260).warning('Long hero paragraphs get skipped. Try to stay under 260 characters.'),
     }),
     defineField({
       name: 'heroCtas',
-      title: 'Hero buttons',
+      title: 'Buttons',
       type: 'array',
       of: [{type: 'cta'}],
+      group: 'hero',
+      description: 'One primary button, optionally one secondary. More than two weakens the main action.',
       validation: (rule) => rule.max(2),
-    }),
-    defineField({
-      name: 'heroImage',
-      title: 'Hero image',
-      type: 'image',
-      options: {hotspot: true},
-      fields: [
-        defineField({name: 'alt', title: 'Alternative text', type: 'string', validation: (rule) => rule.required()}),
-      ],
-    }),
-    defineField({
-      name: 'sections',
-      title: 'Page sections',
-      description: 'Build the rest of the homepage by adding and reordering sections.',
-      type: 'array',
-      of: [
-        {type: 'featureGridSection'},
-        {type: 'productShowcaseSection'},
-        {type: 'testimonialSection'},
-        {type: 'faqSection'},
-        {type: 'ctaSection'},
-        {type: 'richTextSection'},
-      ],
     }),
     defineField({
       name: 'seo',
       title: 'SEO',
       type: 'seo',
+      group: 'seo',
     }),
   ],
   preview: {
-    prepare() {
-      return {title: 'Home Page'}
+    select: {title: 'heroHeading'},
+    prepare({title}) {
+      return {title: 'Home Page', subtitle: title}
     },
   },
 })

@@ -1,0 +1,98 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import PageHeader from "../components/sections/PageHeader.astro";
+import Container from "../components/ui/Container.astro";
+import Section from "../components/ui/Section.astro";
+import FeatureIcon from "../components/ui/FeatureIcon.astro";
+import PortalScreen from "../components/product/PortalScreen.astro";
+import FinalCta from "../components/sections/FinalCta.astro";
+import Faq from "../components/sections/Faq.astro";
+import { Check } from "@lucide/astro";
+import { MODULE_CATEGORIES } from "../lib/content/modules";
+import { getFaqs } from "../lib/sanity/queries";
+
+export const prerender = true;
+
+const faqs = await getFaqs();
+---
+
+<PageLayout
+  title="Platform"
+  seo={{
+    metaTitle: "The Peekaboo platform — every capability, by area",
+    metaDescription:
+      "Attendance, daily reports, curriculum and assessment, health and safety, staff, finance and admissions — the full Peekaboo capability set, grouped by how nurseries actually work.",
+  }}
+  faqs={faqs}
+>
+  <PageHeader
+    eyebrow="The platform"
+    heading="Everything a nursery runs on"
+    intro="Seven areas of the platform, each mapped to a real part of the working day. Every capability listed here exists in the product today."
+  />
+
+  {/* Jump nav — makes a long page navigable and gives the footer real anchors. */}
+  <Container class="pb-4">
+    <nav aria-label="Platform areas" class="flex flex-wrap justify-center gap-2">
+      {MODULE_CATEGORIES.map((category) => (
+        <a
+          href={`#${category.id}`}
+          class="inline-flex items-center gap-2 rounded-full border border-ink-100 bg-white px-4 py-2 text-sm font-semibold text-ink-600 transition-all hover:-translate-y-0.5 hover:border-brand-200 hover:text-brand-700"
+        >
+          <FeatureIcon icon={category.icon} tone={category.tone} class="h-6 w-6" />
+          {category.label}
+        </a>
+      ))}
+    </nav>
+  </Container>
+
+  {MODULE_CATEGORIES.map((category, index) => (
+    <Section
+      id={category.id}
+      surface={index % 2 === 0 ? "plain" : "tint"}
+      labelledBy={`${category.id}-heading`}
+      space="tight"
+    >
+      <Container>
+        <div
+          class:list={[
+            "grid gap-10 lg:grid-cols-[1fr_360px] lg:items-start xl:gap-16",
+            index % 2 === 1 && "lg:grid-cols-[360px_1fr]",
+          ]}
+        >
+          <div class:list={[index % 2 === 1 && "lg:order-2"]}>
+            <FeatureIcon icon={category.icon} tone={category.tone} class="h-12 w-12" />
+            <h2 id={`${category.id}-heading`} class="mt-5 text-2xl sm:text-3xl">{category.title}</h2>
+            <p class="mt-3 max-w-xl text-lg leading-relaxed text-ink-500">{category.summary}</p>
+
+            <ul class="mt-8 grid gap-x-10 gap-y-6 sm:grid-cols-2">
+              {category.capabilities.map((capability) => (
+                <li>
+                  <h3 class="flex items-center gap-2 font-heading text-base tracking-[-0.02em] text-ink-900">
+                    <span class="flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-full bg-mint-soft text-success">
+                      <Check size={11} stroke-width={3.5} aria-hidden="true" />
+                    </span>
+                    {capability.name}
+                  </h3>
+                  <p class="mt-1.5 pl-6.5 text-sm leading-relaxed text-ink-500">
+                    {capability.description}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div class:list={["lg:sticky lg:top-28", index % 2 === 1 && "lg:order-1"]}>
+            <PortalScreen screen={category.preview} />
+          </div>
+        </div>
+      </Container>
+    </Section>
+  ))}
+
+  <Faq eyebrow="Questions" heading="Frequently asked questions" faqs={faqs} />
+  <FinalCta
+    heading="Want to see these working on your own setup?"
+    description="We'll load a demo around your rooms, age groups and fee structure so you can judge it properly."
+  />
+</PageLayout>

@@ -1,5 +1,14 @@
 ---
-import { CalendarCheck, Camera, Wallet, MessageCircle, BookOpen, Users, ShieldCheck, Calendar } from "@lucide/astro";
+import {
+  CalendarCheck,
+  Camera,
+  Wallet,
+  MessageCircle,
+  BookOpen,
+  Users,
+  ShieldCheck,
+  Calendar,
+} from "@lucide/astro";
 
 const ICONS = {
   attendance: CalendarCheck,
@@ -12,15 +21,26 @@ const ICONS = {
   calendar: Calendar,
 } as const;
 
+type Tone = "brand" | "gold" | "mint" | "coral" | "violet";
+
 interface Props {
   icon: keyof typeof ICONS | string;
+  tone?: Tone;
   class?: string;
 }
 
-const { icon, class: className = "" } = Astro.props;
+const { icon, tone = "brand", class: className = "" } = Astro.props;
 const IconComponent = ICONS[icon as keyof typeof ICONS] ?? Users;
+
+const tones: Record<Tone, string> = {
+  brand: "bg-brand-50 text-brand-700",
+  gold: "bg-gold-100 text-gold-700",
+  mint: "bg-mint-soft text-success",
+  coral: "bg-coral-soft text-[#c2513c]",
+  violet: "bg-violet-soft text-[#6250c9]",
+};
 ---
 
-<span class:list={["inline-flex items-center justify-center rounded-xl bg-brand-50 text-brand-600", className]}>
-  <IconComponent size={22} stroke-width={2} aria-hidden="true" />
+<span class:list={["inline-flex shrink-0 items-center justify-center rounded-xl", tones[tone], className]}>
+  <IconComponent size={20} stroke-width={2} aria-hidden="true" />
 </span>

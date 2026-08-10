@@ -3,20 +3,98 @@ import PageLayout from "../layouts/PageLayout.astro";
 import PageHeader from "../components/sections/PageHeader.astro";
 import Container from "../components/ui/Container.astro";
 import ContactForm from "../components/sections/ContactForm.astro";
+import { Mail, Phone, MessageCircle } from "@lucide/astro";
+import { SITE } from "../lib/content/site";
 
 export const prerender = true;
+
+const DEMO_STEPS = [
+  "A short call to understand how your setting runs today",
+  "A walkthrough using your rooms, age groups and fee structure",
+  "Straight answers on which of the three adoption models fits",
+];
 ---
 
-<PageLayout title="Contact" seo={{ metaDescription: "Book a demo or get in touch with the Peekaboo team." }}>
+<PageLayout
+  title="Book a demo"
+  seo={{
+    metaTitle: "Book a Peekaboo demo",
+    metaDescription:
+      "Tell us about your nursery and we'll walk you through Peekaboo using your own rooms, age groups and fee structure.",
+  }}
+>
   <PageHeader
-    eyebrow="Get in touch"
-    heading="Let's show you around Peekaboo"
-    intro="Tell us a bit about your nursery and we'll set up a short walkthrough — no pressure, just a good look at whether Peekaboo fits."
+    eyebrow="Book a demo"
+    heading="See Peekaboo with your nursery in mind"
+    intro="No scripted product tour. Tell us how your setting runs and we'll show you the parts that actually matter to you."
   />
 
-  <section class="pb-24">
-    <Container>
+  <Container class="pb-24">
+    <div class="grid gap-12 lg:grid-cols-[1fr_340px] lg:gap-16">
       <ContactForm />
-    </Container>
-  </section>
+
+      <aside class="lg:pt-2">
+        <div class="rounded-2xl border border-ink-100 bg-white/80 p-6 shadow-soft">
+          <h2 class="font-heading text-lg tracking-[-0.02em] text-ink-900">What to expect</h2>
+          <ol class="mt-4 space-y-3">
+            {DEMO_STEPS.map((step, index) => (
+              <li class="flex gap-3 text-sm leading-relaxed text-ink-500">
+                <span
+                  class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-50 text-xs font-bold text-brand-700"
+                  aria-hidden="true"
+                >
+                  {index + 1}
+                </span>
+                {step}
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        <div class="mt-5 rounded-2xl border border-ink-100 bg-white/80 p-6 shadow-soft">
+          <h2 class="font-heading text-lg tracking-[-0.02em] text-ink-900">Prefer to talk now?</h2>
+          <ul class="mt-4 space-y-3 text-sm">
+            <li>
+              <a
+                href={SITE.phoneHref}
+                class="flex items-center gap-2.5 font-semibold text-ink-700 transition-colors hover:text-brand-700"
+              >
+                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-700">
+                  <Phone size={14} aria-hidden="true" />
+                </span>
+                {SITE.phone}
+              </a>
+            </li>
+            <li>
+              <a
+                href={SITE.whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex items-center gap-2.5 font-semibold text-ink-700 transition-colors hover:text-brand-700"
+              >
+                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-mint-soft text-success">
+                  <MessageCircle size={14} aria-hidden="true" />
+                </span>
+                WhatsApp
+              </a>
+            </li>
+            <li>
+              <a
+                href={`mailto:${SITE.email}`}
+                class="flex items-center gap-2.5 font-semibold break-all text-ink-700 transition-colors hover:text-brand-700"
+              >
+                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-700">
+                  <Mail size={14} aria-hidden="true" />
+                </span>
+                {SITE.email}
+              </a>
+            </li>
+          </ul>
+          <p class="mt-5 border-t border-ink-100 pt-4 text-xs leading-relaxed text-ink-400">
+            {SITE.location}
+          </p>
+        </div>
+      </aside>
+    </div>
+  </Container>
 </PageLayout>

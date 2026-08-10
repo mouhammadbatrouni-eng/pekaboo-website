@@ -24,14 +24,6 @@ export interface Seo {
   noIndex?: boolean;
 }
 
-export interface Feature {
-  _id: string;
-  title: string;
-  summary: string;
-  icon: string;
-  body?: PortableTextBlock[];
-}
-
 export interface Testimonial {
   _id: string;
   quote: string;
@@ -42,69 +34,29 @@ export interface Testimonial {
 }
 
 export interface Faq {
-  _id: string;
+  _id?: string;
   question: string;
-  answer: PortableTextBlock[];
+  /** Sanity supplies portable text; bundled fallbacks use a plain string. */
+  answer: PortableTextBlock[] | string;
   group?: string;
 }
-
-export interface ShowcaseItem {
-  image: SanityImage;
-  caption?: string;
-  surface: "portal" | "mobile";
-}
-
-export type Section =
-  | ({ _type: "featureGridSection"; eyebrow?: string; heading: string; description?: string; features: Feature[] })
-  | ({ _type: "productShowcaseSection"; eyebrow?: string; heading: string; description?: string; items: ShowcaseItem[] })
-  | ({ _type: "testimonialSection"; eyebrow?: string; heading: string; testimonials: Testimonial[] })
-  | ({ _type: "faqSection"; eyebrow?: string; heading: string; faqs: Faq[] })
-  | ({ _type: "ctaSection"; heading: string; description?: string; ctas: Cta[] })
-  | ({ _type: "richTextSection"; heading?: string; body: PortableTextBlock[] });
 
 export interface HomePage {
   heroEyebrow?: string;
   heroHeading: string;
   heroDescription?: string;
   heroCtas?: Cta[];
-  heroImage?: SanityImage;
-  sections?: Section[];
   seo?: Seo;
 }
 
+/** A simple editorial page (About, Privacy, Terms). */
 export interface Page {
   title: string;
   slug: string;
   eyebrow?: string;
   heading: string;
   intro?: string;
-  sections?: Section[];
-  seo?: Seo;
-}
-
-export interface Author {
-  name: string;
-  slug: string;
-  role?: string;
-  photo?: SanityImage;
-  bio?: string;
-}
-
-export interface Category {
-  title: string;
-  slug: string;
-}
-
-export interface Post {
-  _id: string;
-  title: string;
-  slug: string;
-  excerpt: string;
-  coverImage: SanityImage;
-  author: Author;
-  category?: Category;
-  publishedAt: string;
-  body: PortableTextBlock[];
+  body?: PortableTextBlock[];
   seo?: Seo;
 }
 

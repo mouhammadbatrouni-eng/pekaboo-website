@@ -1,5 +1,6 @@
 ---
 import Container from "../ui/Container.astro";
+import Section from "../ui/Section.astro";
 import SectionHeading from "../ui/SectionHeading.astro";
 import { PortableText } from "astro-portabletext";
 import { ChevronDown } from "@lucide/astro";
@@ -12,24 +13,31 @@ interface Props {
 }
 
 const { eyebrow, heading, faqs } = Astro.props;
+
+/** Answers arrive as portable text from Sanity, or a plain string from the bundled set. */
+const isPlainText = (answer: Faq["answer"]): answer is string => typeof answer === "string";
 ---
 
-<section class="bg-ink-50/60 py-20 sm:py-28" id="faq">
+<Section id="faq" surface="tint" labelledBy="faq-heading">
   <Container class="max-w-3xl">
-    <SectionHeading eyebrow={eyebrow} title={heading} />
+    <SectionHeading id="faq-heading" eyebrow={eyebrow} title={heading} />
 
-    <div class="mt-12 divide-y divide-ink-100 rounded-2xl border border-ink-100 bg-white">
+    <div class="mt-12 divide-y divide-ink-100 overflow-hidden rounded-xl border border-ink-100 bg-white">
       {faqs.map((faq) => (
-        <details class="group px-6 py-5 open:pb-5">
-          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold text-ink-900 marker:content-none">
+        <details class="group">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-5 font-semibold text-ink-900 marker:content-none hover:bg-brand-50/40 focus-visible:bg-brand-50/40">
             {faq.question}
-            <ChevronDown size={18} class="shrink-0 text-ink-400 transition-transform duration-200 group-open:rotate-180" />
+            <ChevronDown
+              size={18}
+              class="shrink-0 text-ink-400 transition-transform duration-200 group-open:rotate-180"
+              aria-hidden="true"
+            />
           </summary>
-          <div class="prose prose-sm mt-3 max-w-none text-ink-500">
-            <PortableText value={faq.answer} />
+          <div class="px-6 pb-5 text-[15px] leading-relaxed text-ink-500">
+            {isPlainText(faq.answer) ? <p>{faq.answer}</p> : <PortableText value={faq.answer} />}
           </div>
         </details>
       ))}
     </div>
   </Container>
-</section>
+</Section>

@@ -3,93 +3,110 @@ import { contactSchema, type ContactFieldErrors } from "../../lib/validations/co
 
 export const prerender = false;
 
-/** True when the client submitted via fetch() and expects a JSON response. */
+/** True when the client submitted via fetch() and expects JSON back. */
 function wantsJson(request: Request) {
   return request.headers.get("accept")?.includes("application/json") ?? false;
 }
 
-async function sendNotificationEmail(data: { name: string; email: string; nurseryName?: string; message: string }) {
+type Submission = {
+  name: string;
+  email: string;
+  organisation: string;
+  phone?: string;
+  centers?: string;
+  message: string;
+};
+
+async function sendNotification(data: Submission) {
   const apiKey = import.meta.env.RESEND_API_KEY;
   const to = import.meta.env.CONTACT_TO_EMAIL;
 
   if (!apiKey || !to) {
-    // Not configured yet (e.g. local dev) — log instead of failing the request,
-    // so the form still works end-to-end before email delivery is wired up.
-    console.info("[contact] RESEND_API_KEY/CONTACT_TO_EMAIL not set — skipping email send.", data);
+    // Not configured (e.g. local dev). Log rather than fail, so the whole form
+    // flow stays testable before email delivery is wired up.
+    console.info("[contact] Email not configured — submission received but not sent:", data);
     return;
   }
 
+  const lines = [
+    `Name: ${data.name}`,
+    `Email: ${data.email}`,
+    `Organisation: ${data.organisation}`,
+    `Phone: ${data.phone || "—"}`,
+    `Centers: ${data.centers || "—"}`,
+    "",
+    data.message,
+  ].join("\n");
+
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
+    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
     body: JSON.stringify({
-      from: "Peekaboo Website <noreply@peek-a-boo.app>",
+      from: `Peekaboo Website <noreply@peek-a-boo.app>`,
       to,
       reply_to: data.email,
-      subject: `New demo request from ${data.name}${data.nurseryName ? ` (${data.nurseryName})` : ""}`,
-      text: `Name: ${data.name}\nEmail: ${data.email}\nNursery: ${data.nurseryName || "—"}\n\n${data.message}`,
+      subject: `Demo request — ${data.organisation} (${data.name})`,
+      text: lines,
     }),
   });
 
   if (!response.ok) {
-    console.error("[contact] Resend API error:", response.status, await response.text());
-    throw new Error("Failed to send notification email.");
+    console.error("[contact] Resend error:", response.status, await response.text());
+    throw new Error("Notification email failed to send.");
   }
 }
 
 export const POST: APIRoute = async ({ request, redirect }) => {
-  const formData = await request.formData();
-  const raw = {
-    name: String(formData.get("name") || ""),
-    email: String(formData.get("email") || ""),
-    nurseryName: String(formData.get("nurseryName") || ""),
-    message: String(formData.get("message") || ""),
-    company: String(formData.get("company") || ""),
-  };
-
-  const parsed = contactSchema.safeParse(raw);
   const asJson = wantsJson(request);
 
-  if (!parsed.success) {
-    const fieldErrors: ContactFieldErrors = {};
-    for (const issue of parsed.error.issues) {
-      const key = issue.path[0] as keyof ContactFieldErrors;
-      if (key && !fieldErrors[key]) fieldErrors[key] = issue.message;
-    }
-
-    if (asJson) {
-      return new Response(JSON.stringify({ success: false, errors: fieldErrors }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
-    return redirect("/contact?error=1");
+  let formData: FormData;
+  try {
+    formData = await request.formData();
+  } catch {
+    return asJson
+      ? jsonResponse({ success: false, serverError: true }, 400)
+      : redirect("/contact?error=1");
   }
 
-  // Honeypot tripped — pretend success so bots don't learn anything, but skip sending.
+  const parsed = contactSchema.safeParse({
+    name: String(formData.get("name") || ""),
+    email: String(formData.get("email") || ""),
+    organisation: String(formData.get("organisation") || ""),
+    phone: String(formData.get("phone") || ""),
+    centers: String(formData.get("centers") || ""),
+    message: String(formData.get("message") || ""),
+    company: String(formData.get("company") || ""),
+  });
+
+  if (!parsed.success) {
+    const errors: ContactFieldErrors = {};
+    for (const issue of parsed.error.issues) {
+      const key = issue.path[0] as keyof ContactFieldErrors;
+      if (key && !errors[key]) errors[key] = issue.message;
+    }
+    return asJson ? jsonResponse({ success: false, errors }, 400) : redirect("/contact?error=1");
+  }
+
+  // Honeypot tripped — respond as success so bots learn nothing, but send nothing.
   if (parsed.data.company) {
-    if (asJson) return new Response(JSON.stringify({ success: true }), { headers: { "Content-Type": "application/json" } });
-    return redirect("/contact?success=1");
+    return asJson ? jsonResponse({ success: true }) : redirect("/contact?success=1");
   }
 
   try {
-    await sendNotificationEmail(parsed.data);
+    await sendNotification(parsed.data);
   } catch (error) {
-    console.error("[contact] Failed to process submission:", error);
-    if (asJson) {
-      return new Response(JSON.stringify({ success: false, errors: {}, serverError: true }), {
-        status: 502,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
-    return redirect("/contact?error=1");
+    console.error("[contact] Submission failed:", error);
+    return asJson
+      ? jsonResponse({ success: false, serverError: true }, 502)
+      : redirect("/contact?error=1");
   }
 
-  if (asJson) {
-    return new Response(JSON.stringify({ success: true }), { headers: { "Content-Type": "application/json" } });
-  }
-  return redirect("/contact?success=1");
+  return asJson ? jsonResponse({ success: true }) : redirect("/contact?success=1");
 };
+
+function jsonResponse(body: Record<string, unknown>, status = 200) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { "Content-Type": "application/json" },
+  });
+}

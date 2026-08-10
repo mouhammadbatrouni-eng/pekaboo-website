@@ -27,13 +27,20 @@ const base =
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500 " +
   "active:translate-y-px disabled:opacity-50 disabled:pointer-events-none";
 
+/*
+ * The portal's own button gradient (#2fc5f7 → #1cb6ea) gives white text only
+ * 2.35:1, well short of the 4.5:1 that 16px bold text needs. These are the
+ * same hue family, deepened until white passes AA across the whole gradient —
+ * still unmistakably the Peekaboo blue button, but actually readable.
+ * The bright brand blue is retained everywhere it isn't behind text.
+ */
 const variants: Record<Variant, string> = {
   primary:
-    "border-transparent bg-[linear-gradient(180deg,#2fc5f7_0%,#1cb6ea_100%)] text-white shadow-glow-brand hover:shadow-[0_22px_36px_rgba(28,182,234,0.34)]",
-  gold: "border-transparent bg-[linear-gradient(180deg,#ffc945_0%,#ffae13_100%)] text-white shadow-glow-gold hover:shadow-[0_22px_36px_rgba(255,174,19,0.32)]",
+    "border-transparent bg-[linear-gradient(180deg,#0e7fa8_0%,#0e77a1_100%)] text-white shadow-glow-brand hover:bg-[linear-gradient(180deg,#0d7599_0%,#0d6f95_100%)] hover:shadow-[0_22px_36px_rgba(28,182,234,0.34)]",
+  gold: "border-transparent bg-[linear-gradient(180deg,#a06209_0%,#8f5708_100%)] text-white shadow-glow-gold hover:shadow-[0_22px_36px_rgba(255,174,19,0.32)]",
   secondary:
     "border-ink-200 bg-white/80 text-ink-800 shadow-soft hover:border-brand-300 hover:text-brand-700 hover:bg-white",
-  ghost: "border-transparent text-ink-700 hover:text-brand-600 hover:bg-brand-50",
+  ghost: "border-transparent text-ink-700 hover:text-brand-700 hover:bg-brand-50",
 };
 
 const sizes: Record<Size, string> = {

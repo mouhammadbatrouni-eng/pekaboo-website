@@ -1,0 +1,78 @@
+---
+import Container from "../ui/Container.astro";
+import Section from "../ui/Section.astro";
+import ParentAppScreen from "../product/ParentAppScreen.astro";
+import Button from "../ui/Button.astro";
+import { Check } from "@lucide/astro";
+import { LANGUAGES } from "../../lib/content/marketing";
+import { SITE } from "../../lib/content/site";
+
+const parentBenefits = [
+  "Daily reports the moment the room publishes them",
+  "Photos and moments, shared only with permission",
+  "Announcements, newsletters and event invitations",
+  "Their child's profile, allergies and authorised pickups",
+];
+---
+
+<Section id="parent-app" surface="deep" labelledBy="parent-app-heading">
+  <div
+    class="pointer-events-none absolute inset-0 bg-[radial-gradient(45%_60%_at_78%_20%,var(--color-brand-800),transparent)] opacity-70"
+    aria-hidden="true"
+  >
+  </div>
+
+  <Container class="relative">
+    <div class="grid items-center gap-16 lg:grid-cols-[1fr_auto]">
+      <div class="max-w-xl">
+        <p class="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-brand-300">
+          {SITE.products.parent}
+        </p>
+        <h2 id="parent-app-heading" class="text-3xl text-white sm:text-4xl">
+          Parents see the day, not just the pickup
+        </h2>
+        <p class="mt-4 text-lg leading-relaxed text-ink-300">
+          Families follow their child's day from their phone — what they ate, how they slept, what
+          made them laugh. No phone calls to the office, and no extra write-up for your team.
+        </p>
+
+        <ul class="mt-8 space-y-3">
+          {parentBenefits.map((benefit) => (
+            <li class="flex items-start gap-3 text-ink-200">
+              <span class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-500/20 text-brand-300">
+                <Check size={11} stroke-width={3} aria-hidden="true" />
+              </span>
+              {benefit}
+            </li>
+          ))}
+        </ul>
+
+        {/* Language support, stated qualitatively — the platform ships English and
+            Arabic with full RTL, so we describe that rather than quote a count. */}
+        <div class="mt-9 rounded-xl border border-white/10 bg-white/5 p-5">
+          <p class="text-xs font-bold uppercase tracking-[0.12em] text-brand-300">Built for mixed communities</p>
+          <p class="mt-2 text-sm leading-relaxed text-ink-300">{LANGUAGES.note}</p>
+          <ul class="mt-4 flex flex-wrap gap-2">
+            {LANGUAGES.supported.map((language) => (
+              <li class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm font-semibold text-white">
+                <span lang={language.dir === "rtl" ? "ar" : "en"} dir={language.dir}>{language.native}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="mt-9">
+          <Button href="/peekaboo-parent" variant="secondary" size="lg">
+            More about {SITE.products.parent}
+          </Button>
+        </div>
+      </div>
+
+      {/* Both language directions, side by side — the RTL claim, shown rather than asserted. */}
+      <div class="flex justify-center gap-5 lg:gap-6">
+        <ParentAppScreen class="max-w-[230px]" />
+        <ParentAppScreen rtl class="hidden max-w-[230px] sm:block" />
+      </div>
+    </div>
+  </Container>
+</Section>

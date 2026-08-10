@@ -1,10 +1,10 @@
 import type {StructureResolver} from 'sanity/structure'
-import {CogIcon, HomeIcon, DocumentIcon, SparklesIcon, CommentIcon, HelpCircleIcon, DocumentsIcon} from '@sanity/icons'
+import {CogIcon, HomeIcon, DocumentIcon, CommentIcon, HelpCircleIcon} from '@sanity/icons'
 
 /**
- * Custom desk structure so editors see a friendly, purpose-built menu instead
- * of a flat alphabetical list of every schema type. Singletons (Site Settings,
- * Home Page) are pinned at the top since there's only ever one of each.
+ * Custom desk structure so editors see a purpose-built menu instead of a flat
+ * alphabetical list of schema types. Site Settings and Home Page are pinned as
+ * singletons, since there is only ever one of each.
  */
 export const structure: StructureResolver = (S) =>
   S.list()
@@ -13,18 +13,13 @@ export const structure: StructureResolver = (S) =>
       S.listItem()
         .title('Site Settings')
         .icon(CogIcon)
-        .child(S.document().schemaType('siteSettings').documentId('siteSettings')),
+        .child(S.document().schemaType('siteSettings').documentId('siteSettings').title('Site Settings')),
       S.listItem()
         .title('Home Page')
         .icon(HomeIcon)
-        .child(S.document().schemaType('homePage').documentId('homePage')),
+        .child(S.document().schemaType('homePage').documentId('homePage').title('Home Page')),
       S.divider(),
       S.documentTypeListItem('page').title('Pages').icon(DocumentIcon),
-      S.documentTypeListItem('feature').title('Features').icon(SparklesIcon),
-      S.documentTypeListItem('testimonial').title('Testimonials').icon(CommentIcon),
       S.documentTypeListItem('faq').title('FAQs').icon(HelpCircleIcon),
-      S.divider(),
-      S.documentTypeListItem('post').title('Blog Posts').icon(DocumentsIcon),
-      S.documentTypeListItem('author').title('Authors'),
-      S.documentTypeListItem('category').title('Categories'),
+      S.documentTypeListItem('testimonial').title('Testimonials').icon(CommentIcon),
     ])

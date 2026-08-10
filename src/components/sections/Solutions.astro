@@ -1,0 +1,78 @@
+---
+import Container from "../ui/Container.astro";
+import Section from "../ui/Section.astro";
+import SectionHeading from "../ui/SectionHeading.astro";
+import FeatureIcon from "../ui/FeatureIcon.astro";
+import Button from "../ui/Button.astro";
+import { Check } from "@lucide/astro";
+import { SOLUTIONS } from "../../lib/content/solutions";
+import { CTA } from "../../lib/content/site";
+
+interface Props {
+  /** Hide the section heading when the page already has one. */
+  bare?: boolean;
+  surface?: "plain" | "tint";
+}
+
+const { bare = false, surface = "tint" } = Astro.props;
+---
+
+<Section id="solutions" surface={surface} labelledBy={bare ? undefined : "solutions-heading"}>
+  <Container>
+    {!bare && (
+      <SectionHeading
+        id="solutions-heading"
+        eyebrow="Ways to adopt Peekaboo"
+        title="Three ways to make it yours"
+        description="Run on the platform as it comes, put your own brand in families' hands, or have a system built around how your organisation works."
+      />
+    )}
+
+    <div class:list={["grid gap-6 lg:grid-cols-3", bare ? "" : "mt-14"]}>
+      {SOLUTIONS.map((solution) => (
+        <article
+          class:list={[
+            "relative flex flex-col rounded-xl border bg-white p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg",
+            solution.featured
+              ? "border-brand-300 shadow-soft-lg"
+              : "border-ink-100 shadow-soft hover:border-brand-200",
+          ]}
+        >
+          {solution.featured && (
+            <span class="absolute -top-3 left-7 rounded-full bg-[linear-gradient(180deg,#0e7fa8_0%,#0e77a1_100%)] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-white shadow-glow-brand">
+              Most common
+            </span>
+          )}
+
+          <FeatureIcon icon={solution.icon} tone={solution.featured ? "brand" : "gold"} class="h-11 w-11" />
+          <h3 class="mt-5 font-heading text-xl tracking-[-0.03em] text-ink-900">{solution.name}</h3>
+          <p class="mt-1 text-sm font-semibold text-brand-700">{solution.tagline}</p>
+          <p class="mt-4 text-sm leading-relaxed text-ink-500">{solution.description}</p>
+
+          <ul class="mt-6 space-y-2.5 border-t border-ink-100 pt-6">
+            {solution.includes.map((item) => (
+              <li class="flex items-start gap-2.5 text-sm text-ink-700">
+                <span class="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-mint-soft text-success">
+                  <Check size={10} stroke-width={3.5} aria-hidden="true" />
+                </span>
+                {item}
+              </li>
+            ))}
+          </ul>
+
+          <p class="mt-6 text-xs font-semibold uppercase tracking-[0.1em] text-ink-400">
+            Best for
+          </p>
+          <p class="mt-1 text-sm text-ink-600">{solution.bestFor}</p>
+        </article>
+      ))}
+    </div>
+
+    <div class="mt-12 flex flex-col items-center gap-3 text-center">
+      <p class="text-ink-500">
+        Not sure which fits? Tell us how your setting runs and we'll walk you through the options.
+      </p>
+      <Button href={CTA.primary.href} size="lg">{CTA.primary.label}</Button>
+    </div>
+  </Container>
+</Section>

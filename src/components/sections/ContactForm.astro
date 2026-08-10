@@ -1,83 +1,119 @@
 ---
 import Button from "../ui/Button.astro";
 import { CircleCheckBig, CircleAlert } from "@lucide/astro";
+import { CENTER_COUNT_OPTIONS } from "../../lib/validations/contact";
+import { SITE } from "../../lib/content/site";
+
+const fieldClass =
+  "w-full rounded-xl border border-ink-200 bg-white px-4 py-3 text-sm text-ink-900 placeholder:text-ink-300 transition-colors focus:border-brand-400 focus:outline-none focus:ring-4 focus:ring-brand-100 aria-[invalid=true]:border-danger";
+const labelClass = "mb-1.5 block text-sm font-semibold text-ink-700";
 ---
 
-<div class="mx-auto max-w-xl">
-  <div id="contact-banner-success" class="mb-6 hidden items-start gap-3 rounded-xl bg-success-soft px-4 py-3 text-sm text-success" role="status">
+<div class="mx-auto max-w-2xl">
+  <div
+    id="contact-banner-success"
+    class="mb-6 hidden items-start gap-3 rounded-xl border border-success/20 bg-success-soft px-5 py-4 text-sm text-success"
+    role="status"
+    tabindex="-1"
+  >
     <CircleCheckBig size={20} class="mt-0.5 shrink-0" aria-hidden="true" />
-    <p>Thanks — we've got your message and will be in touch within one business day.</p>
+    <p>
+      <strong class="font-bold">Thank you.</strong> We've got your details and someone from our team will
+      be in touch within one business day.
+    </p>
   </div>
-  <div id="contact-banner-error" class="mb-6 hidden items-start gap-3 rounded-xl bg-danger-soft px-4 py-3 text-sm text-danger" role="alert">
+  <div
+    id="contact-banner-error"
+    class="mb-6 hidden items-start gap-3 rounded-xl border border-danger/20 bg-danger-soft px-5 py-4 text-sm text-danger"
+    role="alert"
+    tabindex="-1"
+  >
     <CircleAlert size={20} class="mt-0.5 shrink-0" aria-hidden="true" />
-    <p>Something went wrong on our end. Please try again, or email us directly at <a href="mailto:hello@peek-a-boo.app" class="font-semibold underline">hello@peek-a-boo.app</a>.</p>
+    <p>
+      We couldn't send that just now. Please try again, or reach us directly at
+      <a href={`mailto:${SITE.email}`} class="font-bold underline">{SITE.email}</a>.
+    </p>
   </div>
 
-  <form id="contact-form" method="POST" action="/api/contact" class="space-y-5" novalidate>
+  <form
+    id="contact-form"
+    method="POST"
+    action="/api/contact"
+    class="rounded-2xl border border-ink-100 bg-white p-6 shadow-soft sm:p-8"
+    novalidate
+  >
     <div class="grid gap-5 sm:grid-cols-2">
       <div>
-        <label for="name" class="mb-1.5 block text-sm font-semibold text-ink-700">Your name</label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          required
-          minlength="2"
-          autocomplete="name"
-          class="w-full rounded-xl border border-ink-200 px-4 py-2.5 text-sm text-ink-900 placeholder:text-ink-300 focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100"
-        />
-        <p class="mt-1.5 hidden text-xs text-danger" data-error-for="name"></p>
+        <label for="name" class={labelClass}>Your name</label>
+        <input type="text" id="name" name="name" required autocomplete="name" class={fieldClass} />
+        <p class="mt-1.5 hidden text-xs font-medium text-danger" data-error-for="name"></p>
       </div>
       <div>
-        <label for="email" class="mb-1.5 block text-sm font-semibold text-ink-700">Work email</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          required
-          autocomplete="email"
-          class="w-full rounded-xl border border-ink-200 px-4 py-2.5 text-sm text-ink-900 placeholder:text-ink-300 focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100"
-        />
-        <p class="mt-1.5 hidden text-xs text-danger" data-error-for="email"></p>
+        <label for="email" class={labelClass}>Work email</label>
+        <input type="email" id="email" name="email" required autocomplete="email" class={fieldClass} />
+        <p class="mt-1.5 hidden text-xs font-medium text-danger" data-error-for="email"></p>
       </div>
     </div>
 
-    <div>
-      <label for="nurseryName" class="mb-1.5 block text-sm font-semibold text-ink-700">
-        Nursery name <span class="font-normal text-ink-400">(optional)</span>
-      </label>
-      <input
-        type="text"
-        id="nurseryName"
-        name="nurseryName"
-        autocomplete="organization"
-        class="w-full rounded-xl border border-ink-200 px-4 py-2.5 text-sm text-ink-900 placeholder:text-ink-300 focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100"
-      />
+    <div class="mt-5 grid gap-5 sm:grid-cols-2">
+      <div>
+        <label for="organisation" class={labelClass}>Nursery or organisation</label>
+        <input
+          type="text"
+          id="organisation"
+          name="organisation"
+          required
+          autocomplete="organization"
+          class={fieldClass}
+        />
+        <p class="mt-1.5 hidden text-xs font-medium text-danger" data-error-for="organisation"></p>
+      </div>
+      <div>
+        <label for="phone" class={labelClass}>
+          Phone <span class="font-normal text-ink-400">(optional)</span>
+        </label>
+        <input type="tel" id="phone" name="phone" autocomplete="tel" class={fieldClass} />
+      </div>
     </div>
 
-    <div>
-      <label for="message" class="mb-1.5 block text-sm font-semibold text-ink-700">How can we help?</label>
+    <div class="mt-5">
+      <label for="centers" class={labelClass}>
+        How many centers do you run? <span class="font-normal text-ink-400">(optional)</span>
+      </label>
+      <select id="centers" name="centers" class={fieldClass}>
+        <option value="">Select…</option>
+        {CENTER_COUNT_OPTIONS.map((option) => <option value={option}>{option}</option>)}
+      </select>
+    </div>
+
+    <div class="mt-5">
+      <label for="message" class={labelClass}>How can we help?</label>
       <textarea
         id="message"
         name="message"
         required
-        minlength="10"
         rows="5"
-        placeholder="Tell us a bit about your nursery and what you're hoping to solve."
-        class="w-full resize-none rounded-xl border border-ink-200 px-4 py-2.5 text-sm text-ink-900 placeholder:text-ink-300 focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100"
+        placeholder="Tell us how your setting runs today and what you're hoping to change."
+        class:list={[fieldClass, "resize-y"]}
       ></textarea>
-      <p class="mt-1.5 hidden text-xs text-danger" data-error-for="message"></p>
+      <p class="mt-1.5 hidden text-xs font-medium text-danger" data-error-for="message"></p>
     </div>
 
-    <!-- Honeypot — hidden from sighted users and screen readers, real visitors never fill it in. -->
-    <div class="absolute left-[-9999px]" aria-hidden="true">
+    {/* Honeypot — positioned off-screen and hidden from assistive tech. */}
+    <div class="absolute left-[-9999px] top-0" aria-hidden="true">
       <label for="company">Company</label>
       <input type="text" id="company" name="company" tabindex="-1" autocomplete="off" />
     </div>
 
-    <Button type="submit" size="lg" class="w-full sm:w-auto" id="contact-submit">
-      <span data-submit-label>Send message</span>
-    </Button>
+    <div class="mt-7 flex flex-col gap-4 sm:flex-row sm:items-center">
+      <Button type="submit" size="lg" class="w-full sm:w-auto" id="contact-submit">
+        <span data-submit-label>Book a demo</span>
+      </Button>
+      <p class="text-xs leading-relaxed text-ink-400">
+        We'll only use these details to reply to you. See our
+        <a href="/privacy" class="font-semibold text-brand-700 underline">privacy policy</a>.
+      </p>
+    </div>
   </form>
 </div>
 
@@ -89,31 +125,47 @@ import { CircleCheckBig, CircleAlert } from "@lucide/astro";
   const errorBanner = document.getElementById("contact-banner-error");
 
   function showBanner(kind: "success" | "error") {
-    successBanner?.classList.toggle("hidden", kind !== "success");
-    successBanner?.classList.toggle("flex", kind === "success");
-    errorBanner?.classList.toggle("hidden", kind !== "error");
-    errorBanner?.classList.toggle("flex", kind === "error");
+    const shown = kind === "success" ? successBanner : errorBanner;
+    const hidden = kind === "success" ? errorBanner : successBanner;
+    hidden?.classList.add("hidden");
+    hidden?.classList.remove("flex");
+    shown?.classList.remove("hidden");
+    shown?.classList.add("flex");
+    // Move focus so screen-reader and keyboard users land on the outcome.
+    shown?.focus();
+    shown?.scrollIntoView({ behavior: "smooth", block: "center" });
     if (kind === "success") form?.reset();
   }
 
-  function clearFieldErrors() {
+  function clearErrors() {
     form?.querySelectorAll<HTMLElement>("[data-error-for]").forEach((el) => {
       el.textContent = "";
       el.classList.add("hidden");
+      const field = form.querySelector(`[name="${el.dataset.errorFor}"]`);
+      field?.removeAttribute("aria-invalid");
+      field?.removeAttribute("aria-describedby");
     });
   }
 
-  function setFieldErrors(errors: Record<string, string>) {
-    for (const [field, message] of Object.entries(errors)) {
-      const el = form?.querySelector<HTMLElement>(`[data-error-for="${field}"]`);
+  function setErrors(errors: Record<string, string>) {
+    let firstField: HTMLElement | null = null;
+    for (const [name, message] of Object.entries(errors)) {
+      const el = form?.querySelector<HTMLElement>(`[data-error-for="${name}"]`);
+      const field = form?.querySelector<HTMLElement>(`[name="${name}"]`);
       if (el) {
+        const errorId = `${name}-error`;
+        el.id = errorId;
         el.textContent = message;
         el.classList.remove("hidden");
+        field?.setAttribute("aria-invalid", "true");
+        field?.setAttribute("aria-describedby", errorId);
+        if (!firstField && field) firstField = field;
       }
     }
+    firstField?.focus();
   }
 
-  // Show the right banner if we've been redirected back from a no-JS submission.
+  // Handle the redirect-based (no-JS) flow landing back on this page.
   const params = new URLSearchParams(location.search);
   if (params.has("success")) showBanner("success");
   if (params.has("error")) showBanner("error");
@@ -125,7 +177,7 @@ import { CircleCheckBig, CircleAlert } from "@lucide/astro";
     event.preventDefault();
     if (!submitButton || !submitLabel) return;
 
-    clearFieldErrors();
+    clearErrors();
     submitButton.disabled = true;
     submitLabel.textContent = "Sending…";
 
@@ -137,18 +189,14 @@ import { CircleCheckBig, CircleAlert } from "@lucide/astro";
       });
       const result = await response.json();
 
-      if (result.success) {
-        showBanner("success");
-      } else if (result.errors && Object.keys(result.errors).length > 0) {
-        setFieldErrors(result.errors);
-      } else {
-        showBanner("error");
-      }
+      if (result.success) showBanner("success");
+      else if (result.errors && Object.keys(result.errors).length > 0) setErrors(result.errors);
+      else showBanner("error");
     } catch {
       showBanner("error");
     } finally {
       submitButton.disabled = false;
-      submitLabel.textContent = "Send message";
+      submitLabel.textContent = "Book a demo";
     }
   });
 </script>

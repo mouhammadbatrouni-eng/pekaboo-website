@@ -1,40 +1,22 @@
 import { sanityClient } from "./client";
-import {
-  fallbackFaqs,
-  fallbackHomePage,
-  fallbackPages,
-  fallbackSiteSettings,
-} from "../content/fallback";
-import type { Faq, HomePage, Page, Post, SiteSettings } from "../content/types";
+import { fallbackFaqs, fallbackHomePage, fallbackPages, fallbackSiteSettings } from "../content/fallback";
+import type { Faq, HomePage, Page, SiteSettings, Testimonial } from "../content/types";
 
-const SEO_PROJECTION = `seo{metaTitle, metaDescription, ogImage{asset, "alt": ogImage.alt}, noIndex}`;
-const LINK_PROJECTION = `{label, type, internalPath, externalUrl}`;
-const CTA_PROJECTION = `{label, style, link${LINK_PROJECTION}}`;
-const FEATURE_PROJECTION = `{_id, title, summary, icon, body}`;
-const TESTIMONIAL_PROJECTION = `{_id, quote, authorName, authorRole, nurseryName, photo}`;
-const FAQ_PROJECTION = `{_id, question, answer, group}`;
-const SHOWCASE_ITEM_PROJECTION = `{image, caption, surface}`;
+const SEO_FIELDS = `metaTitle, metaDescription, ogImage, noIndex`;
+const LINK_FIELDS = `{label, type, internalPath, externalUrl}`;
+const CTA_FIELDS = `{label, style, link${LINK_FIELDS}}`;
 
-const SECTIONS_PROJECTION = `
-  sections[]{
-    _type,
-    _type == "featureGridSection" => {eyebrow, heading, description, features[]->${FEATURE_PROJECTION}},
-    _type == "productShowcaseSection" => {eyebrow, heading, description, items[]${SHOWCASE_ITEM_PROJECTION}},
-    _type == "testimonialSection" => {eyebrow, heading, testimonials[]->${TESTIMONIAL_PROJECTION}},
-    _type == "faqSection" => {eyebrow, heading, faqs[]->${FAQ_PROJECTION}},
-    _type == "ctaSection" => {heading, description, ctas[]${CTA_PROJECTION}},
-    _type == "richTextSection" => {heading, body},
-  }
-`;
-
-/** Fetches Sanity data, returning `null` on any error or missing config instead of throwing. */
+/**
+ * Runs a Sanity query, returning `null` on missing config or any error rather
+ * than throwing. Callers fall back to bundled content, so a CMS outage
+ * degrades to slightly stale copy instead of a broken page.
+ */
 async function safeFetch<T>(query: string, params: Record<string, unknown> = {}): Promise<T | null> {
   if (!sanityClient) return null;
   try {
-    const result = await sanityClient.fetch<T>(query, params);
-    return result ?? null;
+    return (await sanityClient.fetch<T>(query, params)) ?? null;
   } catch (error) {
-    console.error("[sanity] Query failed, falling back to placeholder content:", error);
+    console.error("[sanity] Query failed; using bundled content instead.", error);
     return null;
   }
 }
@@ -42,59 +24,72 @@ async function safeFetch<T>(query: string, params: Record<string, unknown> = {})
 export async function getSiteSettings(): Promise<SiteSettings> {
   const data = await safeFetch<SiteSettings>(
     `*[_type == "siteSettings"][0]{
-      title, tagline, navLinks[]${LINK_PROJECTION}, headerCta${CTA_PROJECTION},
-      footerColumns[]{heading, links[]${LINK_PROJECTION}},
-      socialLinks[]{platform, url}, contactEmail, ${SEO_PROJECTION.replace("seo", "defaultSeo")}
+      title, tagline,
+      navLinks[]${LINK_FIELDS},
+      headerCta${CTA_FIELDS},
+      footerColumns[]{heading, links[]${LINK_FIELDS}},
+      socialLinks[]{platform, url},
+      contactEmail,
+      defaultSeo{${SEO_FIELDS}}
     }`,
   );
-  return data ?? fallbackSiteSettings;
+  // Merge rather than replace: an editor filling in only some fields shouldn't
+  // blank out the rest of the site chrome.
+  return { ...fallbackSiteSettings, ...stripEmpty(data) };
 }
 
 export async function getHomePage(): Promise<HomePage> {
   const data = await safeFetch<HomePage>(
     `*[_type == "homePage"][0]{
-      heroEyebrow, heroHeading, heroDescription, heroCtas[]${CTA_PROJECTION}, heroImage,
-      ${SECTIONS_PROJECTION}, ${SEO_PROJECTION}
+      heroEyebrow, heroHeading, heroDescription,
+      heroCtas[]${CTA_FIELDS},
+      seo{${SEO_FIELDS}}
     }`,
   );
-  return data ?? fallbackHomePage;
+  return { ...fallbackHomePage, ...stripEmpty(data) };
 }
 
 export async function getPage(slug: string): Promise<Page | null> {
   const data = await safeFetch<Page>(
     `*[_type == "page" && slug.current == $slug][0]{
-      title, "slug": slug.current, eyebrow, heading, intro, ${SECTIONS_PROJECTION}, ${SEO_PROJECTION}
+      title, "slug": slug.current, eyebrow, heading, intro, body, seo{${SEO_FIELDS}}
     }`,
     { slug },
   );
-  return data ?? fallbackPages[slug] ?? null;
+  const fallback = fallbackPages[slug];
+  if (!data && !fallback) return null;
+  return { ...fallback, ...stripEmpty(data) } as Page;
 }
 
 export async function getFaqs(): Promise<Faq[]> {
-  const data = await safeFetch<Faq[]>(`*[_type == "faq"] | order(_createdAt asc)${FAQ_PROJECTION}`);
+  const data = await safeFetch<Faq[]>(
+    `*[_type == "faq"] | order(_createdAt asc){_id, question, answer, group}`,
+  );
   return data && data.length > 0 ? data : fallbackFaqs;
 }
 
-export async function getPosts(): Promise<Post[]> {
-  const data = await safeFetch<Post[]>(
-    `*[_type == "post"] | order(publishedAt desc){
-      _id, title, "slug": slug.current, excerpt, coverImage,
-      author->{name, "slug": slug.current, role, photo},
-      category->{title, "slug": slug.current},
-      publishedAt
+/**
+ * Testimonials are Sanity-only by design. We don't ship placeholder quotes —
+ * an empty result means the section simply isn't rendered until real,
+ * attributable customer quotes exist.
+ */
+export async function getTestimonials(): Promise<Testimonial[]> {
+  const data = await safeFetch<Testimonial[]>(
+    `*[_type == "testimonial"] | order(_createdAt asc){
+      _id, quote, authorName, authorRole, nurseryName, photo
     }`,
   );
   return data ?? [];
 }
 
-export async function getPost(slug: string): Promise<Post | null> {
-  return safeFetch<Post>(
-    `*[_type == "post" && slug.current == $slug][0]{
-      _id, title, "slug": slug.current, excerpt, coverImage,
-      author->{name, "slug": slug.current, role, photo, bio},
-      category->{title, "slug": slug.current},
-      publishedAt, body, ${SEO_PROJECTION}
-    }`,
-    { slug },
-  );
+/** Drops null/undefined/empty-array values so they don't override fallbacks. */
+function stripEmpty<T extends object>(input: T | null): Partial<T> {
+  if (!input) return {};
+  return Object.fromEntries(
+    Object.entries(input).filter(([, value]) => {
+      if (value === null || value === undefined) return false;
+      if (Array.isArray(value) && value.length === 0) return false;
+      return true;
+    }),
+  ) as Partial<T>;
 }

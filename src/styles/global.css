@@ -1,7 +1,56 @@
 @import "tailwindcss";
-@import "@fontsource-variable/baloo-2";
-@import "@fontsource-variable/manrope";
 @plugin "@tailwindcss/typography";
+
+/*
+ * Self-hosted variable fonts, latin subsets only.
+ *
+ * Fontsource's default entrypoint ships Cyrillic, Greek, Vietnamese and (for
+ * Baloo 2) a 116 KB Devanagari subset. Browsers wouldn't download them thanks
+ * to unicode-range, but they'd still be deployed — so we declare just the two
+ * subsets this site renders. `font-display: swap` keeps text visible during
+ * load rather than blocking first paint.
+ */
+@font-face {
+  font-family: "Manrope Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 800;
+  src: url("@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Manrope Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 800;
+  src: url("@fontsource-variable/manrope/files/manrope-latin-ext-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308,
+    U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113,
+    U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "Baloo 2 Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400 800;
+  src: url("@fontsource-variable/baloo-2/files/baloo-2-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Baloo 2 Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400 800;
+  src: url("@fontsource-variable/baloo-2/files/baloo-2-latin-ext-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308,
+    U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113,
+    U+2C60-2C7F, U+A720-A7FF;
+}
 
 /*
  * Peekaboo design tokens — pulled directly from the live portal's source
@@ -42,7 +91,9 @@
   --color-ink-100: #e8eaf0;
   --color-ink-200: #ccd0dc;
   --color-ink-300: #a4aabf;
-  --color-ink-400: #767e9c;
+  /* Darkened from the portal's #767e9c to clear 4.5:1 on the cream background —
+     this token is used for body-size secondary text, so it must pass AA. */
+  --color-ink-400: #69718c;
   --color-ink-500: #5d667f;
   --color-ink-600: #454e6b;
   --color-ink-700: #313a56;
@@ -58,13 +109,22 @@
   --color-violet: #8f7bff;
   --color-violet-soft: #ece8ff;
 
-  /* Semantic status colors, kept in-family with the portal's chart colors */
-  --color-success: #1f9d63;
+  /* Semantic status colors.
+     These values are tuned for TEXT on the site's light surfaces and all clear
+     4.5:1 against both white and their own soft background. The portal previews
+     render on near-black, so they use the `-onDark` variants below instead —
+     the light-surface values would be unreadable there. */
+  --color-success: #15734c;
   --color-success-soft: #d9f5e8;
-  --color-warning: #b8720a;
+  --color-warning: #8f5708;
   --color-warning-soft: #fff3c4;
-  --color-danger: #e8483f;
+  --color-danger: #c2332b;
   --color-danger-soft: #ffe2e0;
+
+  /* Status colors for use on the dark portal/app surfaces. */
+  --color-success-onDark: #72ddb1;
+  --color-warning-onDark: #ffd55f;
+  --color-danger-onDark: #ff8b84;
 
   /* Radius scale — same formula as the portal (base 1.45rem), so "rounded-xl"
      etc. feel exactly as playful/round here as they do in the product. */

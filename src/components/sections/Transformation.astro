@@ -1,0 +1,53 @@
+---
+import Container from "../ui/Container.astro";
+import Section from "../ui/Section.astro";
+import SectionHeading from "../ui/SectionHeading.astro";
+import { Check, X } from "@lucide/astro";
+import { TRANSFORMATION } from "../../lib/content/marketing";
+---
+
+<Section id="transformation" labelledBy="transformation-heading">
+  <Container>
+    <SectionHeading
+      id="transformation-heading"
+      eyebrow="Going digital"
+      title="The same day, with the paperwork removed"
+      description="Most settings aren't short of systems — they're short of one system. Here's what usually changes in the first month."
+    />
+
+    <div class="mx-auto mt-14 grid max-w-4xl gap-5 md:grid-cols-2">
+      <div class="rounded-xl border border-ink-100 bg-white/70 p-7">
+        <h3 class="font-heading text-xl tracking-[-0.03em] text-ink-500">{TRANSFORMATION.before.title}</h3>
+        <ul class="mt-5 space-y-3.5">
+          {TRANSFORMATION.before.points.map((point) => (
+            <li class="flex items-start gap-3 text-sm leading-relaxed text-ink-400">
+              <span class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-ink-100 text-ink-400">
+                <X size={11} stroke-width={3} aria-hidden="true" />
+              </span>
+              {point}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="relative rounded-xl border border-brand-200 bg-white p-7 shadow-soft-lg">
+        <span
+          class="absolute -top-3 left-7 rounded-full bg-[linear-gradient(180deg,#0e7fa8_0%,#0e77a1_100%)] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-white shadow-glow-brand"
+        >
+          With Peekaboo
+        </span>
+        <h3 class="font-heading text-xl tracking-[-0.03em] text-ink-900">{TRANSFORMATION.after.title}</h3>
+        <ul class="mt-5 space-y-3.5">
+          {TRANSFORMATION.after.points.map((point) => (
+            <li class="flex items-start gap-3 text-sm leading-relaxed text-ink-700">
+              <span class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-mint-soft text-success">
+                <Check size={11} stroke-width={3} aria-hidden="true" />
+              </span>
+              {point}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </Container>
+</Section>

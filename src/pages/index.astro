@@ -1,20 +1,44 @@
 ---
 import PageLayout from "../layouts/PageLayout.astro";
 import Hero from "../components/sections/Hero.astro";
-import Sections from "../components/sections/Sections.astro";
-import { getHomePage } from "../lib/sanity/queries";
+import TrustStrip from "../components/sections/TrustStrip.astro";
+import Ecosystem from "../components/sections/Ecosystem.astro";
+import ModuleExplorer from "../components/sections/ModuleExplorer.astro";
+import Transformation from "../components/sections/Transformation.astro";
+import Curriculum from "../components/sections/Curriculum.astro";
+import ParentApp from "../components/sections/ParentApp.astro";
+import Outcomes from "../components/sections/Outcomes.astro";
+import Solutions from "../components/sections/Solutions.astro";
+import Testimonials from "../components/sections/Testimonials.astro";
+import Faq from "../components/sections/Faq.astro";
+import FinalCta from "../components/sections/FinalCta.astro";
+import { getFaqs, getHomePage, getTestimonials } from "../lib/sanity/queries";
 
 export const prerender = true;
 
-const homePage = await getHomePage();
+const [homePage, faqs, testimonials] = await Promise.all([
+  getHomePage(),
+  getFaqs(),
+  getTestimonials(),
+]);
 ---
 
-<PageLayout title="Home" seo={homePage.seo} includeOrgSchema>
+<PageLayout title="Home" seo={homePage.seo} includeOrgSchema faqs={faqs}>
   <Hero
     eyebrow={homePage.heroEyebrow}
     heading={homePage.heroHeading}
     description={homePage.heroDescription}
     ctas={homePage.heroCtas}
   />
-  <Sections sections={homePage.sections} />
+  <TrustStrip />
+  <Ecosystem />
+  <ModuleExplorer />
+  <Transformation />
+  <Curriculum />
+  <ParentApp />
+  <Outcomes />
+  <Solutions />
+  <Testimonials testimonials={testimonials} />
+  <Faq eyebrow="Questions" heading="Frequently asked questions" faqs={faqs} />
+  <FinalCta />
 </PageLayout>
