@@ -5,74 +5,58 @@ import SectionIntro from "./SectionIntro.astro";
 import PhoneShell from "../product/PhoneShell.astro";
 import ParentAppBody from "../product/ParentAppBody.astro";
 import FeatureIcon from "../ui/FeatureIcon.astro";
-import { LANGUAGES } from "../../lib/content/marketing";
+import type { Dict } from "../../lib/i18n";
+import type { ParentScreen } from "../product/ParentAppBody.astro";
 
-/**
- * Four beats of the parent experience. On desktop the phone stays put and its
- * screen changes as each beat scrolls past; on mobile each beat simply shows
- * its own phone. No wheel hijacking either way — the browser scrolls normally
- * and IntersectionObserver only swaps which screen is visible.
- */
-const BEATS = [
-  {
-    screen: "timeline" as const,
-    icon: "timeline",
-    title: "Daily updates",
-    body: "Photos and moments from the room reach families as they're posted — not at the door, three hours later.",
-  },
-  {
-    screen: "messages" as const,
-    icon: "communication",
-    title: "Communication",
-    body: "Announcements, newsletters and event invitations land in one place, sent to the right classes.",
-  },
-  {
-    screen: "development" as const,
-    icon: "curriculum",
-    title: "Development",
-    body: "Observations, milestones and learning journals show parents how their child is progressing.",
-  },
-  {
-    screen: "payments" as const,
-    icon: "finance",
-    title: "Payments",
-    body: "Invoices and receipts sit alongside everything else, so fees don't need a separate email thread.",
-  },
+interface Props {
+  t: Dict;
+  rtl: boolean;
+}
+
+const { t, rtl } = Astro.props;
+
+/** Screens and icons stay in code; the words come from the dictionary. */
+const BEAT_META: { screen: ParentScreen; icon: string }[] = [
+  { screen: "timeline", icon: "timeline" },
+  { screen: "messages", icon: "communication" },
+  { screen: "development", icon: "curriculum" },
+  { screen: "payments", icon: "finance" },
 ];
+
+const total = t.app.beats.length;
 ---
 
-<ScrollSection id="app" label="Our App" space="loose">
+<ScrollSection id="app" label={t.nav.app} space="loose">
   <Container>
     <SectionIntro
       id="app-heading"
       step="02"
-      eyebrow="Our App"
-      title="Families follow the day as it happens"
-      description="Peekaboo Parent is the mobile half of the platform. Everything in it comes from records your team already keeps — nothing is written twice."
+      eyebrow={t.app.eyebrow}
+      title={t.app.heading}
+      description={t.app.body}
     />
 
     <div class="mx-auto mt-16 max-w-4xl" data-app-story>
       <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-20">
-        {/* Beats */}
         <div class="space-y-16 lg:space-y-40">
-          {BEATS.map((beat, index) => (
+          {t.app.beats.map((beat, index) => (
             <div data-app-beat={index} class="scroll-mt-32">
               <div class="flex items-start gap-4" data-reveal>
-                <FeatureIcon icon={beat.icon} class="h-11 w-11" />
+                <FeatureIcon icon={BEAT_META[index].icon} class="h-11 w-11" />
                 <div class="min-w-0">
                   <p class="text-xs font-bold uppercase tracking-[0.12em] text-brand-ink">
-                    Step {index + 1} of {BEATS.length}
+                    {t.app.stepOf(index + 1, total)}
                   </p>
-                  <h3 class="mt-1 font-heading text-2xl tracking-[-0.03em] text-body">{beat.title}</h3>
+                  <h3 class="mt-1 font-heading text-2xl text-body">{beat.title}</h3>
                   <p class="mt-2.5 max-w-md leading-relaxed text-muted">{beat.body}</p>
                 </div>
               </div>
 
-              {/* Mobile: each beat carries its own phone, so the story still
-                  reads top-to-bottom without any sticky behaviour. */}
+              {/* Mobile: each beat carries its own phone, so the story reads
+                  top-to-bottom without any sticky behaviour. */}
               <div class="mt-8 flex justify-center lg:hidden">
-                <PhoneShell class="max-w-[240px]">
-                  <ParentAppBody screen={beat.screen} />
+                <PhoneShell class="max-w-[240px]" rtl={rtl}>
+                  <ParentAppBody screen={BEAT_META[index].screen} rtl={rtl} />
                 </PhoneShell>
               </div>
             </div>
@@ -82,26 +66,26 @@ const BEATS = [
         {/* Desktop: one sticky phone, cross-fading between screens. */}
         <div class="hidden lg:block">
           <div class="sticky top-32">
-            <PhoneShell bodyHeight="316px">
-              {BEATS.map((beat, index) => (
+            <PhoneShell bodyHeight="316px" rtl={rtl}>
+              {BEAT_META.map((meta, index) => (
                 <div
                   data-app-screen={index}
                   class="absolute inset-0 transition-opacity duration-500 ease-out"
                   style={index === 0 ? "opacity:1" : "opacity:0"}
                   aria-hidden={index === 0 ? undefined : "true"}
                 >
-                  <ParentAppBody screen={beat.screen} />
+                  <ParentAppBody screen={meta.screen} rtl={rtl} />
                 </div>
               ))}
             </PhoneShell>
 
             <div class="mt-6 flex justify-center gap-1.5" aria-hidden="true">
-              {BEATS.map((_, index) => (
+              {BEAT_META.map((_, index) => (
                 <span
                   data-app-dot={index}
                   class:list={[
                     "h-1.5 rounded-full transition-all duration-300",
-                    index === 0 ? "w-6 bg-brand-500" : "w-1.5 bg-ink-200",
+                    index === 0 ? "w-6 bg-brand-500" : "w-1.5 bg-line-strong",
                   ]}
                 ></span>
               ))}
@@ -112,14 +96,15 @@ const BEATS = [
     </div>
 
     <div class="mx-auto mt-20 max-w-2xl rounded-xl border border-line bg-surface p-6 text-center shadow-soft" data-reveal>
-      <p class="text-xs font-bold uppercase tracking-[0.12em] text-brand-ink">Built for mixed communities</p>
-      <p class="mt-2.5 leading-relaxed text-muted">{LANGUAGES.note}</p>
+      <p class="text-xs font-bold uppercase tracking-[0.12em] text-brand-ink">{t.app.languagesTitle}</p>
+      <p class="mt-2.5 leading-relaxed text-muted">{t.app.languagesBody}</p>
       <ul class="mt-4 flex flex-wrap justify-center gap-2">
-        {LANGUAGES.supported.map((language) => (
-          <li class="rounded-full border border-line bg-surface px-3.5 py-1.5 text-sm font-semibold text-body">
-            <span lang={language.dir === "rtl" ? "ar" : "en"} dir={language.dir}>{language.native}</span>
-          </li>
-        ))}
+        <li class="rounded-full border border-line bg-surface px-3.5 py-1.5 text-sm font-semibold text-body">
+          <span lang="en" dir="ltr">English</span>
+        </li>
+        <li class="rounded-full border border-line bg-surface px-3.5 py-1.5 text-sm font-semibold text-body">
+          <span lang="ar" dir="rtl">العربية</span>
+        </li>
       </ul>
     </div>
   </Container>
@@ -127,8 +112,8 @@ const BEATS = [
 
 <script>
   // Swap the sticky phone's screen as each beat passes the reading line.
-  // Purely presentational: every screen's content is also rendered inline on
-  // mobile, so nothing here is the only route to information.
+  // Purely presentational: every screen is also rendered inline on mobile, so
+  // nothing here is the only route to information.
   const story = document.querySelector("[data-app-story]");
   if (story && window.matchMedia("(min-width: 1024px)").matches) {
     const beats = Array.from(story.querySelectorAll<HTMLElement>("[data-app-beat]"));
@@ -149,14 +134,12 @@ const BEATS = [
         dot.classList.toggle("w-6", i === index);
         dot.classList.toggle("bg-brand-500", i === index);
         dot.classList.toggle("w-1.5", i !== index);
-        dot.classList.toggle("bg-ink-200", i !== index);
+        dot.classList.toggle("bg-line-strong", i !== index);
       });
     }
 
     const observer = new IntersectionObserver(
       (entries) => {
-        // Pick the entry closest to the reading line rather than the first to
-        // fire, so fast scrolls land on the right screen.
         const visible = entries.filter((entry) => entry.isIntersecting);
         if (visible.length === 0) return;
         const best = visible.reduce((a, b) =>

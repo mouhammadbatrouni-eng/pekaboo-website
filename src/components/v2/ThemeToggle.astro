@@ -1,19 +1,27 @@
 ---
 import { Sun, Moon } from "@lucide/astro";
+import type { Dict } from "../../lib/i18n";
 
 /**
  * Light/dark switch, matching the toggle in the Peekaboo portal sidebar.
  * The chosen theme is stored per-visitor and wins over the OS setting; with no
  * stored choice we follow `prefers-color-scheme`.
  */
+interface Props {
+  t: Dict;
+}
+
+const { t } = Astro.props;
 ---
 
 <button
   id="theme-toggle"
   type="button"
-  class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line text-subtle transition-colors hover:text-brand-ink"
-  aria-label="Switch to dark theme"
+  class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line text-subtle transition-colors hover:text-brand-ink"
+  aria-label={t.common.switchToDark}
   aria-pressed="false"
+  data-label-dark={t.common.switchToDark}
+  data-label-light={t.common.switchToLight}
 >
   <Sun id="theme-icon-sun" size={17} aria-hidden="true" />
   <Moon id="theme-icon-moon" size={17} class="hidden" aria-hidden="true" />
@@ -30,7 +38,8 @@ import { Sun, Moon } from "@lucide/astro";
     sun?.classList.toggle("hidden", !isDark);
     moon?.classList.toggle("hidden", isDark);
     toggle?.setAttribute("aria-pressed", String(isDark));
-    toggle?.setAttribute("aria-label", isDark ? "Switch to light theme" : "Switch to dark theme");
+    const label = isDark ? toggle?.dataset.labelLight : toggle?.dataset.labelDark;
+    if (label) toggle?.setAttribute("aria-label", label);
   }
 
   render(document.documentElement.classList.contains("dark"));

@@ -1,6 +1,8 @@
 ---
 import PortalShell from "./PortalShell.astro";
 import { Check } from "@lucide/astro";
+import { getDict } from "../../lib/i18n";
+import type { Lang } from "../../lib/i18n";
 
 /**
  * The curriculum planner, as it works in Peekaboo Care: a theme holds
@@ -9,18 +11,21 @@ import { Check } from "@lucide/astro";
  */
 interface Props {
   class?: string;
+  lang?: Lang;
 }
 
-const { class: className = "" } = Astro.props;
+const { class: className = "", lang = "en" } = Astro.props;
+const p = getDict(lang).product;
+const rtl = lang === "ar";
 
 const chain = [
-  { step: "Theme", value: "Growing things", tone: "bg-brand-500/15 text-brand-300" },
-  { step: "Activity", value: "Planting sunflower seeds", tone: "bg-mint/15 text-mint" },
-  { step: "Objective", value: "Explores how living things grow", tone: "bg-gold-300/15 text-gold-300" },
+  { step: p.theme, value: p.themeValue, tone: "bg-brand-500/15 text-brand-300" },
+  { step: p.activity, value: p.activityValue, tone: "bg-mint/15 text-mint" },
+  { step: p.objective, value: p.objectiveValue, tone: "bg-gold-300/15 text-gold-300" },
 ];
 ---
 
-<PortalShell eyebrow="Early Childhood · Curriculum" title="Weekly plan" active="learning" class={className}>
+<PortalShell eyebrow={p.curriculumSection} title={p.weeklyPlan} active="learning" class={className} rtl={rtl}>
   <div class="space-y-2.5">
     {chain.map((item, index) => (
       <div class="relative">
@@ -30,24 +35,24 @@ const chain = [
               {item.step}
             </span>
             {index === 2 && (
-              <span class="rounded-full bg-mint/15 px-2 py-0.5 text-[9px] font-bold text-mint">Expected</span>
+              <span class="rounded-full bg-mint/15 px-2 py-0.5 text-[9px] font-bold text-mint">{p.expected}</span>
             )}
           </div>
           <p class="mt-1.5 text-[12px] font-semibold text-white">{item.value}</p>
         </div>
         {index < chain.length - 1 && (
-          <div class="ml-4 h-2 w-px bg-white/15" aria-hidden="true"></div>
+          <div class="ms-4 h-2 w-px bg-white/15" aria-hidden="true"></div>
         )}
       </div>
     ))}
 
     <div class="rounded-lg border border-brand-400/25 bg-brand-500/10 p-3">
-      <p class="text-[9px] font-bold uppercase tracking-wide text-brand-300">Observation → Journal</p>
+      <p class="text-[9px] font-bold uppercase tracking-wide text-brand-300">{p.observationToJournal}</p>
       <p class="mt-1.5 text-[11px] leading-relaxed text-ink-200">
-        "Noah checked his seed every morning and told the group it needed water."
+        {p.observationQuote}
       </p>
       <div class="mt-2.5 flex flex-wrap gap-1.5">
-        {["Added to journal", "Milestone recorded", "Shared with family"].map((tag) => (
+        {p.journalTags.map((tag) => (
           <span class="inline-flex items-center gap-1 rounded-full bg-white/8 px-2 py-0.5 text-[9px] font-semibold text-ink-300">
             <Check size={8} stroke-width={4} class="text-mint" aria-hidden="true" />
             {tag}

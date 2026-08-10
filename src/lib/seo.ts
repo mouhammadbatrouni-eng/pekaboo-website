@@ -28,7 +28,11 @@ export function resolveSeo(pageTitle: string, pageSeo: Seo | undefined, site: Si
   };
 }
 
-/** Organization structured data, used on the home page. */
+/**
+ * Organization structured data, used on the home page.
+ * Deliberately omits email — it isn't published on the site yet, and
+ * structured data is still public.
+ */
 export function organizationSchema(siteUrl: string | undefined, description?: string) {
   return {
     "@context": "https://schema.org",
@@ -37,7 +41,6 @@ export function organizationSchema(siteUrl: string | undefined, description?: st
     url: siteUrl,
     logo: siteUrl ? new URL("/peekaboo-mark.png", siteUrl).toString() : undefined,
     description,
-    email: SITE.email,
     telephone: SITE.phone,
     parentOrganization: { "@type": "Organization", name: SITE.parentCompany },
     address: {

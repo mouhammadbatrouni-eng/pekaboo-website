@@ -3,70 +3,48 @@ import Container from "../ui/Container.astro";
 import ScrollSection from "./ScrollSection.astro";
 import SectionIntro from "./SectionIntro.astro";
 import FeatureIcon from "../ui/FeatureIcon.astro";
+import type { Dict } from "../../lib/i18n";
+
+interface Props {
+  t: Dict;
+}
+
+const { t } = Astro.props;
 
 /**
- * Outcomes, not features. Deliberately carries no statistics — no customer
- * counts, percentages or time-saved figures, because none are verified.
+ * Icons and accent tones stay in code, matched to the reasons by position.
+ * Deliberately carries no statistics — no customer counts, percentages or
+ * time-saved figures, because none are verified.
  */
-const REASONS = [
-  {
-    title: "Everything connected",
-    description: "Children, parents, educators, billing and operations in one system instead of five.",
-    icon: "attendance",
-    tone: "brand" as const,
-  },
-  {
-    title: "Less administration",
-    description: "Records entered once travel to the parent, the report and the invoice on their own.",
-    icon: "finance",
-    tone: "gold" as const,
-  },
-  {
-    title: "Better parent engagement",
-    description: "Families see the day as it happens, so pickup stops being the only update they get.",
-    icon: "communication",
-    tone: "coral" as const,
-  },
-  {
-    title: "Understand child development",
-    description: "Observations, milestones and journals build a record that follows each child.",
-    icon: "curriculum",
-    tone: "mint" as const,
-  },
-  {
-    title: "Fill your places",
-    description: "Enquiries tracked from first contact to first day, with a view of which sources actually bring families in.",
-    icon: "calendar",
-    tone: "violet" as const,
-  },
-  {
-    title: "Flexible for your organisation",
-    description: "Use Peekaboo as it comes, brand the parent app, or have it built around your process.",
-    icon: "security",
-    tone: "brand" as const,
-  },
+const META = [
+  { icon: "attendance", tone: "brand" as const },
+  { icon: "finance", tone: "gold" as const },
+  { icon: "communication", tone: "coral" as const },
+  { icon: "curriculum", tone: "mint" as const },
+  { icon: "calendar", tone: "violet" as const },
+  { icon: "security", tone: "brand" as const },
 ];
 ---
 
-<ScrollSection id="why-us" label="Why Us">
+<ScrollSection id="why-us" label={t.nav.whyUs}>
   <Container>
     <SectionIntro
       id="why-us-heading"
       step="06"
-      eyebrow="Why Us"
-      title="Why one platform beats five tools"
-      description="The case for Peekaboo isn't a longer feature list — it's what stops being your problem."
+      eyebrow={t.whyUs.eyebrow}
+      title={t.whyUs.heading}
+      description={t.whyUs.body}
     />
 
     <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {REASONS.map((reason, index) => (
+      {t.whyUs.reasons.map((reason, index) => (
         <article
           data-reveal
           data-reveal-delay={index * 70}
           class="rounded-xl border border-line bg-surface p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-brand-200 hover:shadow-soft-lg"
         >
-          <FeatureIcon icon={reason.icon} tone={reason.tone} class="h-11 w-11" />
-          <h3 class="mt-5 font-heading text-lg tracking-[-0.02em] text-body">{reason.title}</h3>
+          <FeatureIcon icon={META[index].icon} tone={META[index].tone} class="h-11 w-11" />
+          <h3 class="mt-5 font-heading text-lg text-body">{reason.title}</h3>
           <p class="mt-2 text-sm leading-relaxed text-muted">{reason.description}</p>
         </article>
       ))}

@@ -4,40 +4,67 @@ import Button from "../ui/Button.astro";
 import ThemeToggle from "./ThemeToggle.astro";
 import { SECTIONS } from "./SECTIONS";
 import { CTA } from "../../lib/content/site";
+import { LANG_LABELS, LANG_ROUTES, OTHER_LANG, type Dict, type Lang } from "../../lib/i18n";
+import { Languages } from "@lucide/astro";
+
+interface Props {
+  t: Dict;
+  lang: Lang;
+}
+
+const { t, lang } = Astro.props;
+const other = OTHER_LANG[lang];
 ---
 
 <header class="sticky top-0 z-50 border-b border-line bg-canvas/90 backdrop-blur-md">
-  <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3 lg:px-8">
-    <a href="#top" class="shrink-0" aria-label="Peekaboo — back to top">
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-3 px-5 py-3 lg:px-8">
+    <a href="#top" class="shrink-0" aria-label={`${t.common.backToTop} — Peekaboo`}>
       <Logo />
     </a>
 
-    <nav class="hidden xl:block" aria-label="Page sections">
+    <nav class="hidden min-w-0 xl:block" aria-label={t.nav.features}>
       <ul class="flex items-center gap-0.5">
         {SECTIONS.map((section) => (
           <li>
             <a
               href={`#${section.id}`}
               data-nav-link={section.id}
-              class="rounded-full px-3 py-2 text-[13px] font-semibold text-muted transition-colors hover:bg-surface hover:text-brand-ink aria-[current=true]:bg-brand-50 aria-[current=true]:text-brand-ink"
+              class="whitespace-nowrap rounded-full px-2.5 py-2 text-[13px] font-semibold text-muted transition-colors hover:bg-surface hover:text-brand-ink aria-[current=true]:bg-brand-50 aria-[current=true]:text-brand-ink"
             >
-              {section.label}
+              {t.nav[section.key]}
             </a>
           </li>
         ))}
       </ul>
     </nav>
 
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-1.5">
       <a
         href={CTA.signIn.href}
-        class="hidden rounded-full px-3 py-2 text-sm font-semibold text-muted transition-colors hover:text-brand-ink lg:block"
+        class="hidden whitespace-nowrap rounded-full px-3 py-2 text-sm font-semibold text-muted transition-colors hover:text-brand-ink 2xl:block"
       >
-        Sign in
+        {t.common.signIn}
       </a>
-      <ThemeToggle />
+
+      {/* Language switch — goes to the same page in the other language. */}
+      <a
+        href={LANG_ROUTES[other]}
+        lang={other}
+        hreflang={other}
+        class="inline-flex h-10 items-center gap-1.5 rounded-full border border-line px-3 text-sm font-bold text-muted transition-colors hover:text-brand-ink"
+        aria-label={other === "ar" ? t.common.switchToArabic : t.common.switchToEnglish}
+      >
+        <Languages size={15} aria-hidden="true" />
+        <span>{LANG_LABELS[other].code}</span>
+      </a>
+
+      <ThemeToggle t={t} />
+
+      <span class="hidden md:block">
+        <Button href="#contact" variant="secondary">{t.common.contactUs}</Button>
+      </span>
       <span class="hidden sm:block">
-        <Button href="#contact">Get started</Button>
+        <Button href="#contact">{t.common.getStarted}</Button>
       </span>
 
       <button
@@ -46,7 +73,9 @@ import { CTA } from "../../lib/content/site";
         class="inline-flex h-11 w-11 items-center justify-center rounded-full text-body transition-colors hover:bg-surface xl:hidden"
         aria-expanded="false"
         aria-controls="v2-menu"
-        aria-label="Open section menu"
+        aria-label={t.common.openMenu}
+        data-label-open={t.common.openMenu}
+        data-label-close={t.common.closeMenu}
       >
         <svg id="v2-icon-menu" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
           <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
@@ -58,34 +87,35 @@ import { CTA } from "../../lib/content/site";
     </div>
   </div>
 
-  {/* Reading progress. Purely decorative — the nav's active state carries the
-      same information for assistive tech. */}
+  {/* Reading progress. Decorative — the nav's active state carries the same
+      information for assistive tech. Anchored to the start edge so it fills
+      in the reading direction in both languages. */}
   <div class="h-0.5 w-full bg-line" aria-hidden="true">
-    <div id="v2-progress" class="h-full w-0 origin-left bg-brand-500 transition-[width] duration-150 ease-out"></div>
+    <div id="v2-progress" class="h-full w-0 bg-brand-500 transition-[width] duration-150 ease-out"></div>
   </div>
 
-  {/* Current-section label on small screens, where the full nav doesn't fit. */}
   <div class="border-t border-line bg-surface-2 px-5 py-2 xl:hidden">
     <p class="text-[11px] font-bold uppercase tracking-[0.14em] text-subtle">
-      <span class="sr-only">Currently viewing: </span>
-      <span id="v2-current-label">Welcome</span>
+      <span class="sr-only">{t.common.currentlyViewing}</span>
+      <span id="v2-current-label">{t.common.welcome}</span>
     </p>
   </div>
 
   <div id="v2-menu" class="hidden border-t border-line bg-surface xl:hidden">
-    <nav class="grid grid-cols-2 gap-1 px-5 py-4" aria-label="Sections">
+    <nav class="grid grid-cols-2 gap-1 px-5 py-4" aria-label={t.nav.features}>
       {SECTIONS.map((section) => (
         <a
           href={`#${section.id}`}
           data-menu-link={section.id}
           class="rounded-xl px-4 py-3 text-sm font-semibold text-body transition-colors hover:bg-brand-50 hover:text-brand-ink aria-[current=true]:bg-brand-50 aria-[current=true]:text-brand-ink"
         >
-          {section.label}
+          {t.nav[section.key]}
         </a>
       ))}
     </nav>
-    <div class="border-t border-ink-100 px-5 py-4">
-      <Button href="#contact" size="lg" class="w-full">Get started</Button>
+    <div class="grid gap-2 border-t border-line px-5 py-4 sm:grid-cols-2">
+      <Button href="#contact" variant="secondary" size="lg" class="w-full">{t.common.contactUs}</Button>
+      <Button href="#contact" size="lg" class="w-full">{t.common.getStarted}</Button>
     </div>
   </div>
 </header>
@@ -101,7 +131,8 @@ import { CTA } from "../../lib/content/site";
   function setMenuOpen(open: boolean) {
     if (!toggle || !menu || !iconMenu || !iconClose) return;
     toggle.setAttribute("aria-expanded", String(open));
-    toggle.setAttribute("aria-label", open ? "Close section menu" : "Open section menu");
+    const label = open ? toggle.dataset.labelClose : toggle.dataset.labelOpen;
+    if (label) toggle.setAttribute("aria-label", label);
     menu.classList.toggle("hidden", !open);
     iconMenu.classList.toggle("hidden", open);
     iconClose.classList.toggle("hidden", !open);
@@ -119,12 +150,12 @@ import { CTA } from "../../lib/content/site";
   });
 
   // --- Scroll spy -----------------------------------------------------------
-  // Tracks which section occupies the reading area, rather than whichever
-  // happens to be intersecting — so short sections don't steal the highlight
-  // from a long one the reader is still inside.
+  // Tracks which section occupies the reading area, so a short section doesn't
+  // steal the highlight from a long one the reader is still inside.
   const sections = Array.from(document.querySelectorAll<HTMLElement>("[data-section]"));
   const navLinks = Array.from(document.querySelectorAll<HTMLElement>("[data-nav-link]"));
   const menuLinks = Array.from(document.querySelectorAll<HTMLElement>("[data-menu-link]"));
+  const welcomeLabel = currentLabel?.textContent ?? "";
 
   function setActive(id: string | null, label: string) {
     for (const link of [...navLinks, ...menuLinks]) {
@@ -136,31 +167,31 @@ import { CTA } from "../../lib/content/site";
   }
 
   function update() {
-    // Progress through the whole document.
     const scrollable = document.documentElement.scrollHeight - window.innerHeight;
     const ratio = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
     if (progress) progress.style.width = `${ratio * 100}%`;
 
-    // Active section: the last one whose top has passed the reading line.
     const line = window.scrollY + window.innerHeight * 0.35;
     let active: HTMLElement | null = null;
     for (const section of sections) {
       if (section.offsetTop <= line) active = section;
     }
-    setActive(active?.dataset.section ?? null, active?.dataset.sectionLabel ?? "Welcome");
+    setActive(active?.dataset.section ?? null, active?.dataset.sectionLabel ?? welcomeLabel);
   }
 
   let ticking = false;
-  function onScroll() {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(() => {
-      update();
-      ticking = false;
-    });
-  }
-
-  window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", onScroll, { passive: true });
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        update();
+        ticking = false;
+      });
+    },
+    { passive: true },
+  );
+  window.addEventListener("resize", update, { passive: true });
   update();
 </script>

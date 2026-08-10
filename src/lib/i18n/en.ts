@@ -1,0 +1,368 @@
+import type { Dict } from "./types";
+
+export const en: Dict = {
+  meta: {
+    title: "Peekaboo — everything your childcare center needs, in one platform",
+    description:
+      "Run your center, support your educators, connect with parents, manage payments and follow every child's journey — all from one connected platform.",
+    dir: "ltr",
+  },
+
+  common: {
+    getStarted: "Get started",
+    contactUs: "Contact us",
+    signIn: "Sign in",
+    explore: "Explore Peekaboo",
+    backToTop: "Back to top",
+    openMenu: "Open section menu",
+    closeMenu: "Close section menu",
+    currentlyViewing: "Currently viewing: ",
+    welcome: "Welcome",
+    skipToContent: "Skip to main content",
+    switchToArabic: "التبديل إلى العربية",
+    switchToEnglish: "Switch to English",
+    switchToDark: "Switch to dark theme",
+    switchToLight: "Switch to light theme",
+  },
+
+  nav: {
+    plans: "Plans",
+    app: "Our App",
+    features: "Features",
+    improve: "Improve",
+    about: "About",
+    whyUs: "Why Us",
+    curriculum: "Curriculum",
+    contact: "Contact",
+  },
+
+  hero: {
+    badge: "Childcare management platform",
+    heading: "Everything your childcare center needs. One connected platform.",
+    body: "Run your center, support your educators, connect with parents, manage payments and follow every child's journey — all from one place.",
+    points: ["A portal for your team", "An app for families", "Built for early years"],
+  },
+
+  plans: {
+    eyebrow: "Plans",
+    heading: "Three ways to start with Peekaboo",
+    body: "Every center is different. Pick the one that matches yours — you can always talk it through with us first.",
+    mostPopular: "Most popular",
+    bestFor: "Best for",
+    talkToUs: "Talk to us about this",
+    items: [
+      {
+        id: "use-peekaboo",
+        name: "Use Peekaboo",
+        description:
+          "Start with the full Peekaboo platform and the modules your setting needs. Nothing to build, nothing to specify — you're running on proven software from day one.",
+        bestFor: "Settings that want to be up and running quickly",
+        includes: ["Peekaboo Care for your team", "Peekaboo Parent for families", "The modules that fit how you operate"],
+      },
+      {
+        id: "customize-your-app",
+        name: "Customise your own app",
+        description:
+          "Keep the Peekaboo Care platform running your operation, and give families a parent app carrying your own name, logo and identity instead of ours.",
+        bestFor: "Groups with an established brand families already know",
+        includes: ["Parent app in your branding", "Your logo, colours and identity", "Powered by Peekaboo Care"],
+      },
+      {
+        id: "build-your-own",
+        name: "Build your own system",
+        description:
+          "For organisations whose processes don't fit an off-the-shelf platform: a management system and parent app designed around your operation, built on Peekaboo's foundations.",
+        bestFor: "Larger groups with specific operational requirements",
+        includes: ["Custom management system", "Custom parent application", "Modules designed to your process"],
+      },
+    ],
+  },
+
+  bridges: {
+    toApp: "However you start with Peekaboo, families stay connected to their child's day.",
+    toFeatures: "That's what parents see. Here's what your team works with.",
+    toImprove: "All of which adds up to a different kind of working week.",
+  },
+
+  app: {
+    eyebrow: "Our App",
+    heading: "Families follow the day as it happens",
+    body: "Peekaboo Parent is the mobile half of the platform. Everything in it comes from records your team already keeps — nothing is written twice.",
+    stepOf: (current, total) => `Step ${current} of ${total}`,
+    beats: [
+      {
+        title: "Daily updates",
+        body: "Photos and moments from the room reach families as they're posted — not at the door, three hours later.",
+      },
+      {
+        title: "Communication",
+        body: "Announcements, newsletters and event invitations land in one place, sent to the right classes.",
+      },
+      {
+        title: "Development",
+        body: "Observations, milestones and learning journals show parents how their child is progressing.",
+      },
+      {
+        title: "Payments",
+        body: "Invoices and receipts sit alongside everything else, so fees don't need a separate email thread.",
+      },
+    ],
+    languagesTitle: "Built for mixed communities",
+    languagesBody:
+      "Peekaboo runs in English and Arabic, and switches the entire interface to right-to-left automatically — for staff and families alike.",
+  },
+
+  features: {
+    eyebrow: "Features",
+    heading: "What's inside Peekaboo",
+    body: "Three parts carry the product — the portal your team runs on, the app families follow, and the pipeline that fills your places. Everything else supports them.",
+    andAround: "And everything around them",
+    spotlights: [
+      {
+        id: "operations",
+        eyebrow: "Center operations",
+        headline: "See your whole setting at a glance",
+        body: "Attendance, occupancy and staff cover update through the day, so you're not chasing four people to find out where the setting stands.",
+        caption: "The live dashboard in Peekaboo Care",
+        capabilities: [
+          "Classroom management",
+          "Multi-center management",
+          "Attendance & check-in",
+          "Child profiles",
+          "Classroom ratios",
+          "Calendar & events",
+        ],
+      },
+      {
+        id: "parents-children",
+        eyebrow: "Parents & children",
+        headline: "Families see the day, as it happens",
+        body: "Daily reports, photos and messages reach parents straight from the room — built from the records your team already keeps, not written a second time.",
+        caption: "The daily report in Peekaboo Parent",
+        capabilities: [
+          "Daily reports",
+          "Photos & moments",
+          "Announcements",
+          "Observations",
+          "Learning journals",
+          "Photo permissions",
+        ],
+      },
+      {
+        id: "admissions",
+        eyebrow: "Admissions CRM",
+        headline: "Turn enquiries into enrolments",
+        body: "Every family that gets in touch is tracked from first contact through tour, waiting list and approval — so no one goes quiet because a callback was forgotten.",
+        caption: "The admissions pipeline in Peekaboo Care",
+        capabilities: [
+          "Lead pipeline",
+          "Tours & visit notes",
+          "Waiting list",
+          "Lead sources & referrals",
+          "Enrolment checklist",
+          "Enquiry records",
+        ],
+      },
+    ],
+    cards: [
+      {
+        id: "staff",
+        title: "Staff",
+        summary: "Records, cover and permissions in one place.",
+        capabilities: ["Employee profiles", "Staff attendance", "Class assignment", "Roles & access"],
+      },
+      {
+        id: "finance",
+        title: "Finance",
+        summary: "Fees in, costs out, and a clear monthly picture.",
+        capabilities: ["Billing & invoicing", "Payments & receipts", "Expenses", "Suppliers & purchases"],
+      },
+      {
+        id: "insights",
+        title: "Insights & security",
+        summary: "Know where you stand — and keep records safe.",
+        capabilities: ["Classroom insights", "Health & incidents", "Encrypted storage", "Scheduled backups"],
+      },
+    ],
+  },
+
+  improve: {
+    eyebrow: "Improve",
+    heading: "What actually changes",
+    body: "Most settings aren't short of systems — they're short of one system. This is what usually shifts in the first month.",
+    before: "Before Peekaboo",
+    after: "With Peekaboo",
+    pairs: [
+      { before: "Paperwork", after: "Digital records" },
+      { before: "Spreadsheets", after: "One central dashboard" },
+      { before: "Manual invoicing", after: "Digital billing" },
+      { before: "Disconnected apps", after: "One connected platform" },
+      { before: "Difficult reporting", after: "Real-time insights" },
+      { before: "Repetitive admin", after: "Fewer things done twice" },
+    ],
+    onePlatform: "One platform",
+    onePlatformBody: "Everything above, in a single system",
+  },
+
+  about: {
+    eyebrow: "About",
+    heading: "Built around the way early-years teams actually work",
+    body: "Peekaboo brings administration, educators, families, children's development, payments and communication together in one connected environment — and stays configurable, because no two settings run the same way.",
+    usedBy: "Used by settings like",
+    audiences: ["Nurseries", "Preschools", "Daycare centers", "Kindergartens", "Montessori settings", "Nursery groups"],
+    closing:
+      "Whether you run a single room or a group of centers, the same platform adapts — classes, age groups, curriculum frameworks and fee structures are all yours to define.",
+    builtBy: "Peekaboo is built and supported by Educore Systems & Technologies, based in Dubai.",
+  },
+
+  whyUs: {
+    eyebrow: "Why Us",
+    heading: "Why one platform beats five tools",
+    body: "The case for Peekaboo isn't a longer feature list — it's what stops being your problem.",
+    reasons: [
+      {
+        title: "Everything connected",
+        description: "Children, parents, educators, billing and operations in one system instead of five.",
+      },
+      {
+        title: "Less administration",
+        description: "Records entered once travel to the parent, the report and the invoice on their own.",
+      },
+      {
+        title: "Better parent engagement",
+        description: "Families see the day as it happens, so pickup stops being the only update they get.",
+      },
+      {
+        title: "Understand child development",
+        description: "Observations, milestones and journals build a record that follows each child.",
+      },
+      {
+        title: "Fill your places",
+        description:
+          "Enquiries tracked from first contact to first day, with a view of which sources actually bring families in.",
+      },
+      {
+        title: "Flexible for your organisation",
+        description: "Use Peekaboo as it comes, brand the parent app, or have it built around your process.",
+      },
+    ],
+  },
+
+  curriculum: {
+    eyebrow: "Curriculum",
+    heading: "Your curriculum. Your framework. Built into Peekaboo.",
+    body: "Peekaboo doesn't impose a curriculum on your setting. You define the learning areas, objectives and attainment levels you work to — then everything else follows that structure.",
+    steps: [
+      {
+        step: "Define",
+        title: "Set up your framework",
+        description: "Create learning areas and the aspects within them, then define the attainment levels your setting uses.",
+      },
+      {
+        step: "Plan",
+        title: "Map objectives",
+        description: "Attach learning objectives to age groups and attainment levels so expectations are clear per stage.",
+      },
+      {
+        step: "Observe",
+        title: "Record what you see",
+        description: "Educators log observations against objectives, with next steps captured while it's still fresh.",
+      },
+      {
+        step: "Report",
+        title: "Turn it into evidence",
+        description: "Generate assessment reports by child, class, learning area or date range when you need them.",
+      },
+    ],
+    frameworksLabel: "Set up by settings working to",
+    frameworksNote:
+      "Because you define the framework, Peekaboo can be configured for any of these — or for a structure that's entirely your own.",
+    plannerCaption:
+      "A theme leads to activities, activities map to objectives, and an observation becomes part of the child's journal.",
+  },
+
+  contact: {
+    finalCtaHeading: "Run your childcare center with less admin and more connection.",
+    eyebrow: "Contact",
+    heading: "Ready to see Peekaboo in action?",
+    body: "Tell us about your center and we'll help you find the right Peekaboo setup.",
+    form: {
+      name: "Your name",
+      email: "Work email",
+      organisation: "Nursery or organisation",
+      phone: "Phone",
+      centers: "How many centers do you run?",
+      centersPlaceholder: "Select…",
+      message: "How can we help?",
+      messagePlaceholder: "Tell us how your setting runs today and what you're hoping to change.",
+      optional: "(optional)",
+      submit: "Get started",
+      sending: "Sending…",
+      privacyNote: "We'll only use these details to reply to you. See our",
+      privacyLink: "privacy policy",
+      successTitle: "Thank you.",
+      success: "We've got your details and someone from our team will be in touch within one business day.",
+      error: "We couldn't send that just now. Please try again, or call us on",
+    },
+    expect: {
+      title: "What to expect",
+      steps: [
+        "A short call to understand how your setting runs today",
+        "A walkthrough using your rooms, age groups and fee structure",
+        "Straight answers on which of the three plans fits",
+      ],
+    },
+  },
+
+  product: {
+    nos: "Nursery Operating System",
+    liveDashboard: "Live Dashboard",
+    live: "Live",
+    childrenPresent: "Children present",
+    ofEnrolled: "of 55 enrolled",
+    absentToday: "Absent today",
+    excused: "2 excused",
+    activeStaff: "Active staff",
+    acrossRooms: "across 4 rooms",
+    classroomOccupancy: "Classroom occupancy",
+    rooms: ["Giraffe", "Rabbit", "Lion Cubs", "Wise Owls"],
+    admissionsCrm: "Admissions CRM",
+    leadPipeline: "Lead pipeline",
+    last30Days: "Last 30 days",
+    stages: ["New", "Tour booked", "Toured", "Waiting list", "Approved"],
+    enrolmentChecklist: "Enrolment checklist",
+    checklist: ["Information", "Documents", "Evaluation", "Finance"],
+    curriculumSection: "Early Childhood · Curriculum",
+    weeklyPlan: "Weekly plan",
+    theme: "Theme",
+    activity: "Activity",
+    objective: "Objective",
+    expected: "Expected",
+    themeValue: "Growing things",
+    activityValue: "Planting sunflower seeds",
+    objectiveValue: "Explores how living things grow",
+    observationToJournal: "Observation \u2192 Journal",
+    observationQuote: "\u201cNoah checked his seed every morning and told the group it needed water.\u201d",
+    journalTags: ["Added to journal", "Milestone recorded", "Shared with family"],
+  },
+
+  footer: {
+    description:
+      "Peekaboo is a complete management platform for nurseries, preschools and early-years centers. Flexible enough for any setting, easy for your team to use, and backed by people who understand childcare.",
+    usefulLinks: "Useful links",
+    contactHeading: "Get in touch",
+    phoneLabel: "Phone",
+    rights: "All rights reserved.",
+    builtBy: "Built and supported by Educore Systems & Technologies.",
+    links: [
+      { label: "Plans", href: "#plans" },
+      { label: "Our App", href: "#app" },
+      { label: "Features", href: "#features" },
+      { label: "About", href: "#about" },
+      { label: "Why Us", href: "#why-us" },
+      { label: "Curriculum", href: "#curriculum" },
+      { label: "Contact", href: "#contact" },
+    ],
+    legal: { privacy: "Privacy & Policy", terms: "Terms of Service" },
+  },
+};

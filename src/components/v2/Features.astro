@@ -7,76 +7,98 @@ import PortalScreen from "../product/PortalScreen.astro";
 import PhoneShell from "../product/PhoneShell.astro";
 import ParentAppBody from "../product/ParentAppBody.astro";
 import { Check } from "@lucide/astro";
-import { FEATURE_SPOTLIGHTS, FEATURE_CARDS } from "../../lib/content/featureGroups";
+import type { Dict, Lang } from "../../lib/i18n";
+
+interface Props {
+  t: Dict;
+  rtl: boolean;
+  lang: Lang;
+}
+
+const { t, rtl, lang } = Astro.props;
+
+/** Which product surface anchors each spotlight — matched by position. */
+const SPOTLIGHT_VISUALS = [
+  { kind: "portal", screen: "dashboard" },
+  { kind: "app", screen: "dailyReport" },
+  { kind: "portal", screen: "crm" },
+] as const;
+
+const CARD_META = [
+  { icon: "people", tone: "gold" as const },
+  { icon: "finance", tone: "brand" as const },
+  { icon: "security", tone: "violet" as const },
+];
 ---
 
-<ScrollSection id="features" label="Features" surface="tint">
+<ScrollSection id="features" label={t.nav.features} surface="tint">
   <Container>
     <SectionIntro
       id="features-heading"
       step="03"
-      eyebrow="Features"
-      title="What's inside Peekaboo"
-      description="Three parts carry the product — the portal your team runs on, the app families follow, and the pipeline that fills your places. Everything else supports them."
+      eyebrow={t.features.eyebrow}
+      title={t.features.heading}
+      description={t.features.body}
     />
 
     {/* Spotlights: full product visual, one clear promise each. */}
     <div class="mt-16 space-y-20 lg:space-y-28">
-      {FEATURE_SPOTLIGHTS.map((spotlight, index) => (
-        <div
-          class:list={[
-            "grid items-center gap-10 lg:grid-cols-2 lg:gap-16",
-            index % 2 === 1 && "lg:[&>*:first-child]:order-2",
-          ]}
-        >
-          <div data-reveal>
-            <p class="text-xs font-bold uppercase tracking-[0.14em] text-brand-ink">{spotlight.eyebrow}</p>
-            <h3 class="mt-2 font-heading text-2xl tracking-[-0.03em] text-body sm:text-3xl">
-              {spotlight.headline}
-            </h3>
-            <p class="mt-3 max-w-md text-lg leading-relaxed text-muted">{spotlight.body}</p>
+      {t.features.spotlights.map((spotlight, index) => {
+        const visual = SPOTLIGHT_VISUALS[index];
+        return (
+          <div
+            class:list={[
+              "grid items-center gap-10 lg:grid-cols-2 lg:gap-16",
+              index % 2 === 1 && "lg:[&>*:first-child]:order-2",
+            ]}
+          >
+            <div data-reveal>
+              <p class="text-xs font-bold uppercase tracking-[0.14em] text-brand-ink">{spotlight.eyebrow}</p>
+              <h3 class="mt-2 font-heading text-2xl text-body sm:text-3xl">{spotlight.headline}</h3>
+              <p class="mt-3 max-w-md text-lg leading-relaxed text-muted">{spotlight.body}</p>
 
-            {/* Capability labels, not paragraphs — the visual carries the rest. */}
-            <ul class="mt-7 flex flex-wrap gap-2">
-              {spotlight.capabilities.map((capability) => (
-                <li class="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-3.5 py-1.5 text-sm font-semibold text-body">
-                  <Check size={12} stroke-width={3.5} class="text-success" aria-hidden="true" />
-                  {capability}
-                </li>
-              ))}
-            </ul>
+              {/* Capability labels, not paragraphs — the visual carries the rest. */}
+              <ul class="mt-7 flex flex-wrap gap-2">
+                {spotlight.capabilities.map((capability) => (
+                  <li class="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-3.5 py-1.5 text-sm font-semibold text-body">
+                    <Check size={12} stroke-width={3.5} class="text-success" aria-hidden="true" />
+                    {capability}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <figure data-reveal data-reveal-delay="100">
+              {visual.kind === "portal" ? (
+                <PortalScreen screen={visual.screen} lang={lang} />
+              ) : (
+                <div class="flex justify-center">
+                  <PhoneShell class="max-w-[250px]" rtl={rtl}>
+                    <ParentAppBody screen={visual.screen} rtl={rtl} />
+                  </PhoneShell>
+                </div>
+              )}
+              <figcaption class="mt-4 text-center text-sm text-subtle">{spotlight.caption}</figcaption>
+            </figure>
           </div>
-
-          <figure data-reveal data-reveal-delay="100">
-            {spotlight.visual.kind === "portal" ? (
-              <PortalScreen screen={spotlight.visual.screen} />
-            ) : (
-              <div class="flex justify-center">
-                <PhoneShell class="max-w-[250px]">
-                  <ParentAppBody screen={spotlight.visual.screen} />
-                </PhoneShell>
-              </div>
-            )}
-            <figcaption class="mt-4 text-center text-sm text-subtle">{spotlight.caption}</figcaption>
-          </figure>
-        </div>
-      ))}
+        );
+      })}
     </div>
 
     {/* Three supporting areas, compact — a different rhythm from the spotlights. */}
     <div class="mt-20 lg:mt-28">
       <p class="text-center text-xs font-bold uppercase tracking-[0.14em] text-subtle" data-reveal>
-        And everything around them
+        {t.features.andAround}
       </p>
       <div class="mt-8 grid gap-5 md:grid-cols-3">
-        {FEATURE_CARDS.map((card, index) => (
+        {t.features.cards.map((card, index) => (
           <article
             data-reveal
             data-reveal-delay={index * 80}
             class="rounded-xl border border-line bg-surface p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-brand-200 hover:shadow-soft-lg"
           >
-            <FeatureIcon icon={card.icon} tone={card.tone} class="h-11 w-11" />
-            <h3 class="mt-5 font-heading text-lg tracking-[-0.02em] text-body">{card.title}</h3>
+            <FeatureIcon icon={CARD_META[index].icon} tone={CARD_META[index].tone} class="h-11 w-11" />
+            <h3 class="mt-5 font-heading text-lg text-body">{card.title}</h3>
             <p class="mt-1.5 text-sm leading-relaxed text-muted">{card.summary}</p>
             <ul class="mt-4 space-y-1.5 border-t border-line pt-4">
               {card.capabilities.map((capability) => (

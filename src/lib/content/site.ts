@@ -14,11 +14,18 @@ export const SITE = {
   /** The portal's own name for itself, shown in its sidebar badge. */
   systemName: "Nursery Operating System",
   portalUrl: "https://portal.peek-a-boo.app",
-  phone: "+971 504 051 555",
+  phone: "+971 50 405 1555",
   phoneHref: "tel:+971504051555",
   email: "contactus@peekabooedu.com",
   whatsappUrl: "https://wa.me/971504051555",
-  location: "DSOA, Dubai, United Arab Emirates",
+  /** Full registered address, as published by the parent company. */
+  address: [
+    "Office 703, Wing B",
+    "DSO Headquarters Building",
+    "Dubai Silicon Oasis, Dubai",
+    "United Arab Emirates",
+  ],
+  location: "Dubai Silicon Oasis, Dubai, United Arab Emirates",
   parentCompany: "Educore Systems & Technologies",
 } as const;
 

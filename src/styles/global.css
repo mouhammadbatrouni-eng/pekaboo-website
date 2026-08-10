@@ -52,6 +52,20 @@
     U+2C60-2C7F, U+A720-A7FF;
 }
 
+/* Arabic. The portal uses Noto Sans Arabic for its RTL interface, so the
+   website matches it. Only the Arabic ranges are declared, so English pages
+   never fetch this file. */
+@font-face {
+  font-family: "Noto Sans Arabic Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("@fontsource-variable/noto-sans-arabic/files/noto-sans-arabic-arabic-wght-normal.woff2")
+    format("woff2-variations");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0898-08E1, U+08E3-08FF,
+    U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+}
+
 /*
  * Peekaboo design tokens — pulled directly from the live portal's source
  * (peekaboo-web, src/index.css) so the website is provably the same brand,
@@ -260,6 +274,44 @@
     color: var(--color-text);
     font-family: var(--font-heading);
     letter-spacing: -0.03em;
+  }
+
+  /*
+   * Arabic / RTL.
+   *
+   * Baloo 2 has no Arabic coverage, so headings fall back to Noto Sans Arabic
+   * rather than rendering in a mismatched system font. The tight negative
+   * letter-spacing that suits the Latin display face would damage Arabic
+   * letterforms and joins, so it's reset to normal.
+   */
+  /* Scoped to html[dir=rtl] — the Arabic page — rather than any RTL element.
+     Isolated Arabic spans on the English page (the language chips) fall back
+     to the system Arabic face instead of pulling a 164 KB webfont for a
+     handful of characters. */
+  html[dir="rtl"] {
+    font-family: "Noto Sans Arabic Variable", "Segoe UI", Tahoma, sans-serif;
+  }
+
+  html[dir="rtl"] h1,
+  html[dir="rtl"] h2,
+  html[dir="rtl"] h3,
+  html[dir="rtl"] h4 {
+    font-family: "Noto Sans Arabic Variable", "Segoe UI", Tahoma, sans-serif;
+    letter-spacing: normal;
+  }
+
+  /* Arabic script needs a little more vertical room to breathe. */
+  html[dir="rtl"] p,
+  html[dir="rtl"] li {
+    line-height: 1.85;
+  }
+
+  /* Latin runs inside Arabic text (brand names, the phone number) keep their
+     own direction so they don't reorder. */
+  [dir="rtl"] .ltr-inline {
+    direction: ltr;
+    display: inline-block;
+    unicode-bidi: isolate;
   }
 }
 

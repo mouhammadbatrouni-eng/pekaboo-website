@@ -5,6 +5,15 @@ import PortalScreen from "../product/PortalScreen.astro";
 import PhoneShell from "../product/PhoneShell.astro";
 import ParentAppBody from "../product/ParentAppBody.astro";
 import { ArrowDown, Check } from "@lucide/astro";
+import type { Dict, Lang } from "../../lib/i18n";
+
+interface Props {
+  t: Dict;
+  lang: Lang;
+  rtl: boolean;
+}
+
+const { t, lang, rtl } = Astro.props;
 ---
 
 <section id="top" class="relative overflow-hidden pt-12 pb-16 sm:pt-16 sm:pb-20">
@@ -19,31 +28,28 @@ import { ArrowDown, Check } from "@lucide/astro";
       <div data-reveal>
         <p class="mb-5 inline-flex items-center gap-2 rounded-full border border-brand-200/60 bg-surface px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-brand-ink shadow-soft">
           <span class="h-1.5 w-1.5 rounded-full bg-brand-500"></span>
-          Childcare management platform
+          {t.hero.badge}
         </p>
 
-        <h1 class="text-[2.5rem] leading-[1.04] sm:text-[3.2rem] lg:text-[3.5rem]">
-          Everything your childcare center needs. One connected platform.
+        <h1 class="text-[2.5rem] leading-[1.12] sm:text-[3.2rem] lg:text-[3.5rem]">
+          {t.hero.heading}
         </h1>
 
-        <p class="mt-6 max-w-xl text-lg leading-relaxed text-muted">
-          Run your center, support your educators, connect with parents, manage payments and follow
-          every child's journey — all from one place.
-        </p>
+        <p class="mt-6 max-w-xl text-lg leading-relaxed text-muted">{t.hero.body}</p>
 
         <div class="mt-9 flex flex-wrap items-center gap-3">
-          <Button href="#contact" size="lg">Get started</Button>
+          <Button href="#contact" size="lg">{t.common.getStarted}</Button>
           <Button href="#plans" variant="secondary" size="lg">
-            Explore Peekaboo
+            {t.common.explore}
             <ArrowDown size={16} aria-hidden="true" />
           </Button>
         </div>
 
         {/* The five-second test: name both halves of the product explicitly. */}
         <ul class="mt-9 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted">
-          {["A portal for your team", "An app for families", "Built for early years"].map((point) => (
+          {t.hero.points.map((point) => (
             <li class="flex items-center gap-2">
-              <span class="flex h-4 w-4 items-center justify-center rounded-full bg-mint-soft text-success">
+              <span class="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-mint-soft text-success">
                 <Check size={10} stroke-width={3.5} aria-hidden="true" />
               </span>
               {point}
@@ -52,18 +58,21 @@ import { ArrowDown, Check } from "@lucide/astro";
         </ul>
       </div>
 
+      {/* The phone sits just past the portal card's edge, so the two surfaces
+          layer without the app ever covering portal content. Logical `pe`/`end`
+          keep that arrangement correct when the page flips to RTL. */}
       <div class="relative" data-reveal data-reveal-delay="120">
-        <div class="lg:pr-[150px] xl:pr-[168px]">
-          <PortalScreen screen="dashboard" />
+        <div class="lg:pe-[150px] xl:pe-[168px]">
+          <PortalScreen screen="dashboard" lang={lang} />
         </div>
-        <div class="absolute -bottom-6 right-0 hidden w-[170px] lg:block xl:w-[188px]">
-          <PhoneShell>
-            <ParentAppBody screen="timeline" />
+        <div class="absolute -bottom-6 end-0 hidden w-[170px] lg:block xl:w-[188px]">
+          <PhoneShell rtl={rtl}>
+            <ParentAppBody screen="timeline" rtl={rtl} />
           </PhoneShell>
         </div>
         <div class="mt-8 flex justify-center lg:hidden">
-          <PhoneShell class="max-w-[230px]">
-            <ParentAppBody screen="timeline" />
+          <PhoneShell class="max-w-[230px]" rtl={rtl}>
+            <ParentAppBody screen="timeline" rtl={rtl} />
           </PhoneShell>
         </div>
       </div>
