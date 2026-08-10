@@ -1,0 +1,21 @@
+---
+import Container from "../ui/Container.astro";
+import { PortableText } from "astro-portabletext";
+import type { PortableTextBlock } from "@sanity/types";
+
+interface Props {
+  heading?: string;
+  body: PortableTextBlock[];
+}
+
+const { heading, body } = Astro.props;
+---
+
+<section class="py-16 sm:py-20">
+  <Container class="max-w-3xl">
+    {heading && <h2 class="mb-6 text-3xl font-extrabold text-ink-900">{heading}</h2>}
+    <div class="prose max-w-none">
+      <PortableText value={body} />
+    </div>
+  </Container>
+</section>

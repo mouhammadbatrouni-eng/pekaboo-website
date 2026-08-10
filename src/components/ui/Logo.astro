@@ -1,0 +1,32 @@
+---
+interface Props {
+  class?: string;
+  variant?: "mark" | "full";
+  showTagline?: boolean;
+  tone?: "brand" | "light";
+}
+
+const { class: className = "", variant = "full", showTagline = false, tone = "brand" } = Astro.props;
+const wordmarkClass = tone === "light" ? "text-white" : "text-brand-600";
+const taglineClass = tone === "light" ? "text-white/50" : "text-ink-400";
+---
+
+<a href="/" class:list={["group inline-flex items-center gap-3 shrink-0 no-underline", className]} aria-label="Peekaboo home">
+  <img
+    src="/peekaboo-mark.png"
+    alt=""
+    width="44"
+    height="44"
+    class="h-11 w-11 shrink-0 rounded-2xl shadow-soft transition-transform duration-200 group-hover:-translate-y-0.5"
+  />
+  {variant === "full" && (
+    <span class="grid min-w-0 gap-0.5 leading-none">
+      <span class:list={["truncate font-heading text-2xl tracking-[-0.04em]", wordmarkClass]}>Peekaboo</span>
+      {showTagline && (
+        <span class:list={["truncate text-[0.65rem] font-bold uppercase tracking-[0.16em]", taglineClass]}>
+          Early childhood software
+        </span>
+      )}
+    </span>
+  )}
+</a>

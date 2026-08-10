@@ -1,0 +1,35 @@
+---
+import Container from "../ui/Container.astro";
+import SectionHeading from "../ui/SectionHeading.astro";
+import { PortableText } from "astro-portabletext";
+import { ChevronDown } from "@lucide/astro";
+import type { Faq } from "../../lib/content/types";
+
+interface Props {
+  eyebrow?: string;
+  heading: string;
+  faqs: Faq[];
+}
+
+const { eyebrow, heading, faqs } = Astro.props;
+---
+
+<section class="bg-ink-50/60 py-20 sm:py-28" id="faq">
+  <Container class="max-w-3xl">
+    <SectionHeading eyebrow={eyebrow} title={heading} />
+
+    <div class="mt-12 divide-y divide-ink-100 rounded-2xl border border-ink-100 bg-white">
+      {faqs.map((faq) => (
+        <details class="group px-6 py-5 open:pb-5">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold text-ink-900 marker:content-none">
+            {faq.question}
+            <ChevronDown size={18} class="shrink-0 text-ink-400 transition-transform duration-200 group-open:rotate-180" />
+          </summary>
+          <div class="prose prose-sm mt-3 max-w-none text-ink-500">
+            <PortableText value={faq.answer} />
+          </div>
+        </details>
+      ))}
+    </div>
+  </Container>
+</section>

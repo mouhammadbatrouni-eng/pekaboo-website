@@ -1,0 +1,22 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import PageHeader from "../components/sections/PageHeader.astro";
+import Container from "../components/ui/Container.astro";
+import ContactForm from "../components/sections/ContactForm.astro";
+
+export const prerender = true;
+---
+
+<PageLayout title="Contact" seo={{ metaDescription: "Book a demo or get in touch with the Peekaboo team." }}>
+  <PageHeader
+    eyebrow="Get in touch"
+    heading="Let's show you around Peekaboo"
+    intro="Tell us a bit about your nursery and we'll set up a short walkthrough — no pressure, just a good look at whether Peekaboo fits."
+  />
+
+  <section class="pb-24">
+    <Container>
+      <ContactForm />
+    </Container>
+  </section>
+</PageLayout>

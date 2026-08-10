@@ -1,0 +1,26 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import Header from "../components/nav/Header.astro";
+import Footer from "../components/nav/Footer.astro";
+import { getSiteSettings } from "../lib/sanity/queries";
+import { resolveSeo } from "../lib/seo";
+import type { Seo } from "../lib/content/types";
+
+interface Props {
+  title: string;
+  seo?: Seo;
+  includeOrgSchema?: boolean;
+}
+
+const { title, seo: pageSeo, includeOrgSchema = false } = Astro.props;
+const site = await getSiteSettings();
+const resolvedSeo = resolveSeo(title, pageSeo, site);
+---
+
+<BaseLayout seo={resolvedSeo} includeOrgSchema={includeOrgSchema}>
+  <Header site={site} />
+  <main id="main-content">
+    <slot />
+  </main>
+  <Footer site={site} />
+</BaseLayout>

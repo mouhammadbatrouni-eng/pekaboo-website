@@ -1,0 +1,16 @@
+---
+import PageLayout from "../../layouts/PageLayout.astro";
+import PageHeader from "../../components/sections/PageHeader.astro";
+import Sections from "../../components/sections/Sections.astro";
+import { getPage } from "../../lib/sanity/queries";
+
+export const prerender = true;
+
+const page = await getPage("privacy");
+if (!page) return Astro.redirect("/404");
+---
+
+<PageLayout title={page.title} seo={page.seo}>
+  <PageHeader eyebrow={page.eyebrow} heading={page.heading} intro={page.intro} />
+  <Sections sections={page.sections} />
+</PageLayout>

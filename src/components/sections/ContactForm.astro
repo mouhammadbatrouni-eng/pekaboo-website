@@ -1,0 +1,154 @@
+---
+import Button from "../ui/Button.astro";
+import { CircleCheckBig, CircleAlert } from "@lucide/astro";
+---
+
+<div class="mx-auto max-w-xl">
+  <div id="contact-banner-success" class="mb-6 hidden items-start gap-3 rounded-xl bg-success-soft px-4 py-3 text-sm text-success" role="status">
+    <CircleCheckBig size={20} class="mt-0.5 shrink-0" aria-hidden="true" />
+    <p>Thanks — we've got your message and will be in touch within one business day.</p>
+  </div>
+  <div id="contact-banner-error" class="mb-6 hidden items-start gap-3 rounded-xl bg-danger-soft px-4 py-3 text-sm text-danger" role="alert">
+    <CircleAlert size={20} class="mt-0.5 shrink-0" aria-hidden="true" />
+    <p>Something went wrong on our end. Please try again, or email us directly at <a href="mailto:hello@peek-a-boo.app" class="font-semibold underline">hello@peek-a-boo.app</a>.</p>
+  </div>
+
+  <form id="contact-form" method="POST" action="/api/contact" class="space-y-5" novalidate>
+    <div class="grid gap-5 sm:grid-cols-2">
+      <div>
+        <label for="name" class="mb-1.5 block text-sm font-semibold text-ink-700">Your name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          required
+          minlength="2"
+          autocomplete="name"
+          class="w-full rounded-xl border border-ink-200 px-4 py-2.5 text-sm text-ink-900 placeholder:text-ink-300 focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100"
+        />
+        <p class="mt-1.5 hidden text-xs text-danger" data-error-for="name"></p>
+      </div>
+      <div>
+        <label for="email" class="mb-1.5 block text-sm font-semibold text-ink-700">Work email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          autocomplete="email"
+          class="w-full rounded-xl border border-ink-200 px-4 py-2.5 text-sm text-ink-900 placeholder:text-ink-300 focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100"
+        />
+        <p class="mt-1.5 hidden text-xs text-danger" data-error-for="email"></p>
+      </div>
+    </div>
+
+    <div>
+      <label for="nurseryName" class="mb-1.5 block text-sm font-semibold text-ink-700">
+        Nursery name <span class="font-normal text-ink-400">(optional)</span>
+      </label>
+      <input
+        type="text"
+        id="nurseryName"
+        name="nurseryName"
+        autocomplete="organization"
+        class="w-full rounded-xl border border-ink-200 px-4 py-2.5 text-sm text-ink-900 placeholder:text-ink-300 focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100"
+      />
+    </div>
+
+    <div>
+      <label for="message" class="mb-1.5 block text-sm font-semibold text-ink-700">How can we help?</label>
+      <textarea
+        id="message"
+        name="message"
+        required
+        minlength="10"
+        rows="5"
+        placeholder="Tell us a bit about your nursery and what you're hoping to solve."
+        class="w-full resize-none rounded-xl border border-ink-200 px-4 py-2.5 text-sm text-ink-900 placeholder:text-ink-300 focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100"
+      ></textarea>
+      <p class="mt-1.5 hidden text-xs text-danger" data-error-for="message"></p>
+    </div>
+
+    <!-- Honeypot — hidden from sighted users and screen readers, real visitors never fill it in. -->
+    <div class="absolute left-[-9999px]" aria-hidden="true">
+      <label for="company">Company</label>
+      <input type="text" id="company" name="company" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <Button type="submit" size="lg" class="w-full sm:w-auto" id="contact-submit">
+      <span data-submit-label>Send message</span>
+    </Button>
+  </form>
+</div>
+
+<script>
+  const form = document.getElementById("contact-form") as HTMLFormElement | null;
+  const submitButton = document.getElementById("contact-submit") as HTMLButtonElement | null;
+  const submitLabel = submitButton?.querySelector("[data-submit-label]");
+  const successBanner = document.getElementById("contact-banner-success");
+  const errorBanner = document.getElementById("contact-banner-error");
+
+  function showBanner(kind: "success" | "error") {
+    successBanner?.classList.toggle("hidden", kind !== "success");
+    successBanner?.classList.toggle("flex", kind === "success");
+    errorBanner?.classList.toggle("hidden", kind !== "error");
+    errorBanner?.classList.toggle("flex", kind === "error");
+    if (kind === "success") form?.reset();
+  }
+
+  function clearFieldErrors() {
+    form?.querySelectorAll<HTMLElement>("[data-error-for]").forEach((el) => {
+      el.textContent = "";
+      el.classList.add("hidden");
+    });
+  }
+
+  function setFieldErrors(errors: Record<string, string>) {
+    for (const [field, message] of Object.entries(errors)) {
+      const el = form?.querySelector<HTMLElement>(`[data-error-for="${field}"]`);
+      if (el) {
+        el.textContent = message;
+        el.classList.remove("hidden");
+      }
+    }
+  }
+
+  // Show the right banner if we've been redirected back from a no-JS submission.
+  const params = new URLSearchParams(location.search);
+  if (params.has("success")) showBanner("success");
+  if (params.has("error")) showBanner("error");
+  if (params.has("success") || params.has("error")) {
+    history.replaceState(null, "", location.pathname);
+  }
+
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!submitButton || !submitLabel) return;
+
+    clearFieldErrors();
+    submitButton.disabled = true;
+    submitLabel.textContent = "Sending…";
+
+    try {
+      const response = await fetch(form.action, {
+        method: "POST",
+        body: new FormData(form),
+        headers: { Accept: "application/json" },
+      });
+      const result = await response.json();
+
+      if (result.success) {
+        showBanner("success");
+      } else if (result.errors && Object.keys(result.errors).length > 0) {
+        setFieldErrors(result.errors);
+      } else {
+        showBanner("error");
+      }
+    } catch {
+      showBanner("error");
+    } finally {
+      submitButton.disabled = false;
+      submitLabel.textContent = "Send message";
+    }
+  });
+</script>

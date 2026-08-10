@@ -1,0 +1,51 @@
+---
+import PageLayout from "../../layouts/PageLayout.astro";
+import Container from "../../components/ui/Container.astro";
+import { PortableText } from "astro-portabletext";
+import { urlForImage } from "../../lib/sanity/image";
+import { getPosts, getPost } from "../../lib/sanity/queries";
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ params: { slug: post.slug } }));
+}
+
+const { slug } = Astro.params;
+const post = await getPost(slug!);
+if (!post) return Astro.redirect("/404");
+
+const coverUrl = urlForImage(post.coverImage)?.width(1200).height(675).url();
+const date = new Date(post.publishedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+---
+
+<PageLayout title={post.title} seo={{ ...post.seo, metaDescription: post.seo?.metaDescription || post.excerpt }}>
+  <article class="py-16 sm:py-20">
+    <Container class="max-w-3xl">
+      <div class="text-center">
+        {post.category && <span class="text-xs font-bold uppercase tracking-wide text-brand-600">{post.category.title}</span>}
+        <h1 class="mt-2 text-4xl font-extrabold leading-tight text-ink-900 sm:text-5xl">{post.title}</h1>
+        <div class="mt-5 flex items-center justify-center gap-2 text-sm text-ink-400">
+          <span class="font-semibold text-ink-600">{post.author.name}</span>
+          <span aria-hidden="true">·</span>
+          <time datetime={post.publishedAt}>{date}</time>
+        </div>
+      </div>
+
+      {coverUrl && (
+        <img
+          src={coverUrl}
+          alt={post.coverImage.alt || ""}
+          width="1200"
+          height="675"
+          class="mt-10 aspect-video w-full rounded-2xl object-cover"
+        />
+      )}
+
+      <div class="prose prose-lg mx-auto mt-10 max-w-none">
+        <PortableText value={post.body} />
+      </div>
+    </Container>
+  </article>
+</PageLayout>

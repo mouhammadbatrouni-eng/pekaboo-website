@@ -1,0 +1,35 @@
+---
+import PageLayout from "../../layouts/PageLayout.astro";
+import PageHeader from "../../components/sections/PageHeader.astro";
+import Container from "../../components/ui/Container.astro";
+import PostCard from "../../components/blog/PostCard.astro";
+import EmptyState from "../../components/ui/EmptyState.astro";
+import { getPosts } from "../../lib/sanity/queries";
+
+export const prerender = true;
+
+const posts = await getPosts();
+---
+
+<PageLayout title="Blog">
+  <PageHeader
+    eyebrow="Blog"
+    heading="Ideas, updates, and stories from Peekaboo"
+    intro="News from our team, tips for running a happier nursery, and the occasional look behind the scenes."
+  />
+
+  <section class="pb-24">
+    <Container>
+      {posts.length > 0 ? (
+        <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {posts.map((post) => <PostCard post={post} />)}
+        </div>
+      ) : (
+        <EmptyState
+          title="No articles published yet"
+          description="We're working on our first posts — check back soon, or head to our product page to see what Peekaboo can do today."
+        />
+      )}
+    </Container>
+  </section>
+</PageLayout>

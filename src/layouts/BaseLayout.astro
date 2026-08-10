@@ -1,0 +1,71 @@
+---
+import "../styles/global.css";
+import type { ResolvedSeo } from "../lib/seo";
+
+interface Props {
+  seo: ResolvedSeo;
+  /** Include Organization JSON-LD structured data (home page only). */
+  includeOrgSchema?: boolean;
+}
+
+const { seo, includeOrgSchema = false } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const defaultOgImage = new URL("/og-default.svg", Astro.site).toString();
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Peekaboo",
+  url: Astro.site?.toString(),
+  logo: new URL("/peekaboo-mark.png", Astro.site).toString(),
+  description: seo.description,
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/peekaboo-mark.png" />
+    <link rel="apple-touch-icon" href="/peekaboo-mark.png" />
+    <link rel="canonical" href={canonicalURL} />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{seo.title}</title>
+    {seo.description && <meta name="description" content={seo.description} />}
+    {seo.noIndex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={seo.title} />
+    {seo.description && <meta property="og:description" content={seo.description} />}
+    <meta property="og:image" content={seo.ogImageUrl || defaultOgImage} />
+    <meta property="og:site_name" content="Peekaboo" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={seo.title} />
+    {seo.description && <meta name="twitter:description" content={seo.description} />}
+    <meta name="twitter:image" content={seo.ogImageUrl || defaultOgImage} />
+
+    {includeOrgSchema && (
+      <script type="application/ld+json" is:inline set:html={JSON.stringify(organizationSchema)} />
+    )}
+  </head>
+  <body>
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-brand-600 focus:px-5 focus:py-2.5 focus:text-white focus:shadow-soft-lg"
+    >
+      Skip to main content
+    </a>
+
+    <!-- Soft decorative color blobs, fixed to the viewport — matches the portal's ambient-orb treatment. -->
+    <div class="pointer-events-none fixed -right-24 top-32 -z-10 h-72 w-72 rounded-full bg-violet/20 opacity-70 blur-3xl" aria-hidden="true"></div>
+    <div class="pointer-events-none fixed -left-28 bottom-32 -z-10 h-64 w-64 rounded-full bg-coral/20 opacity-70 blur-3xl" aria-hidden="true"></div>
+
+    <slot />
+  </body>
+</html>

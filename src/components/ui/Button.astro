@@ -1,0 +1,57 @@
+---
+type Variant = "primary" | "secondary" | "gold" | "ghost";
+type Size = "md" | "lg";
+
+interface Props {
+  href?: string;
+  variant?: Variant;
+  size?: Size;
+  class?: string;
+  id?: string;
+  type?: "button" | "submit" | "reset";
+  disabled?: boolean;
+}
+
+const {
+  href,
+  variant = "primary",
+  size = "md",
+  class: className = "",
+  id,
+  type = "button",
+  disabled = false,
+} = Astro.props;
+
+const base =
+  "inline-flex items-center justify-center gap-2 rounded-full border font-bold tracking-[-0.01em] transition-all duration-200 " +
+  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500 " +
+  "active:translate-y-px disabled:opacity-50 disabled:pointer-events-none";
+
+const variants: Record<Variant, string> = {
+  primary:
+    "border-transparent bg-[linear-gradient(180deg,#2fc5f7_0%,#1cb6ea_100%)] text-white shadow-glow-brand hover:shadow-[0_22px_36px_rgba(28,182,234,0.34)]",
+  gold: "border-transparent bg-[linear-gradient(180deg,#ffc945_0%,#ffae13_100%)] text-white shadow-glow-gold hover:shadow-[0_22px_36px_rgba(255,174,19,0.32)]",
+  secondary:
+    "border-ink-200 bg-white/80 text-ink-800 shadow-soft hover:border-brand-300 hover:text-brand-700 hover:bg-white",
+  ghost: "border-transparent text-ink-700 hover:text-brand-600 hover:bg-brand-50",
+};
+
+const sizes: Record<Size, string> = {
+  md: "px-5 py-2.5 text-sm",
+  lg: "px-7 py-3.5 text-base",
+};
+
+const classes = [base, variants[variant], sizes[size], className].join(" ");
+---
+
+{
+  href ? (
+    <a href={href} id={id} class={classes}>
+      <slot />
+    </a>
+  ) : (
+    <button type={type} id={id} disabled={disabled} class={classes}>
+      <slot />
+    </button>
+  )
+}

@@ -1,0 +1,128 @@
+---
+import Logo from "../ui/Logo.astro";
+import Button from "../ui/Button.astro";
+import { resolveLink, isExternalLink } from "../../lib/content/resolveLink";
+import type { SiteSettings } from "../../lib/content/types";
+
+interface Props {
+  site: SiteSettings;
+}
+
+const { site } = Astro.props;
+const navLinks = site.navLinks ?? [];
+const currentPath = Astro.url.pathname;
+
+function isActive(path: string) {
+  if (path === "/") return currentPath === "/";
+  return currentPath.startsWith(path);
+}
+---
+
+<header class="sticky top-0 z-50 border-b border-ink-100 bg-white/80 backdrop-blur-md">
+  <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
+    <Logo />
+
+    <nav class="hidden items-center gap-8 lg:flex" aria-label="Primary">
+      {navLinks.map((link) => {
+        const href = resolveLink(link);
+        return (
+          <a
+            href={href}
+            target={isExternalLink(link) ? "_blank" : undefined}
+            rel={isExternalLink(link) ? "noopener noreferrer" : undefined}
+            class:list={[
+              "text-sm font-semibold transition-colors hover:text-brand-600",
+              isActive(href) ? "text-brand-600" : "text-ink-600",
+            ]}
+            aria-current={isActive(href) ? "page" : undefined}
+          >
+            {link.label}
+          </a>
+        );
+      })}
+    </nav>
+
+    <div class="hidden lg:block">
+      {site.headerCta && (
+        <Button href={resolveLink(site.headerCta.link)} variant={site.headerCta.style}>
+          {site.headerCta.label}
+        </Button>
+      )}
+    </div>
+
+    <button
+      id="mobile-nav-toggle"
+      type="button"
+      class="inline-flex h-10 w-10 items-center justify-center rounded-full text-ink-700 hover:bg-ink-50 lg:hidden"
+      aria-expanded="false"
+      aria-controls="mobile-nav-panel"
+      aria-label="Open menu"
+    >
+      <svg id="icon-menu" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+      </svg>
+      <svg id="icon-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="hidden">
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </button>
+  </div>
+
+  <div id="mobile-nav-panel" class="hidden border-t border-ink-100 bg-white lg:hidden" role="dialog" aria-modal="true" aria-label="Mobile navigation">
+    <nav class="flex flex-col gap-1 px-6 py-4" aria-label="Mobile primary">
+      {navLinks.map((link) => {
+        const href = resolveLink(link);
+        return (
+          <a
+            href={href}
+            class:list={[
+              "rounded-lg px-3 py-3 text-base font-semibold",
+              isActive(href) ? "bg-brand-50 text-brand-700" : "text-ink-700 hover:bg-ink-50",
+            ]}
+          >
+            {link.label}
+          </a>
+        );
+      })}
+    </nav>
+    {site.headerCta && (
+      <div class="border-t border-ink-100 px-6 py-4">
+        <Button href={resolveLink(site.headerCta.link)} variant={site.headerCta.style} class="w-full">
+          {site.headerCta.label}
+        </Button>
+      </div>
+    )}
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById("mobile-nav-toggle");
+  const panel = document.getElementById("mobile-nav-panel");
+  const iconMenu = document.getElementById("icon-menu");
+  const iconClose = document.getElementById("icon-close");
+
+  function setOpen(open: boolean) {
+    if (!toggle || !panel || !iconMenu || !iconClose) return;
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    panel.classList.toggle("hidden", !open);
+    iconMenu.classList.toggle("hidden", open);
+    iconClose.classList.toggle("hidden", !open);
+  }
+
+  toggle?.addEventListener("click", () => {
+    const isOpen = toggle.getAttribute("aria-expanded") === "true";
+    setOpen(!isOpen);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") setOpen(false);
+  });
+
+  // Close the mobile panel when a link inside it is activated.
+  panel?.addEventListener("click", (event) => {
+    if ((event.target as HTMLElement).tagName === "A") setOpen(false);
+  });
+</script>

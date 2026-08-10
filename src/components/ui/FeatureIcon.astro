@@ -1,0 +1,26 @@
+---
+import { CalendarCheck, Camera, Wallet, MessageCircle, BookOpen, Users, ShieldCheck, Calendar } from "@lucide/astro";
+
+const ICONS = {
+  attendance: CalendarCheck,
+  timeline: Camera,
+  finance: Wallet,
+  communication: MessageCircle,
+  curriculum: BookOpen,
+  people: Users,
+  security: ShieldCheck,
+  calendar: Calendar,
+} as const;
+
+interface Props {
+  icon: keyof typeof ICONS | string;
+  class?: string;
+}
+
+const { icon, class: className = "" } = Astro.props;
+const IconComponent = ICONS[icon as keyof typeof ICONS] ?? Users;
+---
+
+<span class:list={["inline-flex items-center justify-center rounded-xl bg-brand-50 text-brand-600", className]}>
+  <IconComponent size={22} stroke-width={2} aria-hidden="true" />
+</span>

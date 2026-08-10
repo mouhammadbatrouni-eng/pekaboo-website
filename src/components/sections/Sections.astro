@@ -1,0 +1,36 @@
+---
+import FeatureGrid from "./FeatureGrid.astro";
+import ProductShowcase from "./ProductShowcase.astro";
+import Testimonials from "./Testimonials.astro";
+import Faq from "./Faq.astro";
+import CtaBanner from "./CtaBanner.astro";
+import RichText from "./RichText.astro";
+import type { Section } from "../../lib/content/types";
+
+interface Props {
+  sections?: Section[];
+}
+
+const { sections = [] } = Astro.props;
+---
+
+{
+  sections.map((section) => {
+    switch (section._type) {
+      case "featureGridSection":
+        return <FeatureGrid {...section} />;
+      case "productShowcaseSection":
+        return <ProductShowcase {...section} />;
+      case "testimonialSection":
+        return <Testimonials {...section} />;
+      case "faqSection":
+        return <Faq {...section} />;
+      case "ctaSection":
+        return <CtaBanner {...section} />;
+      case "richTextSection":
+        return <RichText {...section} />;
+      default:
+        return null;
+    }
+  })
+}

@@ -1,0 +1,42 @@
+---
+import Container from "../ui/Container.astro";
+import Button from "../ui/Button.astro";
+import { resolveLink } from "../../lib/content/resolveLink";
+import type { Cta } from "../../lib/content/types";
+
+interface Props {
+  heading: string;
+  description?: string;
+  ctas: Cta[];
+}
+
+const { heading, description, ctas } = Astro.props;
+---
+
+<section class="py-20 sm:py-28">
+  <Container>
+    <div class="relative overflow-hidden rounded-3xl bg-ink-950 px-8 py-16 text-center sm:px-16">
+      <div
+        class="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_80%_at_50%_0%,var(--color-brand-700),transparent)] opacity-60"
+        aria-hidden="true"
+      >
+      </div>
+      <div class="relative">
+        <h2 class="mx-auto max-w-2xl text-3xl font-extrabold text-white sm:text-4xl">{heading}</h2>
+        {description && <p class="mx-auto mt-4 max-w-xl text-lg text-ink-300">{description}</p>}
+        <div class="mt-9 flex flex-wrap items-center justify-center gap-4">
+          {ctas.map((cta) => (
+            <Button
+              href={resolveLink(cta.link)}
+              variant={cta.style === "primary" ? "primary" : "secondary"}
+              size="lg"
+              class={cta.style === "secondary" ? "!border-white/20 !bg-transparent !text-white hover:!bg-white/10" : ""}
+            >
+              {cta.label}
+            </Button>
+          ))}
+        </div>
+      </div>
+    </div>
+  </Container>
+</section>

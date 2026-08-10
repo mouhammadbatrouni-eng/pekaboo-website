@@ -1,0 +1,138 @@
+@import "tailwindcss";
+@import "@fontsource-variable/baloo-2";
+@import "@fontsource-variable/manrope";
+@plugin "@tailwindcss/typography";
+
+/*
+ * Peekaboo design tokens — pulled directly from the live portal's source
+ * (peekaboo-web, src/index.css) so the website is provably the same brand,
+ * not a reinterpretation: same hex values, same font pairing (Baloo 2 for
+ * display/headings, Manrope for body), same very-rounded shape language.
+ * Everything downstream reads from these tokens, not hardcoded colors.
+ */
+@theme {
+  --font-sans: "Manrope Variable", "Segoe UI", Arial, sans-serif;
+  --font-heading: "Baloo 2 Variable", "Trebuchet MS", sans-serif;
+
+  /* Sky — primary brand color, matches --primary in the portal */
+  --color-brand-50: #eafbff;
+  --color-brand-100: #d3f5ff;
+  --color-brand-200: #a8ebff;
+  --color-brand-300: #70dbff;
+  --color-brand-400: #3ec4f5;
+  --color-brand-500: #1cb6ea;
+  --color-brand-600: #0f96c7;
+  --color-brand-700: #0e77a1;
+  --color-brand-800: #106083;
+  --color-brand-900: #12506d;
+  --color-brand-950: #0a3547;
+
+  /* Gold — secondary brand color, matches --secondary in the portal */
+  --color-gold-50: #fffbeb;
+  --color-gold-100: #fff3c4;
+  --color-gold-200: #ffe58a;
+  --color-gold-300: #ffd55f;
+  --color-gold-400: #ffc945;
+  --color-gold-500: #ffae13;
+  --color-gold-600: #e6910a;
+  --color-gold-700: #b8720a;
+
+  /* Ink — near-black navy text color, matches --foreground in the portal */
+  --color-ink-50: #f5f6f9;
+  --color-ink-100: #e8eaf0;
+  --color-ink-200: #ccd0dc;
+  --color-ink-300: #a4aabf;
+  --color-ink-400: #767e9c;
+  --color-ink-500: #5d667f;
+  --color-ink-600: #454e6b;
+  --color-ink-700: #313a56;
+  --color-ink-800: #232c46;
+  --color-ink-900: #172036;
+  --color-ink-950: #101828;
+
+  /* Additional accent colors from the portal's chart/chip palette */
+  --color-coral: #ff7d66;
+  --color-coral-soft: #ffe4de;
+  --color-mint: #72ddb1;
+  --color-mint-soft: #dcf9ec;
+  --color-violet: #8f7bff;
+  --color-violet-soft: #ece8ff;
+
+  /* Semantic status colors, kept in-family with the portal's chart colors */
+  --color-success: #1f9d63;
+  --color-success-soft: #d9f5e8;
+  --color-warning: #b8720a;
+  --color-warning-soft: #fff3c4;
+  --color-danger: #e8483f;
+  --color-danger-soft: #ffe2e0;
+
+  /* Radius scale — same formula as the portal (base 1.45rem), so "rounded-xl"
+     etc. feel exactly as playful/round here as they do in the product. */
+  --radius-sm: 0.9rem;
+  --radius-md: 1.19rem;
+  --radius-lg: 1.45rem;
+  --radius-xl: 1.91rem;
+  --radius-2xl: 2.49rem;
+
+  --shadow-soft: 0 10px 24px rgba(25, 31, 56, 0.07);
+  --shadow-soft-lg: 0 24px 48px -16px rgba(25, 31, 56, 0.18);
+  --shadow-glow-brand: 0 18px 30px rgba(28, 182, 234, 0.26);
+  --shadow-glow-gold: 0 18px 30px rgba(255, 174, 19, 0.24);
+
+  --animate-fade-up: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply text-ink-800 font-sans antialiased;
+    background:
+      radial-gradient(circle at top left, rgba(255, 125, 102, 0.12), transparent 28%),
+      radial-gradient(circle at 82% 14%, rgba(28, 182, 234, 0.12), transparent 24%),
+      radial-gradient(circle at 10% 90%, rgba(114, 221, 177, 0.12), transparent 22%),
+      linear-gradient(180deg, #fffaf5 0%, #fff3e8 60%, #fffdfb 100%);
+  }
+
+  ::selection {
+    @apply bg-brand-200 text-ink-900;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand-500;
+  }
+
+  h1, h2, h3, h4 {
+    @apply text-ink-900 font-bold;
+    font-family: var(--font-heading);
+    letter-spacing: -0.03em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
