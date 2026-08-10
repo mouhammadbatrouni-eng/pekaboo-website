@@ -126,6 +126,29 @@
   --color-warning-onDark: #ffd55f;
   --color-danger-onDark: #ff8b84;
 
+  /*
+   * Semantic surface and text tokens.
+   *
+   * These are the only colors that change between light and dark mode — the
+   * scales above stay fixed, so anything deliberately dark in both themes
+   * (portal previews, the footer, CTA banners) keeps its exact appearance.
+   * Values here are the light theme; the `.dark` block below overrides them
+   * with the portal's own dark palette.
+   */
+  --color-canvas: #fffaf5;
+  --color-surface: #ffffff;
+  --color-surface-2: rgba(255, 255, 255, 0.55);
+  --color-line: #e8eaf0;
+  --color-line-strong: #ccd0dc;
+  --color-text: #172036;
+  --color-text-muted: #5d667f;
+  --color-text-subtle: #69718c;
+  /* Accent colors for text/icons on the current surface — these brighten in
+     dark mode, unlike the fixed accent values used for fills. */
+  --color-brand-ink: #0e77a1;
+  --color-coral-ink: #c2513c;
+  --color-violet-ink: #6250c9;
+
   /* Radius scale — same formula as the portal (base 1.45rem), so "rounded-xl"
      etc. feel exactly as playful/round here as they do in the product. */
   --radius-sm: 0.9rem;
@@ -153,18 +176,75 @@
   }
 }
 
+/*
+ * Dark theme.
+ *
+ * Values are taken from the Peekaboo portal's own `.dark` block, so switching
+ * the website to dark gives the same deep navy and warm off-white the product
+ * uses — the toggle in the portal sidebar and the one here land on the same
+ * colours. Applied via a `.dark` class on <html> (see the theme script), not
+ * a media query, so the visitor's choice wins over the OS setting.
+ */
+@custom-variant dark (&:is(.dark *));
+
+.dark {
+  color-scheme: dark;
+
+  --color-canvas: #12192c;
+  --color-surface: #1a2338;
+  --color-surface-2: rgba(255, 255, 255, 0.03);
+  --color-line: rgba(255, 255, 255, 0.09);
+  --color-line-strong: rgba(255, 255, 255, 0.16);
+  --color-text: #f8f3ea;
+  --color-text-muted: #c2ccdd;
+  --color-text-subtle: #a4aabf;
+  --color-brand-ink: #33c1f2;
+  --color-coral-ink: #ff9c88;
+  --color-violet-ink: #b3a4ff;
+
+  /* Status colours flip to their on-dark variants, since every surface is
+     now dark. */
+  --color-success: #72ddb1;
+  --color-success-soft: rgba(114, 221, 177, 0.14);
+  --color-warning: #ffd55f;
+  --color-warning-soft: rgba(255, 213, 95, 0.14);
+  --color-danger: #ff8b84;
+  --color-danger-soft: rgba(255, 139, 132, 0.14);
+
+  /* Soft accent tints need to be translucent rather than pale in dark mode. */
+  --color-coral-soft: rgba(255, 125, 102, 0.16);
+  --color-mint-soft: rgba(114, 221, 177, 0.14);
+  --color-violet-soft: rgba(143, 123, 255, 0.18);
+  --color-brand-50: rgba(51, 193, 242, 0.12);
+  --color-brand-100: rgba(51, 193, 242, 0.2);
+  --color-gold-100: rgba(255, 213, 95, 0.16);
+  --color-gold-700: #ffd55f;
+
+  --shadow-soft: 0 10px 24px rgba(0, 0, 0, 0.28);
+  --shadow-soft-lg: 0 24px 48px -16px rgba(0, 0, 0, 0.45);
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
   }
 
   body {
-    @apply text-ink-800 font-sans antialiased;
+    @apply font-sans antialiased;
+    color: var(--color-text-muted);
     background:
       radial-gradient(circle at top left, rgba(255, 125, 102, 0.12), transparent 28%),
       radial-gradient(circle at 82% 14%, rgba(28, 182, 234, 0.12), transparent 24%),
       radial-gradient(circle at 10% 90%, rgba(114, 221, 177, 0.12), transparent 22%),
       linear-gradient(180deg, #fffaf5 0%, #fff3e8 60%, #fffdfb 100%);
+  }
+
+  .dark body {
+    background:
+      radial-gradient(circle at top left, rgba(255, 125, 102, 0.07), transparent 28%),
+      radial-gradient(circle at 82% 14%, rgba(51, 193, 242, 0.09), transparent 24%),
+      radial-gradient(circle at 10% 90%, rgba(114, 221, 177, 0.06), transparent 22%),
+      linear-gradient(180deg, #12192c 0%, #18213a 60%, #12192c 100%);
   }
 
   ::selection {
@@ -176,10 +256,49 @@
   }
 
   h1, h2, h3, h4 {
-    @apply text-ink-900 font-bold;
+    @apply font-bold;
+    color: var(--color-text);
     font-family: var(--font-heading);
     letter-spacing: -0.03em;
   }
+}
+
+/*
+ * Theme-aware utilities.
+ *
+ * Components in the single-page concept use these instead of `bg-white` /
+ * `text-ink-900`, so a single `.dark` class flips the whole page. Anything
+ * that should stay dark in both themes keeps using the fixed ink scale.
+ */
+@utility bg-canvas {
+  background-color: var(--color-canvas);
+}
+@utility bg-surface {
+  background-color: var(--color-surface);
+}
+@utility bg-surface-2 {
+  background-color: var(--color-surface-2);
+}
+@utility border-line {
+  border-color: var(--color-line);
+}
+@utility text-body {
+  color: var(--color-text);
+}
+@utility text-muted {
+  color: var(--color-text-muted);
+}
+@utility text-subtle {
+  color: var(--color-text-subtle);
+}
+@utility text-brand-ink {
+  color: var(--color-brand-ink);
+}
+@utility text-coral-ink {
+  color: var(--color-coral-ink);
+}
+@utility text-violet-ink {
+  color: var(--color-violet-ink);
 }
 
 /*

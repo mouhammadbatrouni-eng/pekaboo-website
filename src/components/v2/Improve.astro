@@ -31,9 +31,9 @@ const PAIRS = [
     <div class="mx-auto mt-14 max-w-3xl">
       {/* Column labels, shown once rather than repeated per row. */}
       <div class="mb-4 hidden grid-cols-[1fr_auto_1fr] items-center gap-4 px-1 sm:grid">
-        <p class="text-xs font-bold uppercase tracking-[0.12em] text-ink-400">Before Peekaboo</p>
+        <p class="text-xs font-bold uppercase tracking-[0.12em] text-subtle">Before Peekaboo</p>
         <span class="w-8" aria-hidden="true"></span>
-        <p class="text-xs font-bold uppercase tracking-[0.12em] text-brand-700">With Peekaboo</p>
+        <p class="text-xs font-bold uppercase tracking-[0.12em] text-brand-ink">With Peekaboo</p>
       </div>
 
       <ul class="space-y-3">
@@ -41,18 +41,18 @@ const PAIRS = [
           <li
             data-reveal
             data-reveal-delay={index * 70}
-            class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 rounded-xl border border-ink-100 bg-white/80 p-4 shadow-soft sm:gap-4 sm:p-5"
+            class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 rounded-xl border border-line bg-surface p-4 shadow-soft sm:gap-4 sm:p-5"
           >
-            <span class="text-sm text-ink-400 line-through decoration-ink-200 sm:text-base">
+            <span class="text-sm text-subtle line-through decoration-ink-200 sm:text-base">
               {pair.before}
             </span>
             <span
-              class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-700"
+              class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-ink"
               aria-hidden="true"
             >
               <ArrowRight size={15} stroke-width={2.5} />
             </span>
-            <span class="text-sm font-bold text-ink-900 sm:text-base">{pair.after}</span>
+            <span class="text-sm font-bold text-body sm:text-base">{pair.after}</span>
           </li>
         ))}
       </ul>
@@ -60,11 +60,11 @@ const PAIRS = [
       {/* The convergence: everything above resolves into one platform. */}
       <div class="mt-10 flex flex-col items-center" data-reveal>
         <div class="h-10 w-px bg-gradient-to-b from-ink-200 to-brand-400" aria-hidden="true"></div>
-        <div class="flex items-center gap-3 rounded-xl border border-brand-200 bg-white px-6 py-4 shadow-soft-lg">
+        <div class="flex items-center gap-3 rounded-xl border border-brand-200 bg-surface px-6 py-4 shadow-soft-lg">
           <img src="/peekaboo-mark.png" alt="" width="40" height="40" class="h-10 w-10 rounded-xl" />
           <div>
-            <p class="font-heading text-lg tracking-[-0.03em] text-ink-900">One platform</p>
-            <p class="text-sm text-ink-500">Everything above, in a single system</p>
+            <p class="font-heading text-lg tracking-[-0.03em] text-body">One platform</p>
+            <p class="text-sm text-muted">Everything above, in a single system</p>
           </div>
         </div>
       </div>

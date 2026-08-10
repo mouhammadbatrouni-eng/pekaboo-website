@@ -5,8 +5,8 @@ import { CENTER_COUNT_OPTIONS } from "../../lib/validations/contact";
 import { SITE } from "../../lib/content/site";
 
 const fieldClass =
-  "w-full rounded-xl border border-ink-200 bg-white px-4 py-3 text-sm text-ink-900 placeholder:text-ink-300 transition-colors focus:border-brand-400 focus:outline-none focus:ring-4 focus:ring-brand-100 aria-[invalid=true]:border-danger";
-const labelClass = "mb-1.5 block text-sm font-semibold text-ink-700";
+  "w-full rounded-xl border border-line bg-surface px-4 py-3 text-sm text-body placeholder:text-subtle transition-colors focus:border-brand-400 focus:outline-none focus:ring-4 focus:ring-brand-100 aria-[invalid=true]:border-danger";
+const labelClass = "mb-1.5 block text-sm font-semibold text-body";
 ---
 
 <div class="mx-auto max-w-2xl">
@@ -39,7 +39,7 @@ const labelClass = "mb-1.5 block text-sm font-semibold text-ink-700";
     id="contact-form"
     method="POST"
     action="/api/contact"
-    class="rounded-2xl border border-ink-100 bg-white p-6 shadow-soft sm:p-8"
+    class="rounded-2xl border border-line bg-surface p-6 shadow-soft sm:p-8"
     novalidate
   >
     <div class="grid gap-5 sm:grid-cols-2">
@@ -70,7 +70,7 @@ const labelClass = "mb-1.5 block text-sm font-semibold text-ink-700";
       </div>
       <div>
         <label for="phone" class={labelClass}>
-          Phone <span class="font-normal text-ink-400">(optional)</span>
+          Phone <span class="font-normal text-subtle">(optional)</span>
         </label>
         <input type="tel" id="phone" name="phone" autocomplete="tel" class={fieldClass} />
       </div>
@@ -78,7 +78,7 @@ const labelClass = "mb-1.5 block text-sm font-semibold text-ink-700";
 
     <div class="mt-5">
       <label for="centers" class={labelClass}>
-        How many centers do you run? <span class="font-normal text-ink-400">(optional)</span>
+        How many centers do you run? <span class="font-normal text-subtle">(optional)</span>
       </label>
       <select id="centers" name="centers" class={fieldClass}>
         <option value="">Select…</option>
@@ -109,9 +109,9 @@ const labelClass = "mb-1.5 block text-sm font-semibold text-ink-700";
       <Button type="submit" size="lg" class="w-full sm:w-auto" id="contact-submit">
         <span data-submit-label>Book a demo</span>
       </Button>
-      <p class="text-xs leading-relaxed text-ink-400">
+      <p class="text-xs leading-relaxed text-subtle">
         We'll only use these details to reply to you. See our
-        <a href="/privacy" class="font-semibold text-brand-700 underline">privacy policy</a>.
+        <a href="/privacy" class="font-semibold text-brand-ink underline">privacy policy</a>.
       </p>
     </div>
   </form>

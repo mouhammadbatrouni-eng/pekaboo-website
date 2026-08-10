@@ -23,8 +23,8 @@ import { SOLUTIONS } from "../../lib/content/solutions";
           data-reveal
           data-reveal-delay={index * 90}
           class:list={[
-            "relative flex flex-col rounded-xl border bg-white p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg",
-            solution.featured ? "border-brand-300 shadow-soft-lg" : "border-ink-100 shadow-soft hover:border-brand-200",
+            "relative flex flex-col rounded-xl border bg-surface p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg",
+            solution.featured ? "border-brand-300 shadow-soft-lg" : "border-line shadow-soft hover:border-brand-200",
           ]}
         >
           {solution.featured && (
@@ -34,17 +34,17 @@ import { SOLUTIONS } from "../../lib/content/solutions";
           )}
 
           <FeatureIcon icon={solution.icon} tone={solution.featured ? "brand" : "gold"} class="h-11 w-11" />
-          <h3 class="mt-5 font-heading text-xl tracking-[-0.03em] text-ink-900">{solution.name}</h3>
-          <p class="mt-3 leading-relaxed text-ink-500 lg:min-h-[7.5rem]">{solution.description}</p>
+          <h3 class="mt-5 font-heading text-xl tracking-[-0.03em] text-body">{solution.name}</h3>
+          <p class="mt-3 leading-relaxed text-muted lg:min-h-[7.5rem]">{solution.description}</p>
 
           {/* Fixed heights keep the three cards' dividers on the same line, so
               the column reads as a comparison rather than three loose cards. */}
-          <p class="mt-6 text-xs font-bold uppercase tracking-[0.1em] text-ink-400">Best for</p>
-          <p class="mt-1 text-sm font-semibold text-ink-700 sm:min-h-[2.5rem]">{solution.bestFor}</p>
+          <p class="mt-6 text-xs font-bold uppercase tracking-[0.1em] text-subtle">Best for</p>
+          <p class="mt-1 text-sm font-semibold text-body sm:min-h-[2.5rem]">{solution.bestFor}</p>
 
-          <ul class="mt-6 space-y-2.5 border-t border-ink-100 pt-6">
+          <ul class="mt-6 space-y-2.5 border-t border-line pt-6">
             {solution.includes.slice(0, 3).map((item) => (
-              <li class="flex items-start gap-2.5 text-sm text-ink-700">
+              <li class="flex items-start gap-2.5 text-sm text-body">
                 <span class="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-mint-soft text-success">
                   <Check size={10} stroke-width={3.5} aria-hidden="true" />
                 </span>
@@ -55,7 +55,7 @@ import { SOLUTIONS } from "../../lib/content/solutions";
 
           <a
             href="#contact"
-            class="group mt-7 inline-flex items-center gap-1.5 text-sm font-bold text-brand-700 transition-colors hover:text-brand-800"
+            class="group mt-7 inline-flex items-center gap-1.5 text-sm font-bold text-brand-ink transition-colors hover:text-brand-800"
           >
             Talk to us about this
             <ArrowRight size={15} class="transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true" />

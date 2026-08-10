@@ -31,12 +31,12 @@ import { SITE } from "../../lib/content/site";
 <ScrollSection id="contact" label="Contact">
   <Container>
     <div class="mx-auto max-w-2xl text-center" data-reveal>
-      <p class="mb-3 flex items-center justify-center gap-2.5 text-xs font-bold uppercase tracking-[0.14em] text-brand-700">
-        <span class="rounded-full border border-ink-200 px-2 py-0.5 tabular-nums text-ink-400" aria-hidden="true">08</span>
+      <p class="mb-3 flex items-center justify-center gap-2.5 text-xs font-bold uppercase tracking-[0.14em] text-brand-ink">
+        <span class="rounded-full border border-line px-2 py-0.5 tabular-nums text-subtle" aria-hidden="true">08</span>
         Contact
       </p>
       <h2 id="contact-heading" class="text-3xl sm:text-4xl">Ready to see Peekaboo in action?</h2>
-      <p class="mt-4 text-lg leading-relaxed text-ink-500">
+      <p class="mt-4 text-lg leading-relaxed text-muted">
         Tell us about your center and we'll help you find the right Peekaboo setup.
       </p>
     </div>
@@ -47,12 +47,12 @@ import { SITE } from "../../lib/content/site";
       </div>
 
       <aside class="lg:pt-2" data-reveal>
-        <div class="rounded-2xl border border-ink-100 bg-white/80 p-6 shadow-soft">
-          <h3 class="font-heading text-lg tracking-[-0.02em] text-ink-900">Or reach us directly</h3>
+        <div class="rounded-2xl border border-line bg-surface p-6 shadow-soft">
+          <h3 class="font-heading text-lg tracking-[-0.02em] text-body">Or reach us directly</h3>
           <ul class="mt-4 space-y-3 text-sm">
             <li>
-              <a href={SITE.phoneHref} class="flex items-center gap-2.5 font-semibold text-ink-700 transition-colors hover:text-brand-700">
-                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-700">
+              <a href={SITE.phoneHref} class="flex items-center gap-2.5 font-semibold text-body transition-colors hover:text-brand-ink">
+                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-ink">
                   <Phone size={14} aria-hidden="true" />
                 </span>
                 {SITE.phone}
@@ -63,7 +63,7 @@ import { SITE } from "../../lib/content/site";
                 href={SITE.whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="flex items-center gap-2.5 font-semibold text-ink-700 transition-colors hover:text-brand-700"
+                class="flex items-center gap-2.5 font-semibold text-body transition-colors hover:text-brand-ink"
               >
                 <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-mint-soft text-success">
                   <MessageCircle size={14} aria-hidden="true" />
@@ -74,16 +74,16 @@ import { SITE } from "../../lib/content/site";
             <li>
               <a
                 href={`mailto:${SITE.email}`}
-                class="flex items-center gap-2.5 break-all font-semibold text-ink-700 transition-colors hover:text-brand-700"
+                class="flex items-center gap-2.5 break-all font-semibold text-body transition-colors hover:text-brand-ink"
               >
-                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-700">
+                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-ink">
                   <Mail size={14} aria-hidden="true" />
                 </span>
                 {SITE.email}
               </a>
             </li>
-            <li class="flex items-start gap-2.5 pt-1 text-ink-500">
-              <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-700">
+            <li class="flex items-start gap-2.5 pt-1 text-muted">
+              <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-ink">
                 <MapPin size={14} aria-hidden="true" />
               </span>
               <span class="pt-1.5">{SITE.location}</span>

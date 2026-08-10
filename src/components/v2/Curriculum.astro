@@ -22,26 +22,26 @@ import { CURRICULA, CURRICULUM_STEPS } from "../../lib/content/marketing";
           {CURRICULUM_STEPS.map((step, index) => (
             <li class="relative pl-11" data-reveal data-reveal-delay={index * 80}>
               <span
-                class="absolute left-0 top-0 flex h-8 w-8 items-center justify-center rounded-full bg-white text-sm font-bold text-brand-700 shadow-soft ring-1 ring-brand-100"
+                class="absolute left-0 top-0 flex h-8 w-8 items-center justify-center rounded-full bg-surface text-sm font-bold text-brand-ink shadow-soft ring-1 ring-brand-100"
                 aria-hidden="true"
               >
                 {index + 1}
               </span>
-              <p class="text-xs font-bold uppercase tracking-[0.12em] text-brand-700">{step.step}</p>
-              <p class="mt-1 font-bold text-ink-900">{step.title}</p>
-              <p class="mt-1 text-sm leading-relaxed text-ink-500">{step.description}</p>
+              <p class="text-xs font-bold uppercase tracking-[0.12em] text-brand-ink">{step.step}</p>
+              <p class="mt-1 font-bold text-body">{step.title}</p>
+              <p class="mt-1 text-sm leading-relaxed text-muted">{step.description}</p>
             </li>
           ))}
         </ol>
 
-        <div class="mt-10 rounded-xl border border-ink-100 bg-white/80 p-6" data-reveal>
-          <p class="text-xs font-bold uppercase tracking-[0.12em] text-ink-400">
+        <div class="mt-10 rounded-xl border border-line bg-surface p-6" data-reveal>
+          <p class="text-xs font-bold uppercase tracking-[0.12em] text-subtle">
             Set up by settings working to
           </p>
           <ul class="mt-4 flex flex-wrap gap-2">
             {CURRICULA.map((curriculum) => (
               <li
-                class="rounded-full border border-ink-100 bg-white px-3.5 py-1.5 text-sm font-semibold text-ink-700"
+                class="rounded-full border border-line bg-surface px-3.5 py-1.5 text-sm font-semibold text-body"
                 title={curriculum.name}
               >
                 {curriculum.abbr}
@@ -49,7 +49,7 @@ import { CURRICULA, CURRICULUM_STEPS } from "../../lib/content/marketing";
               </li>
             ))}
           </ul>
-          <p class="mt-4 text-sm leading-relaxed text-ink-400">
+          <p class="mt-4 text-sm leading-relaxed text-subtle">
             Because you define the framework, Peekaboo can be configured for any of these — or for a
             structure that's entirely your own.
           </p>
@@ -58,7 +58,7 @@ import { CURRICULA, CURRICULUM_STEPS } from "../../lib/content/marketing";
 
       <div data-reveal data-reveal-delay="120">
         <CurriculumPlanner />
-        <p class="mt-4 text-center text-sm leading-relaxed text-ink-400">
+        <p class="mt-4 text-center text-sm leading-relaxed text-subtle">
           A theme leads to activities, activities map to objectives, and an observation becomes part
           of the child's journal.
         </p>

@@ -22,11 +22,11 @@ const {
   class: className = "",
 } = Astro.props;
 
-const titleClass = tone === "light" ? "text-white" : "text-ink-900";
-const bodyClass = tone === "light" ? "text-ink-300" : "text-ink-500";
-const eyebrowClass = tone === "light" ? "text-brand-300" : "text-brand-700";
+const titleClass = tone === "light" ? "text-white" : "text-body";
+const bodyClass = tone === "light" ? "text-ink-300" : "text-muted";
+const eyebrowClass = tone === "light" ? "text-brand-300" : "text-brand-ink";
 const stepClass =
-  tone === "light" ? "border-white/15 text-ink-400" : "border-ink-200 text-ink-400";
+  tone === "light" ? "border-white/15 text-subtle" : "border-line text-subtle";
 ---
 
 <div

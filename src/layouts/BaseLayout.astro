@@ -10,9 +10,11 @@ interface Props {
   includeOrgSchema?: boolean;
   /** When supplied, emits FAQPage structured data. */
   faqs?: Faq[];
+  /** Opt into the light/dark theme switch. Pages without it stay light. */
+  enableTheme?: boolean;
 }
 
-const { seo, includeOrgSchema = false, faqs } = Astro.props;
+const { seo, includeOrgSchema = false, faqs, enableTheme = false } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const siteUrl = Astro.site?.toString();
@@ -35,6 +37,24 @@ const schemas = [
     <link rel="canonical" href={canonicalURL} />
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#1cb6ea" />
+
+    {enableTheme && (
+      /* Runs before first paint so the correct theme is applied without a
+         flash of the wrong one. Deliberately inline and un-deferred. */
+      <script is:inline>
+        (function () {
+          try {
+            var stored = localStorage.getItem("peekaboo-theme");
+            var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            if (stored === "dark" || (!stored && prefersDark)) {
+              document.documentElement.classList.add("dark");
+            }
+          } catch (e) {
+            /* Storage unavailable — fall back to the light theme. */
+          }
+        })();
+      </script>
+    )}
 
     <title>{seo.title}</title>
     {seo.description && <meta name="description" content={seo.description} />}

@@ -1,11 +1,12 @@
 ---
 import Logo from "../ui/Logo.astro";
 import Button from "../ui/Button.astro";
+import ThemeToggle from "./ThemeToggle.astro";
 import { SECTIONS } from "./SECTIONS";
 import { CTA } from "../../lib/content/site";
 ---
 
-<header class="sticky top-0 z-50 border-b border-ink-100/70 bg-[#fffaf5]/90 backdrop-blur-md">
+<header class="sticky top-0 z-50 border-b border-line bg-canvas/90 backdrop-blur-md">
   <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3 lg:px-8">
     <a href="#top" class="shrink-0" aria-label="Peekaboo — back to top">
       <Logo />
@@ -18,7 +19,7 @@ import { CTA } from "../../lib/content/site";
             <a
               href={`#${section.id}`}
               data-nav-link={section.id}
-              class="rounded-full px-3 py-2 text-[13px] font-semibold text-ink-600 transition-colors hover:bg-white hover:text-brand-700 aria-[current=true]:bg-brand-50 aria-[current=true]:text-brand-700"
+              class="rounded-full px-3 py-2 text-[13px] font-semibold text-muted transition-colors hover:bg-surface hover:text-brand-ink aria-[current=true]:bg-brand-50 aria-[current=true]:text-brand-ink"
             >
               {section.label}
             </a>
@@ -30,10 +31,11 @@ import { CTA } from "../../lib/content/site";
     <div class="flex items-center gap-2">
       <a
         href={CTA.signIn.href}
-        class="hidden rounded-full px-3 py-2 text-sm font-semibold text-ink-600 transition-colors hover:text-brand-700 sm:block"
+        class="hidden rounded-full px-3 py-2 text-sm font-semibold text-muted transition-colors hover:text-brand-ink lg:block"
       >
         Sign in
       </a>
+      <ThemeToggle />
       <span class="hidden sm:block">
         <Button href="#contact">Get started</Button>
       </span>
@@ -41,7 +43,7 @@ import { CTA } from "../../lib/content/site";
       <button
         id="v2-menu-toggle"
         type="button"
-        class="inline-flex h-11 w-11 items-center justify-center rounded-full text-ink-700 transition-colors hover:bg-white xl:hidden"
+        class="inline-flex h-11 w-11 items-center justify-center rounded-full text-body transition-colors hover:bg-surface xl:hidden"
         aria-expanded="false"
         aria-controls="v2-menu"
         aria-label="Open section menu"
@@ -58,25 +60,25 @@ import { CTA } from "../../lib/content/site";
 
   {/* Reading progress. Purely decorative — the nav's active state carries the
       same information for assistive tech. */}
-  <div class="h-0.5 w-full bg-ink-100" aria-hidden="true">
+  <div class="h-0.5 w-full bg-line" aria-hidden="true">
     <div id="v2-progress" class="h-full w-0 origin-left bg-brand-500 transition-[width] duration-150 ease-out"></div>
   </div>
 
   {/* Current-section label on small screens, where the full nav doesn't fit. */}
-  <div class="border-t border-ink-100/70 bg-white/60 px-5 py-2 xl:hidden">
-    <p class="text-[11px] font-bold uppercase tracking-[0.14em] text-ink-400">
+  <div class="border-t border-line bg-surface-2 px-5 py-2 xl:hidden">
+    <p class="text-[11px] font-bold uppercase tracking-[0.14em] text-subtle">
       <span class="sr-only">Currently viewing: </span>
       <span id="v2-current-label">Welcome</span>
     </p>
   </div>
 
-  <div id="v2-menu" class="hidden border-t border-ink-100 bg-white xl:hidden">
+  <div id="v2-menu" class="hidden border-t border-line bg-surface xl:hidden">
     <nav class="grid grid-cols-2 gap-1 px-5 py-4" aria-label="Sections">
       {SECTIONS.map((section) => (
         <a
           href={`#${section.id}`}
           data-menu-link={section.id}
-          class="rounded-xl px-4 py-3 text-sm font-semibold text-ink-700 transition-colors hover:bg-brand-50 hover:text-brand-700 aria-[current=true]:bg-brand-50 aria-[current=true]:text-brand-700"
+          class="rounded-xl px-4 py-3 text-sm font-semibold text-body transition-colors hover:bg-brand-50 hover:text-brand-ink aria-[current=true]:bg-brand-50 aria-[current=true]:text-brand-ink"
         >
           {section.label}
         </a>

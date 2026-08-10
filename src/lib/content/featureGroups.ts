@@ -1,177 +1,104 @@
 /**
- * Feature groupings for the single-page concept.
+ * Feature content for the single-page concept.
  *
- * These follow the five plain-language buckets a visitor scans for — Center
- * Operations, Parents & Children, Staff, Finance, Insights & Security —
- * rather than the platform's internal module structure (see modules.ts, used
- * by the multi-page concept). The underlying capabilities are the same, and
- * every one of them exists in the Peekaboo Care portal today.
+ * Deliberately split into two shapes so the section doesn't read as five
+ * identical blocks: two "spotlights" get a headline, a sentence and a product
+ * visual; the remaining three are compact cards that list capabilities without
+ * a paragraph each. Every capability here exists in the Peekaboo Care portal.
  */
 
 import type { ParentScreen } from "../../components/product/ParentAppBody.astro";
 
-export interface FeatureItem {
-  name: string;
-  description: string;
-  icon: string;
+type PortalScreenName =
+  | "dashboard"
+  | "attendance"
+  | "dailyReport"
+  | "observation"
+  | "invoice"
+  | "crm"
+  | "roster";
+
+export interface FeatureSpotlight {
+  id: string;
+  eyebrow: string;
+  /** The "so what" — what changes for the setting. */
+  headline: string;
+  body: string;
+  visual: { kind: "portal"; screen: PortalScreenName } | { kind: "app"; screen: ParentScreen };
+  caption: string;
+  /** Short labels only. The visual and headline carry the explanation. */
+  capabilities: string[];
 }
 
-export interface FeatureGroup {
+export interface FeatureCard {
   id: string;
   title: string;
   summary: string;
-  /** Which product visual anchors this group. */
-  visual:
-    | { kind: "portal"; screen: "dashboard" | "attendance" | "dailyReport" | "observation" | "invoice" | "crm" | "roster" }
-    | { kind: "app"; screen: ParentScreen };
-  caption: string;
-  items: FeatureItem[];
+  icon: string;
+  tone: "brand" | "gold" | "mint" | "coral" | "violet";
+  capabilities: string[];
 }
 
-export const FEATURE_GROUPS: FeatureGroup[] = [
+/** The two areas worth showing in full: what the team runs, what families see. */
+export const FEATURE_SPOTLIGHTS: FeatureSpotlight[] = [
   {
     id: "operations",
-    title: "Center operations",
-    summary: "The day-to-day running of your setting, visible in one place.",
+    eyebrow: "Center operations",
+    headline: "See your whole setting at a glance",
+    body: "Attendance, occupancy and staff cover update through the day, so you're not chasing four people to find out where the setting stands.",
     visual: { kind: "portal", screen: "dashboard" },
-    caption: "The live dashboard — attendance, occupancy and staff, updated through the day.",
-    items: [
-      {
-        name: "Classroom management",
-        description: "Classes, capacities, assigned educators and per-room daily-care settings.",
-        icon: "attendance",
-      },
-      {
-        name: "Center management",
-        description: "Run one setting or several, each with its own licence, currency and timezone.",
-        icon: "people",
-      },
-      {
-        name: "Attendance",
-        description: "Present, late, absent or excused, with check-in and check-out times.",
-        icon: "calendar",
-      },
-      {
-        name: "Child profiles",
-        description: "Allergies, languages, SEN needs, photo permissions and authorised pickups.",
-        icon: "curriculum",
-      },
+    caption: "The live dashboard in Peekaboo Care",
+    capabilities: [
+      "Classroom management",
+      "Multi-center management",
+      "Attendance & check-in",
+      "Child profiles",
+      "Classroom ratios",
+      "Calendar & events",
     ],
   },
   {
     id: "parents-children",
-    title: "Parents & children",
-    summary: "Keeping families close to the day without adding work to the room.",
+    eyebrow: "Parents & children",
+    headline: "Families see the day, as it happens",
+    body: "Daily reports, photos and messages reach parents straight from the room — built from the records your team already keeps, not written a second time.",
     visual: { kind: "app", screen: "dailyReport" },
-    caption: "The daily report as a parent sees it — meals, nap and mood, published by the room.",
-    items: [
-      {
-        name: "Communication",
-        description: "Announcements, notifications, newsletters and events, sent to the right classes.",
-        icon: "communication",
-      },
-      {
-        name: "Child development",
-        description: "Observations linked to learning objectives, with next steps recorded.",
-        icon: "curriculum",
-      },
-      {
-        name: "Daily reports",
-        description: "Meals, milk, nap, hygiene and mood — drafted in the room, published to families.",
-        icon: "timeline",
-      },
-      {
-        name: "Learning journals",
-        description: "Observations become assessment reports per child, class or learning area.",
-        icon: "people",
-      },
+    caption: "The daily report in Peekaboo Parent",
+    capabilities: [
+      "Daily reports",
+      "Photos & moments",
+      "Announcements",
+      "Observations",
+      "Learning journals",
+      "Photo permissions",
     ],
   },
+];
+
+/** The three supporting areas, kept compact so the section doesn't sprawl. */
+export const FEATURE_CARDS: FeatureCard[] = [
   {
     id: "staff",
     title: "Staff",
-    summary: "Your team's records and cover, without a separate spreadsheet.",
-    visual: { kind: "portal", screen: "roster" },
-    caption: "Ratios and health alerts — the two things the floor needs to see first.",
-    items: [
-      {
-        name: "Employee management",
-        description: "Roles, contact and emergency details, qualifications and joining dates.",
-        icon: "people",
-      },
-      {
-        name: "Staff attendance",
-        description: "Track who's in on the same board you use for children.",
-        icon: "attendance",
-      },
-      {
-        name: "Class assignment",
-        description: "Assign educators to rooms so ratios and reports reach the right place.",
-        icon: "calendar",
-      },
-      {
-        name: "Roles & access",
-        description: "Decide exactly which parts of the platform each role can open.",
-        icon: "security",
-      },
-    ],
+    summary: "Records, cover and permissions in one place.",
+    icon: "people",
+    tone: "gold",
+    capabilities: ["Employee profiles", "Staff attendance", "Class assignment", "Roles & access"],
   },
   {
     id: "finance",
     title: "Finance",
-    summary: "Fees in, costs out, and a picture of where the month stands.",
-    visual: { kind: "portal", screen: "invoice" },
-    caption: "Invoices built from your defined services, with VAT applied as you go.",
-    items: [
-      {
-        name: "Billing & invoicing",
-        description: "Parent invoices from your service list, with quantities, discounts and VAT.",
-        icon: "finance",
-      },
-      {
-        name: "Payments & receipts",
-        description: "Record what's received and how — cash, cheque, transfer or card.",
-        icon: "calendar",
-      },
-      {
-        name: "Expenses",
-        description: "Log spending by type and supplier, with VAT and attachments kept together.",
-        icon: "attendance",
-      },
-      {
-        name: "Suppliers & purchases",
-        description: "A supplier directory with payment terms, plus purchases and payment vouchers.",
-        icon: "people",
-      },
-    ],
+    summary: "Fees in, costs out, and a clear monthly picture.",
+    icon: "finance",
+    tone: "brand",
+    capabilities: ["Billing & invoicing", "Payments & receipts", "Expenses", "Suppliers & purchases"],
   },
   {
     id: "insights",
     title: "Insights & security",
-    summary: "Knowing where the setting stands, and keeping its records safe.",
-    visual: { kind: "portal", screen: "crm" },
-    caption: "The admissions pipeline — every enquiry with an owner and a next step.",
-    items: [
-      {
-        name: "Classroom insights",
-        description: "Occupancy and staff-to-child ratios per room, as they stand today.",
-        icon: "attendance",
-      },
-      {
-        name: "Admissions pipeline",
-        description: "Enquiries tracked from first contact through tour, waiting list and approval.",
-        icon: "calendar",
-      },
-      {
-        name: "Health & incidents",
-        description: "Allergies and medical conditions by severity, and a full incident record.",
-        icon: "security",
-      },
-      {
-        name: "Secure storage",
-        description: "Encrypted records, scheduled backups and access controlled by role.",
-        icon: "security",
-      },
-    ],
+    summary: "Know where you stand — and keep records safe.",
+    icon: "security",
+    tone: "violet",
+    capabilities: ["Admissions pipeline", "Health & incidents", "Encrypted storage", "Scheduled backups"],
   },
 ];

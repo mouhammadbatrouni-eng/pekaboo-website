@@ -32,12 +32,14 @@ interface Props {
 const { icon, tone = "brand", class: className = "" } = Astro.props;
 const IconComponent = ICONS[icon as keyof typeof ICONS] ?? Users;
 
+// Both the tint and the icon colour are theme-aware tokens, so these chips
+// stay legible when the page flips to the dark theme.
 const tones: Record<Tone, string> = {
-  brand: "bg-brand-50 text-brand-700",
+  brand: "bg-brand-50 text-brand-ink",
   gold: "bg-gold-100 text-gold-700",
   mint: "bg-mint-soft text-success",
-  coral: "bg-coral-soft text-[#c2513c]",
-  violet: "bg-violet-soft text-[#6250c9]",
+  coral: "bg-coral-soft text-coral-ink",
+  violet: "bg-violet-soft text-violet-ink",
 };
 ---
 

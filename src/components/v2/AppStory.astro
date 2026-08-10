@@ -60,11 +60,11 @@ const BEATS = [
               <div class="flex items-start gap-4" data-reveal>
                 <FeatureIcon icon={beat.icon} class="h-11 w-11" />
                 <div class="min-w-0">
-                  <p class="text-xs font-bold uppercase tracking-[0.12em] text-brand-700">
+                  <p class="text-xs font-bold uppercase tracking-[0.12em] text-brand-ink">
                     Step {index + 1} of {BEATS.length}
                   </p>
-                  <h3 class="mt-1 font-heading text-2xl tracking-[-0.03em] text-ink-900">{beat.title}</h3>
-                  <p class="mt-2.5 max-w-md leading-relaxed text-ink-500">{beat.body}</p>
+                  <h3 class="mt-1 font-heading text-2xl tracking-[-0.03em] text-body">{beat.title}</h3>
+                  <p class="mt-2.5 max-w-md leading-relaxed text-muted">{beat.body}</p>
                 </div>
               </div>
 
@@ -111,12 +111,12 @@ const BEATS = [
       </div>
     </div>
 
-    <div class="mx-auto mt-20 max-w-2xl rounded-xl border border-ink-100 bg-white/80 p-6 text-center shadow-soft" data-reveal>
-      <p class="text-xs font-bold uppercase tracking-[0.12em] text-brand-700">Built for mixed communities</p>
-      <p class="mt-2.5 leading-relaxed text-ink-500">{LANGUAGES.note}</p>
+    <div class="mx-auto mt-20 max-w-2xl rounded-xl border border-line bg-surface p-6 text-center shadow-soft" data-reveal>
+      <p class="text-xs font-bold uppercase tracking-[0.12em] text-brand-ink">Built for mixed communities</p>
+      <p class="mt-2.5 leading-relaxed text-muted">{LANGUAGES.note}</p>
       <ul class="mt-4 flex flex-wrap justify-center gap-2">
         {LANGUAGES.supported.map((language) => (
-          <li class="rounded-full border border-ink-100 bg-white px-3.5 py-1.5 text-sm font-semibold text-ink-700">
+          <li class="rounded-full border border-line bg-surface px-3.5 py-1.5 text-sm font-semibold text-body">
             <span lang={language.dir === "rtl" ? "ar" : "en"} dir={language.dir}>{language.native}</span>
           </li>
         ))}

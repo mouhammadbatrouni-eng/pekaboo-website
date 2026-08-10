@@ -9,6 +9,20 @@ mobile app.
 
 Intended repository: `peekaboo-website`.
 
+## Two concepts
+
+The repo contains two website concepts sharing one design system, content
+layer and set of product visuals:
+
+| | Route | Shape |
+| --- | --- | --- |
+| **Concept A** | `/` | Multi-page — home plus `/features`, `/solutions`, `/peekaboo-care`, `/peekaboo-parent`, `/about` |
+| **Concept B** | `/v2` | Single-page guided scroll — the whole story in one page, following the existing site's Plans → Our App → Features → Improve → About → Why Us → Curriculum → Contact journey |
+
+Concept B additionally has a **light/dark theme switch** using the portal's own
+dark palette. To promote either concept to the main site, rename its page file
+to `index.astro`.
+
 ---
 
 ## Tech stack
@@ -171,6 +185,29 @@ requires. The website's primary button uses the same hue deepened to
 brand blue is retained everywhere it isn't sitting behind text. Several
 secondary text tokens were darkened for the same reason — each is annotated in
 `global.css`.
+
+### Light and dark themes
+
+The single-page concept can switch between light and dark, using the exact
+palette from the portal's own `.dark` block — so a visitor who toggles the
+website and then signs into the portal sees the same deep navy and warm
+off-white.
+
+Only a small set of semantic tokens change between themes: `--color-canvas`,
+`--color-surface`, `--color-line`, the three text levels, and the accent
+"ink" colours. The fixed scales (`ink-*`, `brand-*`) don't move, which is what
+keeps surfaces that are *deliberately* dark in both themes — portal previews,
+the footer, CTA banners — looking identical either way.
+
+Components opt in by using `bg-surface` / `text-body` / `text-muted` /
+`border-line` instead of `bg-white` / `text-ink-900`. Anything still using the
+fixed scale stays put by design.
+
+The theme is applied by a `.dark` class on `<html>`, set by a small inline
+script in `<head>` before first paint so there's no flash of the wrong theme.
+A stored choice wins over the OS setting; with no stored choice we follow
+`prefers-color-scheme`. All dark-theme text was contrast-checked numerically,
+including alpha-composited chip backgrounds.
 
 ### Product imagery
 
