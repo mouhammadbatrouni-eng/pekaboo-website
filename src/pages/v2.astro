@@ -74,15 +74,31 @@ const seo = resolveSeo("Home", {
 
     for (const el of reveals) observer.observe(el);
 
-    // Anything already in view on load (the hero) reveals immediately rather
-    // than waiting for a scroll event that may never come.
-    requestAnimationFrame(() => {
+    /**
+     * Reveals anything at or above the fold without waiting for a scroll.
+     * Needed because the page can arrive already scrolled — an anchor link,
+     * a restored scroll position, or a reload partway down — which would
+     * otherwise leave content sitting at opacity 0 until the visitor happens
+     * to scroll again.
+     */
+    function sweep() {
       for (const el of reveals) {
+        if (el.classList.contains("is-revealed")) continue;
         if (el.getBoundingClientRect().top < window.innerHeight) {
           el.classList.add("is-revealed");
           observer.unobserve(el);
         }
       }
-    });
+    }
+
+    requestAnimationFrame(sweep);
+    window.addEventListener("load", sweep);
+    window.addEventListener("hashchange", () => requestAnimationFrame(sweep));
+
+    // Last-resort guarantee: content must never stay invisible because an
+    // animation hook didn't fire.
+    setTimeout(() => {
+      for (const el of reveals) el.classList.add("is-revealed");
+    }, 4000);
   }
 </script>

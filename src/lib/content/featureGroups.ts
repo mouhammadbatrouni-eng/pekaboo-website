@@ -39,7 +39,10 @@ export interface FeatureCard {
   capabilities: string[];
 }
 
-/** The two areas worth showing in full: what the team runs, what families see. */
+/**
+ * The three areas worth showing in full: what the team runs day to day, what
+ * families see, and how new families arrive in the first place.
+ */
 export const FEATURE_SPOTLIGHTS: FeatureSpotlight[] = [
   {
     id: "operations",
@@ -73,6 +76,22 @@ export const FEATURE_SPOTLIGHTS: FeatureSpotlight[] = [
       "Photo permissions",
     ],
   },
+  {
+    id: "admissions",
+    eyebrow: "Admissions CRM",
+    headline: "Turn enquiries into enrolments",
+    body: "Every family that gets in touch is tracked from first contact through tour, waiting list and approval — so no one goes quiet because a callback was forgotten.",
+    visual: { kind: "portal", screen: "crm" },
+    caption: "The admissions pipeline in Peekaboo Care",
+    capabilities: [
+      "Lead pipeline",
+      "Tours & visit notes",
+      "Waiting list",
+      "Lead sources & referrals",
+      "Enrolment checklist",
+      "Enquiry records",
+    ],
+  },
 ];
 
 /** The three supporting areas, kept compact so the section doesn't sprawl. */
@@ -99,6 +118,6 @@ export const FEATURE_CARDS: FeatureCard[] = [
     summary: "Know where you stand — and keep records safe.",
     icon: "security",
     tone: "violet",
-    capabilities: ["Admissions pipeline", "Health & incidents", "Encrypted storage", "Scheduled backups"],
+    capabilities: ["Classroom insights", "Health & incidents", "Encrypted storage", "Scheduled backups"],
   },
 ];
