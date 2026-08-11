@@ -3,13 +3,14 @@ import Button from "../ui/Button.astro";
 import { CircleCheckBig, CircleAlert } from "@lucide/astro";
 import { CENTER_COUNT_OPTIONS } from "../../lib/validations/contact";
 import { SITE } from "../../lib/content/site";
-import type { Dict } from "../../lib/i18n";
+import { routePath, type Dict, type Lang } from "../../lib/i18n";
 
 interface Props {
   t: Dict;
+  lang: Lang;
 }
 
-const { t } = Astro.props;
+const { t, lang } = Astro.props;
 const f = t.contact.form;
 
 const fieldClass =
@@ -110,7 +111,7 @@ const labelClass = "mb-1.5 block text-sm font-semibold text-body";
       </Button>
       <p class="text-xs leading-relaxed text-subtle">
         {f.privacyNote}
-        <a href="/privacy" class="font-semibold text-brand-ink underline">{f.privacyLink}</a>.
+        <a href={routePath("privacy", lang)} class="font-semibold text-brand-ink underline">{f.privacyLink}</a>.
       </p>
     </div>
   </form>

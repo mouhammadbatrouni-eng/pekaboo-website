@@ -1,6 +1,5 @@
 import siteSettings from './documents/siteSettings'
 import homePage from './documents/homePage'
-import page from './documents/page'
 import testimonial from './documents/testimonial'
 import faq from './documents/faq'
 
@@ -22,7 +21,6 @@ export const schemaTypes = [
   // Documents
   siteSettings,
   homePage,
-  page,
   testimonial,
   faq,
   // Reusable objects

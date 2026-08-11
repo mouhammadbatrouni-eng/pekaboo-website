@@ -49,16 +49,6 @@ export interface HomePage {
   seo?: Seo;
 }
 
-/** A simple editorial page (About, Privacy, Terms). */
-export interface Page {
-  title: string;
-  slug: string;
-  eyebrow?: string;
-  heading: string;
-  intro?: string;
-  body?: PortableTextBlock[];
-  seo?: Seo;
-}
 
 export interface FooterColumn {
   heading: string;

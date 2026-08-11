@@ -4,32 +4,53 @@ import Button from "../ui/Button.astro";
 import ThemeToggle from "./ThemeToggle.astro";
 import { SECTIONS } from "./SECTIONS";
 import { CTA } from "../../lib/content/site";
-import { LANG_LABELS, LANG_ROUTES, OTHER_LANG, type Dict, type Lang } from "../../lib/i18n";
+import {
+  LANG_LABELS,
+  OTHER_LANG,
+  alternatePath,
+  routePath,
+  sectionHref,
+  type Dict,
+  type Lang,
+  type RouteKey,
+} from "../../lib/i18n";
 import { Languages } from "@lucide/astro";
 
 interface Props {
   t: Dict;
   lang: Lang;
+  /** Which page this header is on — drives the language switch and section links. */
+  routeKey: RouteKey;
+  /** Override when a page maps to the home route but isn't the homepage (404). */
+  isHome?: boolean;
 }
 
-const { t, lang } = Astro.props;
+const { t, lang, routeKey, isHome = routeKey === "home" } = Astro.props;
 const other = OTHER_LANG[lang];
+const homePath = routePath("home", lang);
+const contactHref = sectionHref("contact", lang, isHome);
 ---
 
+{/*
+  Full-bleed header: no max-width, with side padding that scales from 20px on
+  small screens to 56px on very wide ones. The row starts near the left edge
+  and finishes near the right, while keeping professional breathing room.
+*/}
 <header class="sticky top-0 z-50 border-b border-line bg-canvas/90 backdrop-blur-md">
-  <div class="mx-auto flex max-w-7xl items-center justify-between gap-3 px-5 py-3 lg:px-8">
-    <a href="#top" class="shrink-0" aria-label={`${t.common.backToTop} — Peekaboo`}>
-      <Logo />
+  <div class="flex w-full items-center gap-4 px-[clamp(1.25rem,3vw,3.5rem)] py-3">
+    <a href={homePath} class="shrink-0" aria-label="Peekaboo">
+      <Logo href={homePath} />
     </a>
 
-    <nav class="hidden min-w-0 xl:block" aria-label={t.nav.features}>
+    {/* Centre: section nav, given the space between logo and actions. */}
+    <nav class="hidden min-w-0 flex-1 justify-center xl:flex" aria-label={t.nav.features}>
       <ul class="flex items-center gap-0.5">
         {SECTIONS.map((section) => (
           <li>
             <a
-              href={`#${section.id}`}
-              data-nav-link={section.id}
-              class="whitespace-nowrap rounded-full px-2.5 py-2 text-[13px] font-semibold text-muted transition-colors hover:bg-surface hover:text-brand-ink aria-[current=true]:bg-brand-50 aria-[current=true]:text-brand-ink"
+              href={sectionHref(section.id, lang, isHome)}
+              data-nav-link={isHome ? section.id : undefined}
+              class="whitespace-nowrap rounded-full px-3 py-2 text-[13px] font-semibold text-muted transition-colors hover:bg-surface hover:text-brand-ink aria-[current=true]:bg-brand-50 aria-[current=true]:text-brand-ink"
             >
               {t.nav[section.key]}
             </a>
@@ -38,17 +59,18 @@ const other = OTHER_LANG[lang];
       </ul>
     </nav>
 
-    <div class="flex items-center gap-1.5">
+    {/* Right: account, language, theme and the two calls to action. */}
+    <div class="ms-auto flex shrink-0 items-center gap-1.5 xl:ms-0">
       <a
         href={CTA.signIn.href}
-        class="hidden whitespace-nowrap rounded-full px-3 py-2 text-sm font-semibold text-muted transition-colors hover:text-brand-ink 2xl:block"
+        class="hidden whitespace-nowrap rounded-full px-3 py-2 text-sm font-semibold text-muted transition-colors hover:text-brand-ink lg:block"
       >
         {t.common.signIn}
       </a>
 
-      {/* Language switch — goes to the same page in the other language. */}
+      {/* Stays on the current document when switching language. */}
       <a
-        href={LANG_ROUTES[other]}
+        href={alternatePath(routeKey, other)}
         lang={other}
         hreflang={other}
         class="inline-flex h-10 items-center gap-1.5 rounded-full border border-line px-3 text-sm font-bold text-muted transition-colors hover:text-brand-ink"
@@ -61,10 +83,10 @@ const other = OTHER_LANG[lang];
       <ThemeToggle t={t} />
 
       <span class="hidden md:block">
-        <Button href="#contact" variant="secondary">{t.common.contactUs}</Button>
+        <Button href={contactHref} variant="secondary">{t.common.contactUs}</Button>
       </span>
       <span class="hidden sm:block">
-        <Button href="#contact">{t.common.getStarted}</Button>
+        <Button href={contactHref}>{t.common.getStarted}</Button>
       </span>
 
       <button
@@ -87,35 +109,43 @@ const other = OTHER_LANG[lang];
     </div>
   </div>
 
-  {/* Reading progress. Decorative — the nav's active state carries the same
-      information for assistive tech. Anchored to the start edge so it fills
-      in the reading direction in both languages. */}
-  <div class="h-0.5 w-full bg-line" aria-hidden="true">
-    <div id="v2-progress" class="h-full w-0 bg-brand-500 transition-[width] duration-150 ease-out"></div>
-  </div>
+  {/* Reading progress and the current-section bar only mean anything while
+      scrolling the homepage story, so legal pages omit them entirely. */}
+  {isHome && (
+    <>
+      <div class="h-0.5 w-full bg-line" aria-hidden="true">
+        <div id="v2-progress" class="h-full w-0 bg-brand-500 transition-[width] duration-150 ease-out"></div>
+      </div>
 
-  <div class="border-t border-line bg-surface-2 px-5 py-2 xl:hidden">
-    <p class="text-[11px] font-bold uppercase tracking-[0.14em] text-subtle">
-      <span class="sr-only">{t.common.currentlyViewing}</span>
-      <span id="v2-current-label">{t.common.welcome}</span>
-    </p>
-  </div>
+      <div class="border-t border-line bg-surface-2 px-[clamp(1.25rem,3vw,3.5rem)] py-2 xl:hidden">
+        <p class="text-[11px] font-bold uppercase tracking-[0.14em] text-subtle">
+          <span class="sr-only">{t.common.currentlyViewing}</span>
+          <span id="v2-current-label">{t.common.welcome}</span>
+        </p>
+      </div>
+    </>
+  )}
 
   <div id="v2-menu" class="hidden border-t border-line bg-surface xl:hidden">
-    <nav class="grid grid-cols-2 gap-1 px-5 py-4" aria-label={t.nav.features}>
+    <nav class="grid grid-cols-2 gap-1 px-[clamp(1.25rem,3vw,3.5rem)] py-4" aria-label={t.nav.features}>
       {SECTIONS.map((section) => (
         <a
-          href={`#${section.id}`}
-          data-menu-link={section.id}
+          href={sectionHref(section.id, lang, isHome)}
+          data-menu-link={isHome ? section.id : undefined}
           class="rounded-xl px-4 py-3 text-sm font-semibold text-body transition-colors hover:bg-brand-50 hover:text-brand-ink aria-[current=true]:bg-brand-50 aria-[current=true]:text-brand-ink"
         >
           {t.nav[section.key]}
         </a>
       ))}
     </nav>
-    <div class="grid gap-2 border-t border-line px-5 py-4 sm:grid-cols-2">
-      <Button href="#contact" variant="secondary" size="lg" class="w-full">{t.common.contactUs}</Button>
-      <Button href="#contact" size="lg" class="w-full">{t.common.getStarted}</Button>
+    <div class="grid gap-2 border-t border-line px-[clamp(1.25rem,3vw,3.5rem)] py-4 sm:grid-cols-2">
+      <Button href={contactHref} variant="secondary" size="lg" class="w-full">{t.common.contactUs}</Button>
+      <Button href={contactHref} size="lg" class="w-full">{t.common.getStarted}</Button>
+    </div>
+    <div class="border-t border-line px-[clamp(1.25rem,3vw,3.5rem)] py-3 lg:hidden">
+      <a href={CTA.signIn.href} class="text-sm font-semibold text-muted transition-colors hover:text-brand-ink">
+        {t.common.signIn}
+      </a>
     </div>
   </div>
 </header>
@@ -125,8 +155,6 @@ const other = OTHER_LANG[lang];
   const menu = document.getElementById("v2-menu");
   const iconMenu = document.getElementById("v2-icon-menu");
   const iconClose = document.getElementById("v2-icon-close");
-  const progress = document.getElementById("v2-progress");
-  const currentLabel = document.getElementById("v2-current-label");
 
   function setMenuOpen(open: boolean) {
     if (!toggle || !menu || !iconMenu || !iconClose) return;
@@ -150,48 +178,52 @@ const other = OTHER_LANG[lang];
   });
 
   // --- Scroll spy -----------------------------------------------------------
-  // Tracks which section occupies the reading area, so a short section doesn't
-  // steal the highlight from a long one the reader is still inside.
+  // Only present on the homepage; legal pages have no sections to track.
+  const progress = document.getElementById("v2-progress");
+  const currentLabel = document.getElementById("v2-current-label");
   const sections = Array.from(document.querySelectorAll<HTMLElement>("[data-section]"));
-  const navLinks = Array.from(document.querySelectorAll<HTMLElement>("[data-nav-link]"));
-  const menuLinks = Array.from(document.querySelectorAll<HTMLElement>("[data-menu-link]"));
-  const welcomeLabel = currentLabel?.textContent ?? "";
 
-  function setActive(id: string | null, label: string) {
-    for (const link of [...navLinks, ...menuLinks]) {
-      const key = link.dataset.navLink ?? link.dataset.menuLink;
-      if (key === id) link.setAttribute("aria-current", "true");
-      else link.removeAttribute("aria-current");
+  if (sections.length > 0) {
+    const navLinks = Array.from(document.querySelectorAll<HTMLElement>("[data-nav-link]"));
+    const menuLinks = Array.from(document.querySelectorAll<HTMLElement>("[data-menu-link]"));
+    const welcomeLabel = currentLabel?.textContent ?? "";
+
+    function setActive(id: string | null, label: string) {
+      for (const link of [...navLinks, ...menuLinks]) {
+        const key = link.dataset.navLink ?? link.dataset.menuLink;
+        if (key === id) link.setAttribute("aria-current", "true");
+        else link.removeAttribute("aria-current");
+      }
+      if (currentLabel) currentLabel.textContent = label;
     }
-    if (currentLabel) currentLabel.textContent = label;
-  }
 
-  function update() {
-    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-    const ratio = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
-    if (progress) progress.style.width = `${ratio * 100}%`;
+    function update() {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const ratio = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
+      if (progress) progress.style.width = `${ratio * 100}%`;
 
-    const line = window.scrollY + window.innerHeight * 0.35;
-    let active: HTMLElement | null = null;
-    for (const section of sections) {
-      if (section.offsetTop <= line) active = section;
+      const line = window.scrollY + window.innerHeight * 0.35;
+      let active: HTMLElement | null = null;
+      for (const section of sections) {
+        if (section.offsetTop <= line) active = section;
+      }
+      setActive(active?.dataset.section ?? null, active?.dataset.sectionLabel ?? welcomeLabel);
     }
-    setActive(active?.dataset.section ?? null, active?.dataset.sectionLabel ?? welcomeLabel);
-  }
 
-  let ticking = false;
-  window.addEventListener(
-    "scroll",
-    () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        update();
-        ticking = false;
-      });
-    },
-    { passive: true },
-  );
-  window.addEventListener("resize", update, { passive: true });
-  update();
+    let ticking = false;
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          update();
+          ticking = false;
+        });
+      },
+      { passive: true },
+    );
+    window.addEventListener("resize", update, { passive: true });
+    update();
+  }
 </script>

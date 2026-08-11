@@ -3,13 +3,14 @@ import Container from "../ui/Container.astro";
 import ScrollSection from "./ScrollSection.astro";
 import Button from "../ui/Button.astro";
 import ContactForm from "./ContactForm.astro";
-import type { Dict } from "../../lib/i18n";
+import type { Dict, Lang } from "../../lib/i18n";
 
 interface Props {
   t: Dict;
+  lang: Lang;
 }
 
-const { t } = Astro.props;
+const { t, lang } = Astro.props;
 ---
 
 {/* Final push before the form — the last moment to make the case. */}
@@ -44,7 +45,7 @@ const { t } = Astro.props;
 
     <div class="mt-14 grid gap-10 lg:grid-cols-[1fr_300px] lg:gap-14">
       <div id="contact-form" class="scroll-mt-32">
-        <ContactForm t={t} />
+        <ContactForm t={t} lang={lang} />
       </div>
 
       {/* Contact details live in the footer now, so this rail only sets

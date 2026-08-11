@@ -12,7 +12,7 @@ import WhyUs from "./WhyUs.astro";
 import Curriculum from "./Curriculum.astro";
 import Contact from "./Contact.astro";
 import Footer from "./Footer.astro";
-import { getDict, LANG_ROUTES, type Lang } from "../../lib/i18n";
+import { getDict, alternatesFor, type Lang } from "../../lib/i18n";
 import { getSiteSettings } from "../../lib/sanity/queries";
 import { resolveSeo } from "../../lib/seo";
 
@@ -32,11 +32,7 @@ const rtl = t.meta.dir === "rtl";
 const site = await getSiteSettings();
 const seo = resolveSeo("Home", { metaTitle: t.meta.title, metaDescription: t.meta.description }, site);
 
-const alternates = [
-  { lang: "en", path: LANG_ROUTES.en },
-  { lang: "ar", path: LANG_ROUTES.ar },
-  { lang: "x-default", path: LANG_ROUTES.en },
-];
+const alternates = alternatesFor("home");
 ---
 
 <BaseLayout
@@ -48,7 +44,7 @@ const alternates = [
   alternates={alternates}
   skipLabel={t.common.skipToContent}
 >
-  <StickyNav t={t} lang={lang} />
+  <StickyNav t={t} lang={lang} routeKey="home" />
 
   <main id="main-content">
     <Hero t={t} lang={lang} rtl={rtl} />
@@ -66,10 +62,10 @@ const alternates = [
     <About t={t} />
     <WhyUs t={t} />
     <Curriculum t={t} lang={lang} />
-    <Contact t={t} />
+    <Contact t={t} lang={lang} />
   </main>
 
-  <Footer t={t} rtl={rtl} />
+  <Footer t={t} rtl={rtl} lang={lang} isHome />
 </BaseLayout>
 
 <script>

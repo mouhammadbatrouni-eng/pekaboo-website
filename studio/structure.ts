@@ -1,5 +1,5 @@
 import type {StructureResolver} from 'sanity/structure'
-import {CogIcon, HomeIcon, DocumentIcon, CommentIcon, HelpCircleIcon} from '@sanity/icons'
+import {CogIcon, HomeIcon, CommentIcon, HelpCircleIcon} from '@sanity/icons'
 
 /**
  * Custom desk structure so editors see a purpose-built menu instead of a flat
@@ -19,7 +19,6 @@ export const structure: StructureResolver = (S) =>
         .icon(HomeIcon)
         .child(S.document().schemaType('homePage').documentId('homePage').title('Home Page')),
       S.divider(),
-      S.documentTypeListItem('page').title('Pages').icon(DocumentIcon),
       S.documentTypeListItem('faq').title('FAQs').icon(HelpCircleIcon),
       S.documentTypeListItem('testimonial').title('Testimonials').icon(CommentIcon),
     ])

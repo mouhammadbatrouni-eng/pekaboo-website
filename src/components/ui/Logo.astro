@@ -4,14 +4,16 @@ interface Props {
   variant?: "mark" | "full";
   showTagline?: boolean;
   tone?: "brand" | "light";
+  /** Where the mark links to — the homepage in the current language. */
+  href?: string;
 }
 
-const { class: className = "", variant = "full", showTagline = false, tone = "brand" } = Astro.props;
+const { class: className = "", variant = "full", showTagline = false, tone = "brand", href = "/" } = Astro.props;
 const wordmarkClass = tone === "light" ? "text-white" : "text-brand-700";
 const taglineClass = tone === "light" ? "text-white/50" : "text-ink-400";
 ---
 
-<a href="/" class:list={["group inline-flex items-center gap-3 shrink-0 no-underline", className]} aria-label="Peekaboo home">
+<a href={href} class:list={["group inline-flex items-center gap-3 shrink-0 no-underline", className]} aria-label="Peekaboo home">
   <img
     src="/peekaboo-mark.png"
     alt=""

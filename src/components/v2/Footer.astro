@@ -4,14 +4,20 @@ import Container from "../ui/Container.astro";
 import Button from "../ui/Button.astro";
 import { ArrowUp, MapPin, Phone, ChevronRight, ChevronLeft } from "@lucide/astro";
 import { SITE } from "../../lib/content/site";
-import type { Dict } from "../../lib/i18n";
+import { routePath, sectionHref, type Dict, type Lang } from "../../lib/i18n";
 
 interface Props {
   t: Dict;
   rtl: boolean;
+  lang: Lang;
+  /** Section links become absolute when the footer is on a legal page. */
+  isHome?: boolean;
 }
 
-const { t, rtl } = Astro.props;
+const { t, rtl, lang, isHome = false } = Astro.props;
+const privacyHref = routePath("privacy", lang);
+const termsHref = routePath("terms", lang);
+const contactHref = sectionHref("contact", lang, isHome);
 const Chevron = rtl ? ChevronLeft : ChevronRight;
 const year = new Date().getFullYear();
 ---
@@ -40,7 +46,7 @@ const year = new Date().getFullYear();
           {t.footer.links.map((link) => (
             <li>
               <a
-                href={link.href}
+                href={sectionHref(link.href.replace("#", ""), lang, isHome)}
                 class="group inline-flex items-center gap-1.5 text-sm text-ink-400 transition-colors hover:text-white"
               >
                 <Chevron size={13} class="text-brand-400" aria-hidden="true" />
@@ -50,7 +56,7 @@ const year = new Date().getFullYear();
           ))}
           <li>
             <a
-              href="/privacy"
+              href={privacyHref}
               class="group inline-flex items-center gap-1.5 text-sm text-ink-400 transition-colors hover:text-white"
             >
               <Chevron size={13} class="text-brand-400" aria-hidden="true" />
@@ -59,7 +65,7 @@ const year = new Date().getFullYear();
           </li>
           <li>
             <a
-              href="/terms"
+              href={termsHref}
               class="group inline-flex items-center gap-1.5 text-sm text-ink-400 transition-colors hover:text-white"
             >
               <Chevron size={13} class="text-brand-400" aria-hidden="true" />
@@ -92,7 +98,7 @@ const year = new Date().getFullYear();
         </address>
 
         <div class="mt-6">
-          <Button href="#contact" class="w-full">{t.common.contactUs}</Button>
+          <Button href={contactHref} class="w-full">{t.common.contactUs}</Button>
         </div>
       </div>
     </div>
@@ -100,7 +106,7 @@ const year = new Date().getFullYear();
     <div class="mt-12 flex flex-col gap-4 border-t border-white/8 pt-7 text-xs text-ink-500 sm:flex-row sm:items-center sm:justify-between">
       <p>&copy; {year} Peekaboo. {t.footer.rights} {t.footer.builtBy}</p>
       <a
-        href="#top"
+        href={isHome ? "#top" : routePath("home", lang)}
         class="inline-flex items-center gap-1.5 font-semibold text-ink-400 transition-colors hover:text-white"
       >
         {t.common.backToTop}

@@ -1,6 +1,6 @@
 import { sanityClient } from "./client";
-import { fallbackFaqs, fallbackHomePage, fallbackPages, fallbackSiteSettings } from "../content/fallback";
-import type { Faq, HomePage, Page, SiteSettings, Testimonial } from "../content/types";
+import { fallbackFaqs, fallbackHomePage, fallbackSiteSettings } from "../content/fallback";
+import type { Faq, HomePage, SiteSettings, Testimonial } from "../content/types";
 
 const SEO_FIELDS = `metaTitle, metaDescription, ogImage, noIndex`;
 const LINK_FIELDS = `{label, type, internalPath, externalUrl}`;
@@ -49,17 +49,6 @@ export async function getHomePage(): Promise<HomePage> {
   return { ...fallbackHomePage, ...stripEmpty(data) };
 }
 
-export async function getPage(slug: string): Promise<Page | null> {
-  const data = await safeFetch<Page>(
-    `*[_type == "page" && slug.current == $slug][0]{
-      title, "slug": slug.current, eyebrow, heading, intro, body, seo{${SEO_FIELDS}}
-    }`,
-    { slug },
-  );
-  const fallback = fallbackPages[slug];
-  if (!data && !fallback) return null;
-  return { ...fallback, ...stripEmpty(data) } as Page;
-}
 
 export async function getFaqs(): Promise<Faq[]> {
   const data = await safeFetch<Faq[]>(
