@@ -10,8 +10,10 @@ import Improve from "./Improve.astro";
 import About from "./About.astro";
 import WhyUs from "./WhyUs.astro";
 import Curriculum from "./Curriculum.astro";
+import Faq from "./Faq.astro";
 import Contact from "./Contact.astro";
 import Footer from "./Footer.astro";
+import WhatsAppFab from "./WhatsAppFab.astro";
 import { getDict, alternatesFor, type Lang } from "../../lib/i18n";
 import { getSiteSettings } from "../../lib/sanity/queries";
 import { resolveSeo } from "../../lib/seo";
@@ -38,6 +40,7 @@ const alternates = alternatesFor("home");
 <BaseLayout
   seo={seo}
   includeOrgSchema
+  faqs={t.faq.items}
   enableTheme
   lang={lang}
   dir={t.meta.dir}
@@ -62,10 +65,12 @@ const alternates = alternatesFor("home");
     <About t={t} />
     <WhyUs t={t} />
     <Curriculum t={t} lang={lang} />
+    <Faq t={t} />
     <Contact t={t} lang={lang} />
   </main>
 
   <Footer t={t} rtl={rtl} lang={lang} isHome />
+  <WhatsAppFab t={t} />
 </BaseLayout>
 
 <script>

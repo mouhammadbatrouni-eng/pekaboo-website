@@ -23,6 +23,7 @@ export const en: Dict = {
     switchToEnglish: "Switch to English",
     switchToDark: "Switch to dark theme",
     switchToLight: "Switch to light theme",
+    whatsapp: "Chat with us on WhatsApp",
   },
 
   nav: {
@@ -33,6 +34,7 @@ export const en: Dict = {
     about: "About",
     whyUs: "Why Us",
     curriculum: "Curriculum",
+    faq: "FAQ",
     contact: "Contact",
   },
 
@@ -281,6 +283,44 @@ export const en: Dict = {
       "A theme leads to activities, activities map to objectives, and an observation becomes part of the child's journal.",
   },
 
+  faq: {
+    eyebrow: "Questions",
+    heading: "What centers ask us before they start",
+    body: "If your question isn't here, the form below is the fastest way to get a straight answer.",
+    items: [
+      {
+        question: "Can Peekaboo replace the separate tools we use today?",
+        answer:
+          "That's the intent. Attendance, daily reports, curriculum and observations, staff records, invoicing and expenses, and your admissions pipeline all live in one platform — so the spreadsheets, group chats and paper folders can be retired rather than duplicated.",
+      },
+      {
+        question: "Do parents need to download an app?",
+        answer:
+          "Yes — families use the Peekaboo Parent app to see daily reports, moments, announcements and events as they're published. It's available in English and Arabic, with full right-to-left layout.",
+      },
+      {
+        question: "Which curriculum frameworks does it support?",
+        answer:
+          "The curriculum module is framework-agnostic. You define your own learning areas, aspects, objectives and attainment levels, which means it can be set up for EYFS, IPC, Jolly Curriculum, Whole School Development, Reggio Emilia or a framework specific to your setting.",
+      },
+      {
+        question: "Can we run more than one center?",
+        answer:
+          "Yes. Each center has its own details, licence dates, currency and timezone, and management can work across all of them from a single account.",
+      },
+      {
+        question: "Can we use our own branding?",
+        answer:
+          "Yes. Alongside using Peekaboo as it comes, you can have the parent app published in your own branding, or have a system and app built around your specific operation. Those are the three ways settings adopt Peekaboo.",
+      },
+      {
+        question: "How is our data protected?",
+        answer:
+          "Records are held on secure infrastructure with encrypted storage and scheduled backups, and access is controlled by role — so staff only reach the information their role requires.",
+      },
+    ],
+  },
+
   contact: {
     finalCtaHeading: "Run your childcare center with less admin and more connection.",
     eyebrow: "Contact",
@@ -361,6 +401,7 @@ export const en: Dict = {
       { label: "About", href: "#about" },
       { label: "Why Us", href: "#why-us" },
       { label: "Curriculum", href: "#curriculum" },
+      { label: "FAQ", href: "#faq" },
       { label: "Contact", href: "#contact" },
     ],
     legal: { privacy: "Privacy & Policy", terms: "Terms of Service" },

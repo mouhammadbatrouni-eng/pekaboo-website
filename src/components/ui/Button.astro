@@ -1,6 +1,6 @@
 ---
 type Variant = "primary" | "secondary" | "gold" | "ghost";
-type Size = "md" | "lg";
+type Size = "sm" | "md" | "lg";
 
 interface Props {
   href?: string;
@@ -50,6 +50,8 @@ const variants: Record<Variant, string> = {
 };
 
 const sizes: Record<Size, string> = {
+  /** Compact — for the narrow-screen header, where space is tight. */
+  sm: "px-3.5 py-2 text-[13px]",
   md: "px-5 py-2.5 text-sm",
   lg: "px-7 py-3.5 text-base",
 };
