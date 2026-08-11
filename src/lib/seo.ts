@@ -39,7 +39,7 @@ export function organizationSchema(siteUrl: string | undefined, description?: st
     "@type": "Organization",
     name: SITE.name,
     url: siteUrl,
-    logo: siteUrl ? new URL("/peekaboo-mark.png", siteUrl).toString() : undefined,
+    logo: siteUrl ? new URL("/peekaboo-mark.svg", siteUrl).toString() : undefined,
     description,
     telephone: SITE.phone,
     parentOrganization: { "@type": "Organization", name: SITE.parentCompany },
