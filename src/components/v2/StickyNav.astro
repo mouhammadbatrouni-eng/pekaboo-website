@@ -37,10 +37,10 @@ const contactHref = sectionHref("contact", lang, isHome);
   and finishes near the right, while keeping professional breathing room.
 */}
 <header class="sticky top-0 z-50 border-b border-line bg-canvas/90 backdrop-blur-md">
-  <div class="flex w-full items-center gap-4 px-[clamp(1.25rem,3vw,3.5rem)] py-3">
-    <a href={homePath} class="shrink-0" aria-label="Peekaboo">
-      <Logo href={homePath} />
-    </a>
+  <div class="flex w-full items-center gap-2 px-[clamp(1.25rem,3vw,3.5rem)] py-3 sm:gap-4">
+    {/* Logo renders its own anchor — wrapping it in another produced nested
+        <a> elements, which browsers silently split into a phantom empty link. */}
+    <Logo href={homePath} wordmarkDisplay="hidden sm:grid" />
 
     {/* Centre: section nav, given the space between logo and actions. */}
     <nav class="hidden min-w-0 flex-1 justify-center xl:flex" aria-label={t.nav.features}>
@@ -84,6 +84,12 @@ const contactHref = sectionHref("contact", lang, isHome);
 
       <span class="hidden md:block">
         <Button href={contactHref} variant="secondary">{t.common.contactUs}</Button>
+      </span>
+      {/* Always visible: on a page this long, sending phone visitors into a
+          menu to find the only conversion point loses them. Two spans rather
+          than one responsive Button — see the note in Button.astro. */}
+      <span class="sm:hidden">
+        <Button href={contactHref} size="sm">{t.common.getStarted}</Button>
       </span>
       <span class="hidden sm:block">
         <Button href={contactHref}>{t.common.getStarted}</Button>

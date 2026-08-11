@@ -13,6 +13,7 @@ export const SECTIONS = [
   { id: "about", key: "about" },
   { id: "why-us", key: "whyUs" },
   { id: "curriculum", key: "curriculum" },
+  { id: "faq", key: "faq" },
   { id: "contact", key: "contact" },
 ] as const satisfies readonly { id: string; key: keyof Dict["nav"] }[];
 

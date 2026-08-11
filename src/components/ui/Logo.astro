@@ -6,9 +6,22 @@ interface Props {
   tone?: "brand" | "light";
   /** Where the mark links to — the homepage in the current language. */
   href?: string;
+  /**
+   * Display utilities for the wordmark block. The header passes
+   * `hidden sm:grid` to drop the wordmark on narrow screens and free up the
+   * space the call to action needs.
+   */
+  wordmarkDisplay?: string;
 }
 
-const { class: className = "", variant = "full", showTagline = false, tone = "brand", href = "/" } = Astro.props;
+const {
+  class: className = "",
+  variant = "full",
+  showTagline = false,
+  tone = "brand",
+  href = "/",
+  wordmarkDisplay = "grid",
+} = Astro.props;
 const wordmarkClass = tone === "light" ? "text-white" : "text-brand-700";
 const taglineClass = tone === "light" ? "text-white/50" : "text-ink-400";
 ---
@@ -22,7 +35,7 @@ const taglineClass = tone === "light" ? "text-white/50" : "text-ink-400";
     class="h-11 w-11 shrink-0 rounded-2xl shadow-soft transition-transform duration-200 group-hover:-translate-y-0.5"
   />
   {variant === "full" && (
-    <span class="grid min-w-0 gap-0.5 leading-none">
+    <span class:list={["min-w-0 gap-0.5 leading-none", wordmarkDisplay]}>
       <span class:list={["truncate font-heading text-2xl tracking-[-0.04em]", wordmarkClass]}>Peekaboo</span>
       {showTagline && (
         <span class:list={["truncate text-[0.65rem] font-bold uppercase tracking-[0.16em]", taglineClass]}>

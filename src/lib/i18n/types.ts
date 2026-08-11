@@ -30,6 +30,7 @@ export interface Dict {
     switchToEnglish: string;
     switchToDark: string;
     switchToLight: string;
+    whatsapp: string;
   };
 
   nav: {
@@ -40,6 +41,7 @@ export interface Dict {
     about: string;
     whyUs: string;
     curriculum: string;
+    faq: string;
     contact: string;
   };
 
@@ -130,6 +132,18 @@ export interface Dict {
     frameworksLabel: string;
     frameworksNote: string;
     plannerCaption: string;
+  };
+
+  /**
+   * The objection-handling section before the form. Answers live here rather
+   * than in `marketing.ts` so the Arabic page carries them too, and so the
+   * same array can feed FAQPage structured data.
+   */
+  faq: {
+    eyebrow: string;
+    heading: string;
+    body: string;
+    items: { question: string; answer: string }[];
   };
 
   contact: {
