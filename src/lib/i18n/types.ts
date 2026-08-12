@@ -173,6 +173,98 @@ export interface Dict {
   };
 
   /**
+   * The ten-step signup wizard.
+   *
+   * `choices` is keyed by the English answer text the portal stores, so the
+   * value posted stays identical in both languages while the visitor reads
+   * their own. A missing translation is a compile error, not a blank pill.
+   */
+  signup: {
+    metaTitle: string;
+    metaDescription: string;
+    eyebrow: string;
+    heading: string;
+    body: string;
+    stepOf: (current: number, total: number) => string;
+    progressLabel: string;
+    next: string;
+    back: string;
+    finish: string;
+    submitting: string;
+    optional: string;
+    mandatoryNote: string;
+    chooseAtLeastOne: string;
+    requiredField: string;
+    invalidEmail: string;
+    invalidNumber: string;
+    logoTooLarge: string;
+    logoNotImage: string;
+    dateInPast: string;
+    loading: string;
+    lookupFailed: string;
+    submitError: string;
+    choices: Record<string, string>;
+    steps: {
+      role: string;
+      institution: string;
+      locations: string;
+      objectives: string;
+      center: string;
+      contact: string;
+      web: string;
+      location: string;
+      legal: string;
+      appointment: string;
+    };
+    questions: {
+      role: string;
+      institution: string;
+      locations: string;
+      objectives: string;
+      objectivesHint: string;
+      appointment: string;
+    };
+    fields: {
+      centerName: string;
+      capacity: string;
+      enrolled: string;
+      centerDesc: string;
+      contactTitle: string;
+      contactTitlePlaceholder: string;
+      contactName: string;
+      phone: string;
+      email: string;
+      website: string;
+      facebook: string;
+      twitter: string;
+      instagram: string;
+      youtube: string;
+      cloud: string;
+      country: string;
+      currency: string;
+      timezone: string;
+      address: string;
+      logo: string;
+      logoHint: string;
+      logoChoose: string;
+      logoNone: string;
+      vat: string;
+      appointmentDate: string;
+    };
+    done: {
+      title: string;
+      body: (email: string) => string;
+      /** Shown when the portal refused and the answers were emailed instead. */
+      handoffTitle: string;
+      handoffBody: (email: string) => string;
+      signIn: string;
+      helpBefore: string;
+      helpEmail: string;
+      helpAfter: string;
+    };
+  };
+
+  /**
    * Strings inside the reproduced product screenshots. The real portal and app
    * are bilingual, so the mockups are localised too — an English dashboard on
    * the Arabic page would misrepresent the product.

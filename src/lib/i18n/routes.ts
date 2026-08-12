@@ -10,6 +10,7 @@ import type { Lang } from "./types";
  */
 export const ROUTES = {
   home: { en: "/", ar: "/ar" },
+  getStarted: { en: "/get-started", ar: "/ar/get-started" },
   privacy: { en: "/privacy-policy", ar: "/ar/privacy-policy" },
   terms: { en: "/terms-of-service", ar: "/ar/terms-of-service" },
 } as const;
