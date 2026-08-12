@@ -1,9 +1,8 @@
 ---
 import Container from "../ui/Container.astro";
 import Button from "../ui/Button.astro";
-import PortalScreen from "../product/PortalScreen.astro";
-import PhoneShell from "../product/PhoneShell.astro";
-import ParentAppBody from "../product/ParentAppBody.astro";
+import PortalFrame from "../product/PortalFrame.astro";
+import PhoneFrame from "../product/PhoneFrame.astro";
 import { ArrowDown, Check } from "@lucide/astro";
 import type { Dict, Lang } from "../../lib/i18n";
 
@@ -13,7 +12,7 @@ interface Props {
   rtl: boolean;
 }
 
-const { t, lang, rtl } = Astro.props;
+const { t } = Astro.props;
 ---
 
 <section id="top" class="relative overflow-hidden pt-12 pb-16 sm:pt-16 sm:pb-20">
@@ -58,22 +57,19 @@ const { t, lang, rtl } = Astro.props;
         </ul>
       </div>
 
-      {/* The phone sits just past the portal card's edge, so the two surfaces
-          layer without the app ever covering portal content. Logical `pe`/`end`
-          keep that arrangement correct when the page flips to RTL. */}
+      {/* Both halves of the product in one frame: the portal your team runs on,
+          and the app families follow. The phone sits just past the portal's
+          edge so the two surfaces layer without the app covering portal
+          content. Logical `pe`/`end` keep that arrangement correct in RTL. */}
       <div class="relative" data-reveal data-reveal-delay="120">
-        <div class="lg:pe-[150px] xl:pe-[168px]">
-          <PortalScreen screen="dashboard" lang={lang} />
+        <div class="lg:pe-[128px] xl:pe-[142px]">
+          <PortalFrame shot="communication" alt={t.product.shots.portalCommunication} eager />
         </div>
-        <div class="absolute -bottom-6 end-0 hidden w-[170px] lg:block xl:w-[188px]">
-          <PhoneShell rtl={rtl}>
-            <ParentAppBody screen="timeline" rtl={rtl} />
-          </PhoneShell>
+        <div class="absolute -bottom-8 end-0 hidden w-[150px] lg:block xl:w-[166px]">
+          <PhoneFrame shot="feed" alt={t.product.shots.appFeed} eager class="max-w-none" />
         </div>
         <div class="mt-8 flex justify-center lg:hidden">
-          <PhoneShell class="max-w-[230px]" rtl={rtl}>
-            <ParentAppBody screen="timeline" rtl={rtl} />
-          </PhoneShell>
+          <PhoneFrame shot="feed" alt={t.product.shots.appFeed} class="max-w-[220px]" />
         </div>
       </div>
     </div>

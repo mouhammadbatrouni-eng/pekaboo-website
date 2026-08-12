@@ -204,6 +204,16 @@ export interface Dict {
     themeValue: string;
     activityValue: string;
     objectiveValue: string;
+    /** Alt text for the real product captures, keyed to `screenshots.ts`. */
+    shots: {
+      portalDashboard: string;
+      portalCommunication: string;
+      appFeed: string;
+      appDailyReport: string;
+      appDailyReportCreate: string;
+      appMessages: string;
+      appProgress: string;
+    };
     observationToJournal: string;
     observationQuote: string;
     journalTags: [string, string, string];
