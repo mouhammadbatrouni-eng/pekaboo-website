@@ -13,7 +13,13 @@ export const SITE = {
   },
   /** The portal's own name for itself, shown in its sidebar badge. */
   systemName: "Nursery Operating System",
+  /**
+   * The portal's API origin — where the signup wizard posts registrations and
+   * reads its country/currency lists. Not a link; see `loginUrl` for that.
+   */
   portalUrl: "https://portal.peek-a-boo.app",
+  /** Where "Sign in" sends people. */
+  loginUrl: "https://peek.peek-a-boo.app/login",
   phone: "+971 50 405 1555",
   phoneHref: "tel:+971504051555",
   email: "contactus@peekabooedu.com",
@@ -37,7 +43,7 @@ export const SITE = {
 export const CTA = {
   primary: { label: "Book a demo", href: "/contact" },
   secondary: { label: "Explore the platform", href: "/features" },
-  signIn: { label: "Sign in", href: SITE.portalUrl },
+  signIn: { label: "Sign in", href: SITE.loginUrl },
 } as const;
 
 export const fallbackSiteSettings: SiteSettings = {
@@ -79,7 +85,7 @@ export const fallbackSiteSettings: SiteSettings = {
       links: [
         { label: "About", type: "internal", internalPath: "/about" },
         { label: "Contact", type: "internal", internalPath: "/contact" },
-        { label: "Sign in", type: "external", externalUrl: SITE.portalUrl },
+        { label: "Sign in", type: "external", externalUrl: SITE.loginUrl },
       ],
     },
     {

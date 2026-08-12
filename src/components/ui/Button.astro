@@ -10,6 +10,8 @@ interface Props {
   id?: string;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
+  /** Anything else — `target`, `rel`, `data-*`, `aria-*` — lands on the element. */
+  [key: string]: unknown;
 }
 
 const {
@@ -20,6 +22,7 @@ const {
   id,
   type = "button",
   disabled = false,
+  ...rest
 } = Astro.props;
 
 /*
@@ -61,11 +64,11 @@ const classes = [base, variants[variant], sizes[size], className].join(" ");
 
 {
   href ? (
-    <a href={href} id={id} class={classes}>
+    <a href={href} id={id} class={classes} {...rest}>
       <slot />
     </a>
   ) : (
-    <button type={type} id={id} disabled={disabled} class={classes}>
+    <button type={type} id={id} disabled={disabled} class={classes} {...rest}>
       <slot />
     </button>
   )

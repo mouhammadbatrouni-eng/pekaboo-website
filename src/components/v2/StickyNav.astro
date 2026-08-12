@@ -29,6 +29,9 @@ const { t, lang, routeKey, isHome = routeKey === "home" } = Astro.props;
 const other = OTHER_LANG[lang];
 const homePath = routePath("home", lang);
 const contactHref = sectionHref("contact", lang, isHome);
+// "Get started" opens the signup wizard; "Contact us" stays on the form, so
+// there is still a low-commitment way to reach a human.
+const signupHref = routePath("getStarted", lang);
 ---
 
 {/*
@@ -89,10 +92,10 @@ const contactHref = sectionHref("contact", lang, isHome);
           menu to find the only conversion point loses them. Two spans rather
           than one responsive Button — see the note in Button.astro. */}
       <span class="sm:hidden">
-        <Button href={contactHref} size="sm">{t.common.getStarted}</Button>
+        <Button href={signupHref} size="sm">{t.common.getStarted}</Button>
       </span>
       <span class="hidden sm:block">
-        <Button href={contactHref}>{t.common.getStarted}</Button>
+        <Button href={signupHref}>{t.common.getStarted}</Button>
       </span>
 
       <button
@@ -146,7 +149,7 @@ const contactHref = sectionHref("contact", lang, isHome);
     </nav>
     <div class="grid gap-2 border-t border-line px-[clamp(1.25rem,3vw,3.5rem)] py-4 sm:grid-cols-2">
       <Button href={contactHref} variant="secondary" size="lg" class="w-full">{t.common.contactUs}</Button>
-      <Button href={contactHref} size="lg" class="w-full">{t.common.getStarted}</Button>
+      <Button href={signupHref} size="lg" class="w-full">{t.common.getStarted}</Button>
     </div>
     <div class="border-t border-line px-[clamp(1.25rem,3vw,3.5rem)] py-3 lg:hidden">
       <a href={CTA.signIn.href} class="text-sm font-semibold text-muted transition-colors hover:text-brand-ink">

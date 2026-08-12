@@ -4,7 +4,7 @@ import Button from "../ui/Button.astro";
 import PortalFrame from "../product/PortalFrame.astro";
 import PhoneFrame from "../product/PhoneFrame.astro";
 import { ArrowDown, Check } from "@lucide/astro";
-import type { Dict, Lang } from "../../lib/i18n";
+import { routePath, type Dict, type Lang } from "../../lib/i18n";
 
 interface Props {
   t: Dict;
@@ -12,7 +12,7 @@ interface Props {
   rtl: boolean;
 }
 
-const { t } = Astro.props;
+const { t, lang } = Astro.props;
 ---
 
 <section id="top" class="relative overflow-hidden pt-12 pb-16 sm:pt-16 sm:pb-20">
@@ -37,7 +37,7 @@ const { t } = Astro.props;
         <p class="mt-6 max-w-xl text-lg leading-relaxed text-muted">{t.hero.body}</p>
 
         <div class="mt-9 flex flex-wrap items-center gap-3">
-          <Button href="#contact" size="lg">{t.common.getStarted}</Button>
+          <Button href={routePath("getStarted", lang)} size="lg">{t.common.getStarted}</Button>
           <Button href="#plans" variant="secondary" size="lg">
             {t.common.explore}
             <ArrowDown size={16} aria-hidden="true" />
