@@ -3,7 +3,6 @@ import Container from "../ui/Container.astro";
 import ScrollSection from "./ScrollSection.astro";
 import SectionIntro from "./SectionIntro.astro";
 import FeatureIcon from "../ui/FeatureIcon.astro";
-import PortalCrmScreen from "../product/PortalCrmScreen.astro";
 import PortalFrame from "../product/PortalFrame.astro";
 import PhoneFrame from "../product/PhoneFrame.astro";
 import { Check } from "@lucide/astro";
@@ -15,19 +14,16 @@ interface Props {
   lang: Lang;
 }
 
-const { t, lang } = Astro.props;
+const { t } = Astro.props;
 
 /**
- * Which product surface anchors each spotlight — matched by position.
- *
- * `shot` variants are real captures. The admissions pipeline is still drawn in
- * markup because no capture of that screen exists yet; swap it for
- * `{ kind: "portalShot", shot: "..." }` as soon as one does.
+ * Which product surface anchors each spotlight — matched by position. Every one
+ * is a real capture.
  */
 const SPOTLIGHT_VISUALS = [
   { kind: "portalShot", shot: "dashboard", altKey: "portalDashboard" },
   { kind: "appShot", shot: "dailyReportCreate", altKey: "appDailyReportCreate" },
-  { kind: "portalCoded", screen: "crm" },
+  { kind: "portalShot", shot: "crm", altKey: "portalCrm" },
 ] as const;
 
 const CARD_META = [
@@ -83,7 +79,6 @@ const CARD_META = [
                   <PhoneFrame shot={visual.shot} alt={t.product.shots[visual.altKey]} class="max-w-[248px]" />
                 </div>
               )}
-              {visual.kind === "portalCoded" && <PortalCrmScreen lang={lang} />}
               <figcaption class="mt-4 text-center text-sm text-subtle">{spotlight.caption}</figcaption>
             </figure>
           </div>

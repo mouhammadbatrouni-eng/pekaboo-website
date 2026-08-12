@@ -515,6 +515,8 @@ export const en: Dict = {
     shots: {
       portalDashboard:
         "The Peekaboo Care live dashboard, showing children present, absences today, active staff and classroom occupancy per room.",
+      portalCrm:
+        "The Peekaboo Care CRM dashboard, showing total leads, tours booked, waiting list and admissions outcomes above a month calendar of booked tours.",
       portalCommunication:
         "The Peekaboo Care communication page, showing announcements, photo posts and daily reports going out to families.",
       appFeed: "The Peekaboo Parent timeline, showing photos and a video posted from the classroom.",
@@ -524,6 +526,8 @@ export const en: Dict = {
         "An educator filling in a daily report in the app, choosing a child's mood and how much of breakfast they ate.",
       appMessages: "The Peekaboo Parent inbox, showing conversations with families and colleagues.",
       appProgress: "A child's progress analysis, showing curriculum coverage across each learning area.",
+      appAssessmentReport:
+        "The assessment report screen, listing each child's observations by learning area, filtered by class and date.",
     },
     observationToJournal: "Observation \u2192 Journal",
     observationQuote: "\u201cNoah checked his seed every morning and told the group it needed water.\u201d",

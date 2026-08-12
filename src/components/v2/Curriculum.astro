@@ -2,7 +2,7 @@
 import Container from "../ui/Container.astro";
 import ScrollSection from "./ScrollSection.astro";
 import SectionIntro from "./SectionIntro.astro";
-import CurriculumPlanner from "../product/CurriculumPlanner.astro";
+import PhoneFrame from "../product/PhoneFrame.astro";
 import { CURRICULA } from "../../lib/content/marketing";
 import type { Dict, Lang } from "../../lib/i18n";
 
@@ -11,7 +11,7 @@ interface Props {
   lang: Lang;
 }
 
-const { t, lang } = Astro.props;
+const { t } = Astro.props;
 ---
 
 <ScrollSection id="curriculum" label={t.nav.curriculum} surface="tint">
@@ -62,7 +62,11 @@ const { t, lang } = Astro.props;
       </div>
 
       <div data-reveal data-reveal-delay="120">
-        <CurriculumPlanner lang={lang} />
+        {/* Held well under the 380px column: a phone capture at full column
+            width would tower over the seven steps beside it. */}
+        <div class="flex justify-center">
+          <PhoneFrame shot="assessmentReport" alt={t.product.shots.appAssessmentReport} class="max-w-[262px]" />
+        </div>
         <p class="mt-4 text-center text-sm leading-relaxed text-subtle">{t.curriculum.plannerCaption}</p>
       </div>
     </div>
