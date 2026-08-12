@@ -299,12 +299,14 @@ export interface Dict {
     /** Alt text for the real product captures, keyed to `screenshots.ts`. */
     shots: {
       portalDashboard: string;
+      portalCrm: string;
       portalCommunication: string;
       appFeed: string;
       appDailyReport: string;
       appDailyReportCreate: string;
       appMessages: string;
       appProgress: string;
+      appAssessmentReport: string;
     };
     observationToJournal: string;
     observationQuote: string;
