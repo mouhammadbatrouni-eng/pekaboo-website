@@ -555,6 +555,6 @@ export const ar: Dict = {
       { label: "الأسئلة الشائعة", href: "#faq" },
       { label: "تواصل معنا", href: "#contact" },
     ],
-    legal: { privacy: "سياسة الخصوصية", terms: "شروط الخدمة" },
+    legal: { privacy: "سياسة الخصوصية", terms: "الشروط والأحكام" },
   },
 };

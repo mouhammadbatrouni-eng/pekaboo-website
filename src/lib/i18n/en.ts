@@ -548,6 +548,6 @@ export const en: Dict = {
       { label: "FAQ", href: "#faq" },
       { label: "Contact", href: "#contact" },
     ],
-    legal: { privacy: "Privacy & Policy", terms: "Terms of Service" },
+    legal: { privacy: "Privacy & Policy", terms: "Terms & Conditions" },
   },
 };
