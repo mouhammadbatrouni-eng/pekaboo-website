@@ -3,9 +3,9 @@ import Container from "../ui/Container.astro";
 import ScrollSection from "./ScrollSection.astro";
 import SectionIntro from "./SectionIntro.astro";
 import FeatureIcon from "../ui/FeatureIcon.astro";
-import PortalScreen from "../product/PortalScreen.astro";
-import PhoneShell from "../product/PhoneShell.astro";
-import ParentAppBody from "../product/ParentAppBody.astro";
+import PortalCrmScreen from "../product/PortalCrmScreen.astro";
+import PortalFrame from "../product/PortalFrame.astro";
+import PhoneFrame from "../product/PhoneFrame.astro";
 import { Check } from "@lucide/astro";
 import type { Dict, Lang } from "../../lib/i18n";
 
@@ -15,13 +15,19 @@ interface Props {
   lang: Lang;
 }
 
-const { t, rtl, lang } = Astro.props;
+const { t, lang } = Astro.props;
 
-/** Which product surface anchors each spotlight — matched by position. */
+/**
+ * Which product surface anchors each spotlight — matched by position.
+ *
+ * `shot` variants are real captures. The admissions pipeline is still drawn in
+ * markup because no capture of that screen exists yet; swap it for
+ * `{ kind: "portalShot", shot: "..." }` as soon as one does.
+ */
 const SPOTLIGHT_VISUALS = [
-  { kind: "portal", screen: "dashboard" },
-  { kind: "app", screen: "dailyReport" },
-  { kind: "portal", screen: "crm" },
+  { kind: "portalShot", shot: "dashboard", altKey: "portalDashboard" },
+  { kind: "appShot", shot: "dailyReportCreate", altKey: "appDailyReportCreate" },
+  { kind: "portalCoded", screen: "crm" },
 ] as const;
 
 const CARD_META = [
@@ -69,15 +75,15 @@ const CARD_META = [
             </div>
 
             <figure data-reveal data-reveal-delay="100">
-              {visual.kind === "portal" ? (
-                <PortalScreen screen={visual.screen} lang={lang} />
-              ) : (
+              {visual.kind === "portalShot" && (
+                <PortalFrame shot={visual.shot} alt={t.product.shots[visual.altKey]} />
+              )}
+              {visual.kind === "appShot" && (
                 <div class="flex justify-center">
-                  <PhoneShell class="max-w-[250px]" rtl={rtl}>
-                    <ParentAppBody screen={visual.screen} rtl={rtl} />
-                  </PhoneShell>
+                  <PhoneFrame shot={visual.shot} alt={t.product.shots[visual.altKey]} class="max-w-[248px]" />
                 </div>
               )}
+              {visual.kind === "portalCoded" && <PortalCrmScreen lang={lang} />}
               <figcaption class="mt-4 text-center text-sm text-subtle">{spotlight.caption}</figcaption>
             </figure>
           </div>

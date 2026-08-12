@@ -381,6 +381,24 @@ export const en: Dict = {
     themeValue: "Growing things",
     activityValue: "Planting sunflower seeds",
     objectiveValue: "Explores how living things grow",
+    /**
+     * Alt text for the real product captures. Written as descriptions of what
+     * each screen shows, so someone who can't see the image still learns what
+     * the section around it is claiming.
+     */
+    shots: {
+      portalDashboard:
+        "The Peekaboo Care live dashboard, showing children present, absences today, active staff and classroom occupancy per room.",
+      portalCommunication:
+        "The Peekaboo Care communication page, showing announcements, photo posts and daily reports going out to families.",
+      appFeed: "The Peekaboo Parent timeline, showing photos and a video posted from the classroom.",
+      appDailyReport:
+        "A daily report in Peekaboo Parent, showing a child's mood, meals, medicine and the supplies they need.",
+      appDailyReportCreate:
+        "An educator filling in a daily report in the app, choosing a child's mood and how much of breakfast they ate.",
+      appMessages: "The Peekaboo Parent inbox, showing conversations with families and colleagues.",
+      appProgress: "A child's progress analysis, showing curriculum coverage across each learning area.",
+    },
     observationToJournal: "Observation \u2192 Journal",
     observationQuote: "\u201cNoah checked his seed every morning and told the group it needed water.\u201d",
     journalTags: ["Added to journal", "Milestone recorded", "Shared with family"],

@@ -2,11 +2,13 @@
 import Container from "../ui/Container.astro";
 import ScrollSection from "./ScrollSection.astro";
 import SectionIntro from "./SectionIntro.astro";
-import PhoneShell from "../product/PhoneShell.astro";
-import ParentAppBody from "../product/ParentAppBody.astro";
+import PhoneFrame from "../product/PhoneFrame.astro";
+import PhoneScreenshot from "../product/PhoneScreenshot.astro";
+import CodedAppScreen from "../product/CodedAppScreen.astro";
+import ParentPaymentsScreen from "../product/ParentPaymentsScreen.astro";
 import FeatureIcon from "../ui/FeatureIcon.astro";
 import type { Dict } from "../../lib/i18n";
-import type { ParentScreen } from "../product/ParentAppBody.astro";
+import type { AppShot } from "../product/screenshots";
 
 interface Props {
   t: Dict;
@@ -15,12 +17,22 @@ interface Props {
 
 const { t, rtl } = Astro.props;
 
-/** Screens and icons stay in code; the words come from the dictionary. */
-const BEAT_META: { screen: ParentScreen; icon: string }[] = [
-  { screen: "timeline", icon: "timeline" },
-  { screen: "messages", icon: "communication" },
-  { screen: "development", icon: "curriculum" },
-  { screen: "payments", icon: "finance" },
+/**
+ * Screens and icons stay in code; the words come from the dictionary.
+ *
+ * Each beat shows the app screen it is actually describing. Payments has no
+ * capture yet, so that one beat still draws its screen in markup — give it a
+ * `shot` as soon as a real one exists.
+ */
+type BeatVisual =
+  | { shot: AppShot; altKey: "appDailyReport" | "appMessages" | "appProgress"; icon: string }
+  | { shot: null; icon: string };
+
+const BEAT_META: BeatVisual[] = [
+  { shot: "dailyReport", altKey: "appDailyReport", icon: "timeline" },
+  { shot: "messages", altKey: "appMessages", icon: "communication" },
+  { shot: "progress", altKey: "appProgress", icon: "curriculum" },
+  { shot: null, icon: "finance" },
 ];
 
 const total = t.app.beats.length;
@@ -39,45 +51,63 @@ const total = t.app.beats.length;
     <div class="mx-auto mt-16 max-w-4xl" data-app-story>
       <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-20">
         <div class="space-y-16 lg:space-y-40">
-          {t.app.beats.map((beat, index) => (
-            <div data-app-beat={index} class="scroll-mt-32">
-              <div class="flex items-start gap-4" data-reveal>
-                <FeatureIcon icon={BEAT_META[index].icon} class="h-11 w-11" />
-                <div class="min-w-0">
-                  <p class="text-xs font-bold uppercase tracking-[0.12em] text-brand-ink">
-                    {t.app.stepOf(index + 1, total)}
-                  </p>
-                  <h3 class="mt-1 font-heading text-2xl text-body">{beat.title}</h3>
-                  <p class="mt-2.5 max-w-md leading-relaxed text-muted">{beat.body}</p>
+          {t.app.beats.map((beat, index) => {
+            const visual = BEAT_META[index];
+            return (
+              <div data-app-beat={index} class="scroll-mt-32">
+                <div class="flex items-start gap-4" data-reveal>
+                  <FeatureIcon icon={visual.icon} class="h-11 w-11" />
+                  <div class="min-w-0">
+                    <p class="text-xs font-bold uppercase tracking-[0.12em] text-brand-ink">
+                      {t.app.stepOf(index + 1, total)}
+                    </p>
+                    <h3 class="mt-1 font-heading text-2xl text-body">{beat.title}</h3>
+                    <p class="mt-2.5 max-w-md leading-relaxed text-muted">{beat.body}</p>
+                  </div>
+                </div>
+
+                {/* Mobile: each beat carries its own phone, so the story reads
+                    top-to-bottom without any sticky behaviour. */}
+                <div class="mt-8 flex justify-center lg:hidden">
+                  {visual.shot ? (
+                    <PhoneFrame shot={visual.shot} alt={t.product.shots[visual.altKey]} class="max-w-[236px]" />
+                  ) : (
+                    <PhoneFrame class="max-w-[236px]">
+                      <CodedAppScreen title={beat.title} rtl={rtl}>
+                        <ParentPaymentsScreen />
+                      </CodedAppScreen>
+                    </PhoneFrame>
+                  )}
                 </div>
               </div>
-
-              {/* Mobile: each beat carries its own phone, so the story reads
-                  top-to-bottom without any sticky behaviour. */}
-              <div class="mt-8 flex justify-center lg:hidden">
-                <PhoneShell class="max-w-[240px]" rtl={rtl}>
-                  <ParentAppBody screen={BEAT_META[index].screen} rtl={rtl} />
-                </PhoneShell>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Desktop: one sticky phone, cross-fading between screens. */}
         <div class="hidden lg:block">
           <div class="sticky top-32">
-            <PhoneShell bodyHeight="316px" rtl={rtl}>
-              {BEAT_META.map((meta, index) => (
+            {/* One device, every screen stacked inside it. Scrolling past a
+                beat cross-fades to that beat's screen — the frame never moves,
+                only what's on it. */}
+            <PhoneFrame stack>
+              {BEAT_META.map((visual, index) => (
                 <div
                   data-app-screen={index}
                   class="absolute inset-0 transition-opacity duration-500 ease-out"
                   style={index === 0 ? "opacity:1" : "opacity:0"}
                   aria-hidden={index === 0 ? undefined : "true"}
                 >
-                  <ParentAppBody screen={meta.screen} rtl={rtl} />
+                  {visual.shot ? (
+                    <PhoneScreenshot shot={visual.shot} alt={t.product.shots[visual.altKey]} />
+                  ) : (
+                    <CodedAppScreen title={t.app.beats[index].title} rtl={rtl}>
+                      <ParentPaymentsScreen />
+                    </CodedAppScreen>
+                  )}
                 </div>
               ))}
-            </PhoneShell>
+            </PhoneFrame>
 
             <div class="mt-6 flex justify-center gap-1.5" aria-hidden="true">
               {BEAT_META.map((_, index) => (
