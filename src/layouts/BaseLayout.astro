@@ -117,5 +117,27 @@ const schemas = [
     </div>
 
     <slot />
+
+    {/*
+      Educore chat widget.
+
+      In the layout rather than a page so it is present on every route, and last
+      in the body so it never delays what a visitor came to read — the tag is
+      `async`, and the chat panel itself is only fetched on the first click.
+
+      `is:inline` because Astro would otherwise process this as a local module:
+      the loader is a classic IIFE served from another origin, and it reads its
+      own configuration off `document.currentScript`, which is null inside a
+      module.
+
+      The key identifies the widget and authorises nothing. The widget refuses
+      to load on any origin not in the workspace's allowlist.
+    */}
+    <script
+      is:inline
+      async
+      src="https://ai-agent-web-peekaboo1.vercel.app/loader.js"
+      data-widget-key="wk_ggk9avfy4a1cxzbn9xstx948at1cc"
+      data-api-url="https://ai-agent-web-peekaboo1.vercel.app"></script>
   </body>
 </html>

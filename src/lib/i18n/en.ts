@@ -23,7 +23,6 @@ export const en: Dict = {
     switchToEnglish: "Switch to English",
     switchToDark: "Switch to dark theme",
     switchToLight: "Switch to light theme",
-    whatsapp: "Chat with us on WhatsApp",
   },
 
   nav: {

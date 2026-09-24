@@ -13,7 +13,6 @@ import Curriculum from "./Curriculum.astro";
 import Faq from "./Faq.astro";
 import Contact from "./Contact.astro";
 import Footer from "./Footer.astro";
-import WhatsAppFab from "./WhatsAppFab.astro";
 import { getDict, alternatesFor, type Lang } from "../../lib/i18n";
 import { getSiteSettings } from "../../lib/sanity/queries";
 import { resolveSeo } from "../../lib/seo";
@@ -70,7 +69,6 @@ const alternates = alternatesFor("home");
   </main>
 
   <Footer t={t} rtl={rtl} lang={lang} isHome />
-  <WhatsAppFab t={t} />
 </BaseLayout>
 
 <script>

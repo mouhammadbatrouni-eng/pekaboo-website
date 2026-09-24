@@ -30,7 +30,6 @@ export interface Dict {
     switchToEnglish: string;
     switchToDark: string;
     switchToLight: string;
-    whatsapp: string;
   };
 
   nav: {
