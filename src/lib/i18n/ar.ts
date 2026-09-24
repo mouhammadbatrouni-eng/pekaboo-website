@@ -32,7 +32,6 @@ export const ar: Dict = {
     switchToEnglish: "Switch to English",
     switchToDark: "التبديل إلى الوضع الداكن",
     switchToLight: "التبديل إلى الوضع الفاتح",
-    whatsapp: "تواصل معنا عبر واتساب",
   },
 
   nav: {
