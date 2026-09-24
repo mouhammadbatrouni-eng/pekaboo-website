@@ -32,8 +32,8 @@ async function sendNotification(data: Submission) {
     `Name: ${data.name}`,
     `Email: ${data.email}`,
     `Organisation: ${data.organisation}`,
-    `Phone: ${data.phone || "—"}`,
-    `Centers: ${data.centers || "—"}`,
+    `Phone: ${data.phone || "not given"}`,
+    `Centers: ${data.centers || "not given"}`,
     "",
     data.message,
   ].join("\n");
@@ -45,7 +45,7 @@ async function sendNotification(data: Submission) {
       from: `Peekaboo Website <noreply@peek-a-boo.app>`,
       to,
       reply_to: data.email,
-      subject: `Demo request — ${data.organisation} (${data.name})`,
+      subject: `Demo request: ${data.organisation} (${data.name})`,
       text: lines,
     }),
   });
